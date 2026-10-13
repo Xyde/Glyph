@@ -162,7 +162,7 @@
 .folioNoteRow {
 	position: relative;
 	width: 100%;
-	min-height: 100px;
+	min-height: 6.25rem;
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
@@ -227,14 +227,14 @@
 }
 
 .folioNoteRow[data-kind="file"] {
-	min-height: 42px;
+	min-height: 2.625rem;
 	justify-content: center;
 	padding-top: 9px;
 	padding-bottom: 9px;
 }
 
 .folioNoteRow:has(.folioNoteThumbnail) {
-	min-height: 120px;
+	min-height: 7.5rem;
 }
 
 .folioNoteRowTop {
@@ -341,23 +341,24 @@
 	grid-row: 1;
 	display: flex;
 	align-items: center;
-	gap: 4px;
-	overflow: hidden;
+	flex-wrap: wrap;
+	gap: 4px 6px;
 }
 
 .folioNoteTag {
-	display: block;
+	display: inline-flex;
+	align-items: center;
 	flex: 0 1 auto;
 	min-width: 0;
 	max-width: 98px;
-	min-height: 18px;
-	padding: 0 6px;
+	min-height: 1.25rem;
+	padding: 1px 6px;
 	border-radius: 4px;
 	background: color-mix(in srgb, var(--bg-hover) 68%, transparent);
 	color: color-mix(in srgb, var(--text-secondary) 76%, var(--text-tertiary));
 	font-size: calc(var(--text-base) * 0.8);
 	font-weight: var(--font-medium);
-	line-height: 18px;
+	line-height: 1.35;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -385,7 +386,7 @@
 	overflow: hidden;
 	color: color-mix(in srgb, var(--text-tertiary) 86%, transparent);
 	font-size: calc(var(--text-base) * 0.8);
-	line-height: 16px;
+	line-height: 1.35;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
@@ -394,7 +395,7 @@
 	flex: 0 0 auto;
 	color: var(--interactive-accent);
 	font-size: calc(var(--text-base) * 0.8);
-	line-height: 16px;
+	line-height: 1.35;
 	white-space: nowrap;
 }
 

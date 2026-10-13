@@ -22,6 +22,7 @@ import {
 	type DatabasesOpenRequest,
 	INITIAL_DATABASES_OPEN_REQUEST,
 } from "../../lib/database/openDatabasesRequest";
+import { useUiFontSize } from "../../hooks/useUiFontSize";
 import { formatShortcutPartsForPlatform } from "../../lib/shortcuts/platform";
 import type { SplitEditorNode } from "../../lib/splitEditor";
 import type { FsEntry } from "../../lib/tauri";
@@ -196,7 +197,12 @@ export const MainContent = memo(function MainContent({
 	const settingsTab = useActiveSettingsTab();
 	const { aiEnabled, aiPanelOpen, setAiPanelOpen } = useAISidebarContext();
 	const { keepMounted: aiPanelKeepMounted } = useAiPanelSession();
-	const [infoSidebarWidth, setInfoSidebarWidth] = useState(340);
+	const uiFontSize = useUiFontSize();
+	const fontScale = Math.max(1, uiFontSize / 14);
+	const minInfoSidebarWidth = Math.round(260 * fontScale);
+	const maxInfoSidebarWidth = Math.max(620, Math.round(620 * fontScale));
+	const defaultInfoSidebarWidth = Math.round(340 * fontScale);
+	const [infoSidebarWidth, setInfoSidebarWidth] = useState(defaultInfoSidebarWidth);
 	const [infoSidebarOpen, setInfoSidebarOpen] = useState(false);
 	const handledDailyNoteSetupNoticeRequestRef = useRef(0);
 
@@ -204,19 +210,20 @@ export const MainContent = memo(function MainContent({
 	const aiSidebarMounted = aiSidebarVisible || aiPanelKeepMounted;
 	const rightSidebarOpen =
 		Boolean(spacePath) && !settingsMode && (aiSidebarVisible || (!zenMode && infoSidebarOpen));
+	const effectiveInfoSidebarWidth = Math.max(minInfoSidebarWidth, infoSidebarWidth);
 	const infoSidebarResize = useResizablePanel({
-		min: 260,
-		max: 620,
+		min: minInfoSidebarWidth,
+		max: maxInfoSidebarWidth,
 		direction: "left",
 		onResize: setInfoSidebarWidth,
-		currentWidth: infoSidebarWidth,
+		currentWidth: effectiveInfoSidebarWidth,
 	});
 	const notesInfoSidebarHostStyle = useMemo<CSSProperties>(
 		() =>
 			({
-				"--markdown-info-sidebar-width": `${infoSidebarWidth}px`,
+				"--markdown-info-sidebar-width": `${effectiveInfoSidebarWidth}px`,
 			}) as CSSProperties,
-		[infoSidebarWidth],
+		[effectiveInfoSidebarWidth],
 	);
 	useEffect(() => {
 		onRightSidebarOpenChange?.(rightSidebarOpen);

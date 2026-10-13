@@ -16,6 +16,7 @@ import { useTaskSummariesForPaths } from "../../hooks/useTaskSummariesForPaths";
 import { extractErrorMessage } from "../../lib/errorUtils";
 import { prefetchNote } from "../../lib/navigationPrefetch";
 import type { FileTreeSortMode } from "../../lib/settings";
+import { useUiFontSize } from "../../hooks/useUiFontSize";
 import type { FileTreeAppearance } from "../../lib/tauri";
 import { toast } from "../../lib/toast";
 import { isDeleteKey, isEditableTarget } from "../../utils/keyboard";
@@ -158,6 +159,16 @@ export const FolioNotesListPane = memo(function FolioNotesListPane({
 	const [appearancePickerPath, setAppearancePickerPath] = useState<string | null>(null);
 	const paneRef = useRef<HTMLElement | null>(null);
 	const listRef = useRef<HTMLUListElement | null>(null);
+	const [listElement, setListElementState] = useState<HTMLUListElement | null>(null);
+	const uiFontSize = useUiFontSize();
+	const noteRowEstimate = Math.max(
+		FOLIO_NOTE_ROW_ESTIMATE,
+		Math.round(FOLIO_NOTE_ROW_ESTIMATE * (uiFontSize / 14)),
+	);
+	const fileRowEstimate = Math.max(
+		FOLIO_FILE_ROW_ESTIMATE,
+		Math.round(FOLIO_FILE_ROW_ESTIMATE * (uiFontSize / 14)),
+	);
 	const { data: clockNowMs } = useQuery({
 		queryKey: ["folio", "relative-time-clock"],
 		queryFn: () => Date.now(),
@@ -187,10 +198,10 @@ export const FolioNotesListPane = memo(function FolioNotesListPane({
 		count: sortedNotes.length,
 		estimateSize: (index) => {
 			const note = sortedNotes[index];
-			if (note && !note.is_markdown) return FOLIO_FILE_ROW_ESTIMATE;
-			return FOLIO_NOTE_ROW_ESTIMATE;
+			if (note && !note.is_markdown) return fileRowEstimate;
+			return noteRowEstimate;
 		},
-		getScrollElement: () => listRef.current,
+		getScrollElement: () => listElement,
 		getItemKey: (index) => sortedNotes[index]?.note_path ?? index,
 		overscan: 4,
 	});
@@ -198,6 +209,7 @@ export const FolioNotesListPane = memo(function FolioNotesListPane({
 	const setListElement = useCallback(
 		(element: HTMLUListElement | null) => {
 			listRef.current = element;
+			setListElementState(element);
 			navigationQueryIdentityRef.current = navigationQueryIdentity;
 			if (element && activeTabPath && selectedIndex >= 0) {
 				rowVirtualizer.scrollToIndex(selectedIndex, { align: "auto" });
@@ -387,6 +399,7 @@ export const FolioNotesListPane = memo(function FolioNotesListPane({
 					</div>
 				) : null}
 				<ul
+					key={uiFontSize}
 					ref={setListElement}
 					className="folioNotesList is-virtualized"
 					style={

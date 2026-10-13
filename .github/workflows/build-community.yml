@@ -1,0 +1,56 @@
+name: Build Community macOS App
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build macOS Application
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Vite+
+        uses: voidzero-dev/setup-vp@v1
+        with:
+          node-version-file: .node-version
+          run-install: false
+          cache: true
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust artifacts
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
+
+      - name: Install dependencies
+        run: vp install --frozen-lockfile
+
+      - name: Build macOS Application
+        run: |
+          vp run tauri build --config '{"bundle": {"createUpdaterArtifacts": false}}'
+
+      - name: Archive Application Bundle
+        run: |
+          mkdir -p artifacts
+          cd src-tauri/target/release/bundle/macos
+          ditto -c -k --keepParent Glyph.app "$GITHUB_WORKSPACE/artifacts/Glyph-Community-macOS-arm64.zip"
+          cd "$GITHUB_WORKSPACE"
+          if compgen -G "src-tauri/target/release/bundle/dmg/*.dmg" > /dev/null; then
+            cp src-tauri/target/release/bundle/dmg/*.dmg artifacts/
+          fi
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Glyph-Community-macOS
+          path: artifacts/
+          retention-days: 14

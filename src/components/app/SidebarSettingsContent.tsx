@@ -168,25 +168,7 @@ export const SidebarSettingsContent = memo(function SidebarSettingsContent() {
 
 			<div className="sidebarBottomLayer">
 				<div className="settingsSidebarFooter">
-					{licenseStatus?.mode === "community_build" ? (
-						<div className="settingsFeedbackCard settingsFeedbackCardCommunity">
-							<span className="settingsFeedbackBadge">Community build</span>
-							<div className="settingsFeedbackTitle">Thanks for building Glyph</div>
-							<p className="settingsFeedbackBody">
-								Get automatic updates and the official build with a license.
-							</p>
-							<Button
-								type="button"
-								variant="ghost"
-								size="sm"
-								className="settingsFeedbackAction settingsFeedbackActionCommunity"
-								onClick={() => void openUrl(licenseStatus.purchase_url)}
-							>
-								Buy official license
-								<HugeiconsIcon icon={ArrowUpRight01Icon} size="var(--icon-sm)" />
-							</Button>
-						</div>
-					) : (
+					{licenseStatus?.mode !== "community_build" ? (
 						<div className="settingsFeedbackCard">
 							<span className="settingsFeedbackBadge">Early access</span>
 							<div className="settingsFeedbackTitle">Help shape Glyph</div>
@@ -205,7 +187,7 @@ export const SidebarSettingsContent = memo(function SidebarSettingsContent() {
 								<HugeiconsIcon icon={ArrowUpRight01Icon} size="var(--icon-sm)" />
 							</Button>
 						</div>
-					)}
+					) : null}
 				</div>
 			</div>
 		</>
