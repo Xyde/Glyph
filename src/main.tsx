@@ -30,7 +30,7 @@ import { isEditorViewMode, setCachedDefaultEditorViewMode } from "./lib/editorMo
 import { applyEditorHeadingPalette, isHeadingPaletteId } from "./lib/headingPalettes";
 import { queryClient } from "./lib/queryClient";
 import type { UiCornerRadiusStyle, UiDarkThemeId, UiLightThemeId } from "./lib/settings";
-import { isUiCornerRadiusStyle, loadSettings, reloadFromDisk } from "./lib/settings";
+import { isEditorWidthMode, isUiCornerRadiusStyle, loadSettings, reloadFromDisk } from "./lib/settings";
 import { invoke } from "./lib/tauri";
 import { useTauriEvent } from "./lib/tauriEvents";
 import { isUiDarkThemeId, isUiLightThemeId } from "./lib/uiThemes";
@@ -169,11 +169,7 @@ function ThemeAndTypographyBridge() {
 		if (isUiCornerRadiusStyle(payload.ui?.cornerRadiusStyle)) {
 			setCornerRadiusStyle(payload.ui.cornerRadiusStyle);
 		}
-		if (
-			payload.editor?.editorWidthMode === "compact" ||
-			payload.editor?.editorWidthMode === "comfortable" ||
-			payload.editor?.editorWidthMode === "wide"
-		) {
+		if (isEditorWidthMode(payload.editor?.editorWidthMode)) {
 			applyEditorWidthMode(payload.editor.editorWidthMode);
 		}
 		if (typeof payload.editor?.enablePeopleMentionsAsTags === "boolean") {

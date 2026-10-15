@@ -31,6 +31,7 @@ import {
 import { normalizeRelPath } from "../../utils/path";
 import { LocalNoteConnectionsDialog } from "../connections/LocalNoteConnectionsDialog";
 import { EditorViewModeSwitch } from "../editor/EditorViewModeSwitch";
+import { EditorWidthSwitcher } from "../editor/EditorWidthSwitcher";
 import { NoteInlineEditor } from "../editor/NoteInlineEditor";
 import { useInlineTemplateInsertion } from "../editor/hooks/useInlineTemplateInsertion";
 import { useTableOfContents } from "../editor/hooks/useTableOfContents";
@@ -526,6 +527,7 @@ export function MarkdownEditorPane({
 							largeNote={isLargeNote}
 							onModeChange={requestEditorMode}
 						/>
+						<EditorWidthSwitcher />
 						<div className="markdownEditorToolbarActions">
 							<NoteArchiveAction path={relPath} />
 							{aiEnabled ? (

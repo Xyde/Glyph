@@ -178,6 +178,46 @@ export function applyEditorWidthMode(mode: EditorWidthMode): void {
 		return;
 	}
 
+	if (mode === "ratio-1-3") {
+		root.style.setProperty(
+			"--editor-readable-content-max-width",
+			"min(33.33vw, calc(100% - 48px))",
+		);
+		root.style.setProperty("--editor-readable-content-gutter", "clamp(14px, 3vw, 36px)");
+		root.style.setProperty("--editor-readable-content-gutter-compact", "clamp(10px, 2.4vw, 22px)");
+		return;
+	}
+
+	if (mode === "ratio-1-2") {
+		root.style.setProperty(
+			"--editor-readable-content-max-width",
+			"min(50vw, calc(100% - 48px))",
+		);
+		root.style.setProperty("--editor-readable-content-gutter", "clamp(14px, 3vw, 36px)");
+		root.style.setProperty("--editor-readable-content-gutter-compact", "clamp(10px, 2.4vw, 22px)");
+		return;
+	}
+
+	if (mode === "ratio-2-3") {
+		root.style.setProperty(
+			"--editor-readable-content-max-width",
+			"min(66.67vw, calc(100% - 48px))",
+		);
+		root.style.setProperty("--editor-readable-content-gutter", "clamp(14px, 3vw, 36px)");
+		root.style.setProperty("--editor-readable-content-gutter-compact", "clamp(10px, 2.4vw, 22px)");
+		return;
+	}
+
+	if (mode === "ratio-3-4") {
+		root.style.setProperty(
+			"--editor-readable-content-max-width",
+			"min(75vw, calc(100% - 48px))",
+		);
+		root.style.setProperty("--editor-readable-content-gutter", "clamp(14px, 3vw, 36px)");
+		root.style.setProperty("--editor-readable-content-gutter-compact", "clamp(10px, 2.4vw, 22px)");
+		return;
+	}
+
 	if (mode === "comfortable") {
 		root.style.setProperty("--editor-readable-content-max-width", "860px");
 		root.style.setProperty("--editor-readable-content-gutter", "clamp(14px, 3vw, 36px)");

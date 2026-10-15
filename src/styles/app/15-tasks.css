@@ -4,7 +4,7 @@
 	--task-checkbox-size: min(calc(var(--editor-font-size) - 2px), 16px);
 	/* Pads the checkbox label out to a 24px pointer target. */
 	--task-hit-pad: calc((24px - var(--task-checkbox-size)) / 2);
-	--tasks-chevron-gutter: 26px;
+	--tasks-chevron-gutter: max(26px, calc(var(--icon-xl) + var(--space-2)));
 	--task-indent-step: 1.1em;
 	--tasks-row-hover: color-mix(in srgb, var(--bg-hover) 76%, transparent);
 	--tasks-meta: color-mix(in srgb, var(--text-secondary) 76%, var(--text-tertiary));
@@ -31,19 +31,21 @@
 
 .tasksToolbar .tasksSearch {
 	flex: 1 1 220px;
-	height: 28px;
+	min-height: 2.25rem;
+	height: auto;
 }
 
 .tasksToolbar .tasksScopeSelect {
 	width: auto;
 	max-width: 260px;
-	min-height: 28px;
-	height: 28px;
+	min-height: 2.25rem;
+	height: auto;
+	line-height: 1.35;
+	padding-block: 4px;
 	flex: 0 1 auto;
-	/* .databaseNativeSelect centers its arrow for 32px; re-center it for 28px. */
 	background-position:
-		calc(100% - 14px) 11px,
-		calc(100% - 9px) 11px;
+		calc(100% - 14px) center,
+		calc(100% - 9px) center;
 }
 
 .tasksScopeError {
@@ -59,6 +61,12 @@
 	align-items: center;
 	gap: var(--space-2);
 	margin-inline-start: auto;
+}
+
+.tasksToolbarEnd button {
+	min-width: max(24px, calc(var(--icon-sm) + 6px));
+	height: max(24px, calc(var(--icon-sm) + 6px));
+	width: auto;
 }
 
 /* Type and colour come from .activityDayCounts. */

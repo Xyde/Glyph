@@ -31,7 +31,13 @@ export const FolioWorkspace = memo(function FolioWorkspace({
 	onRequestCreateFolder,
 	onDuplicateFile,
 }: FolioWorkspaceProps) {
-	const { folioNotesWidth, setFolioNotesWidth, commitFolioNotesWidth } = useUILayoutContext();
+	const {
+		folioNotesWidth,
+		setFolioNotesWidth,
+		commitFolioNotesWidth,
+		sidebarWidth,
+		sidebarCollapsed,
+	} = useUILayoutContext();
 	const resize = useResizablePanel({
 		min: MIN_FOLIO_NOTES_WIDTH,
 		max: MAX_FOLIO_NOTES_WIDTH,
@@ -40,12 +46,14 @@ export const FolioWorkspace = memo(function FolioWorkspace({
 		onResize: setFolioNotesWidth,
 		onResizeEnd: commitFolioNotesWidth,
 	});
+	const effectiveLeftOffset = (sidebarCollapsed ? 0 : sidebarWidth) + folioNotesWidth;
 	const style = useMemo(
 		() =>
 			({
 				"--folio-notes-width": `${folioNotesWidth}px`,
+				"--editor-left-offset": `${effectiveLeftOffset}px`,
 			}) as CSSProperties,
-		[folioNotesWidth],
+		[effectiveLeftOffset, folioNotesWidth],
 	);
 
 	return (

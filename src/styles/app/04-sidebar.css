@@ -15,6 +15,8 @@
 	/* width/min-width animated by motion layout */
 	position: relative;
 	z-index: 6;
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .sidebarDragLayer {
@@ -323,11 +325,11 @@
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
-	gap: 1px;
+	gap: 2px;
 	width: calc(100% - 16px);
 	max-width: calc(100% - 16px);
 	margin: 10px 8px 6px;
-	padding: 2px 0;
+	padding: 4px 0;
 	border-radius: var(--radius-8);
 	background: transparent;
 	flex-shrink: 0;
@@ -348,10 +350,11 @@ button.sidebarViewTab {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	gap: 5px;
-	min-width: 0;
-	height: 26px;
-	padding: 0 8px;
+	gap: 6px;
+	min-width: max(26px, calc(var(--icon-md) + 8px));
+	height: auto;
+	min-height: max(26px, calc(var(--icon-md) + 6px));
+	padding: 3px 8px;
 	border: 0;
 	border-radius: var(--radius-6);
 	background: transparent;
@@ -440,7 +443,7 @@ button.sidebarViewTab:focus-visible {
 	display: flex;
 	align-items: center;
 	gap: 6px;
-	min-height: 22px;
+	min-height: max(22px, calc(var(--icon-sm) + 8px));
 	padding: 10px 16px 4px;
 	justify-content: space-between;
 	flex-shrink: 0;
@@ -461,7 +464,7 @@ button.sidebarViewTab:focus-visible {
 .sidebarStackHeaderActions {
 	display: inline-flex;
 	align-items: center;
-	gap: 2px;
+	gap: 6px;
 	flex-shrink: 0;
 	min-width: 0;
 }
@@ -470,15 +473,22 @@ button.sidebarViewTab:focus-visible {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 22px;
-	height: 22px;
-	padding: 0;
+	min-width: max(22px, calc(var(--icon-sm) + 6px));
+	width: auto;
+	min-height: max(22px, calc(var(--icon-sm) + 6px));
+	height: auto;
+	padding: 0 3px;
 	border: 0;
 	border-radius: var(--radius-sm);
 	background: transparent;
 	color: var(--text-tertiary);
 	cursor: pointer;
 	transition: color var(--transition-fast);
+}
+
+.sidebarStackHeaderAction svg {
+	flex: 0 0 auto;
+	color: currentColor;
 }
 
 .sidebarStackHeaderAction:hover,
@@ -495,8 +505,11 @@ button.sidebarViewTab:focus-visible {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 22px;
-	height: 22px;
+	min-width: max(22px, calc(var(--icon-sm) + 6px));
+	width: auto;
+	min-height: max(22px, calc(var(--icon-sm) + 6px));
+	height: auto;
+	padding: 0 3px;
 	border-radius: var(--radius-sm);
 	color: var(--text-tertiary);
 	transition: color var(--transition-fast);
@@ -509,14 +522,18 @@ button.sidebarViewTab:focus-visible {
 
 .sidebarStackHeaderSortIcon {
 	position: absolute;
-	left: 4px;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
 	pointer-events: none;
 	color: currentColor;
 }
 
 .sidebarStackHeaderSortSelect {
+	position: absolute;
+	inset: 0;
 	width: 100%;
-	height: 22px;
+	height: 100%;
 	padding: 0;
 	border: 0;
 	border-radius: var(--radius-sm);

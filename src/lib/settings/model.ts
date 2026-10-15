@@ -27,7 +27,14 @@ export type AttachmentStorageMode =
 export type UiCornerRadiusStyle = "default" | "sharp" | "round";
 export type UiFontFamily = string;
 export type UiFontSize = number;
-export type EditorWidthMode = "compact" | "comfortable" | "wide";
+export type EditorWidthMode =
+	| "compact"
+	| "comfortable"
+	| "wide"
+	| "ratio-1-3"
+	| "ratio-1-2"
+	| "ratio-2-3"
+	| "ratio-3-4";
 export type FocusMode = "off" | "paragraph" | "sentence";
 
 const SIDEBAR_VISIBILITY_KEYS = [

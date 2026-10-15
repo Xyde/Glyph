@@ -31,6 +31,10 @@ const DEFAULT_EDITOR_MODE_VALUES = [
 
 const EDITOR_WIDTH_VALUES = [
 	"compact",
+	"ratio-1-3",
+	"ratio-1-2",
+	"ratio-2-3",
+	"ratio-3-4",
 	"comfortable",
 	"wide",
 ] as const satisfies readonly EditorWidthMode[];

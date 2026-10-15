@@ -93,6 +93,17 @@
 	outline-offset: 2px;
 }
 
+.markdownEditorWidthBtn {
+	width: auto;
+	min-width: 28px;
+	padding: 0 5px;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: -0.02em;
+	line-height: 1;
+}
+
 .markdownEditorModeSwitch {
 	--markdown-editor-mode-bubble-offset: 6px;
 	position: relative;
@@ -1142,7 +1153,13 @@
 
 .markdownEditorPane .tiptapContentInline {
 	max-width: var(--editor-readable-content-max-width);
+	margin-left: max(
+		var(--editor-readable-content-gutter),
+		calc(50vw - var(--editor-left-offset, 0px) - (var(--editor-readable-content-max-width) / 2))
+	);
+	margin-right: auto;
 	padding: 18px var(--editor-readable-content-gutter) 50vh;
+	transition: max-width 180ms ease, margin-left 180ms ease;
 }
 
 @media (min-width: 761px) {
@@ -1160,7 +1177,30 @@
 .markdownEditorPane .frontmatterPreview {
 	width: var(--readable-content-outer-width);
 	box-sizing: border-box;
+	margin-left: max(
+		var(--editor-readable-content-gutter),
+		calc(50vw - var(--editor-left-offset, 0px) - (var(--editor-readable-content-max-width) / 2))
+	);
+	margin-right: auto;
 	padding-inline: clamp(8px, 1.4vw, 14px);
+	transition: max-width 180ms ease, margin-left 180ms ease;
+}
+
+.markdownEditorPane .rfNodeNoteEditorRaw .cm-content {
+	max-width: var(--editor-readable-content-max-width);
+	margin-left: max(
+		var(--editor-readable-content-gutter-compact),
+		calc(50vw - var(--editor-left-offset, 0px) - (var(--editor-readable-content-max-width) / 2))
+	);
+	margin-right: auto;
+	transition: max-width 180ms ease, margin-left 180ms ease;
+}
+
+:root[data-editor-width-mode="wide"] .markdownEditorPane .tiptapContentInline,
+:root[data-editor-width-mode="wide"] .markdownEditorPane .frontmatterPreview,
+:root[data-editor-width-mode="wide"] .markdownEditorPane .rfNodeNoteEditorRaw .cm-content {
+	margin-left: 0;
+	margin-right: 0;
 }
 
 :root[data-editor-width-mode="wide"] .markdownEditorPane .frontmatterPreview {

@@ -53,7 +53,7 @@ export function FontSizeControl({
 				<Input
 					id={id}
 					type="number"
-					className="w-16 [font-variant-numeric:tabular-nums]"
+					className="min-w-[5.5rem] w-auto min-h-[2.25rem] [font-variant-numeric:tabular-nums]"
 					min={min}
 					max={max}
 					step={1}

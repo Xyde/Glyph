@@ -261,7 +261,15 @@ export function isAttachmentStorageMode(value: unknown): value is AttachmentStor
 }
 
 export function isEditorWidthMode(value: unknown): value is EditorWidthMode {
-	return value === "compact" || value === "comfortable" || value === "wide";
+	return (
+		value === "compact" ||
+		value === "comfortable" ||
+		value === "wide" ||
+		value === "ratio-1-3" ||
+		value === "ratio-1-2" ||
+		value === "ratio-2-3" ||
+		value === "ratio-3-4"
+	);
 }
 
 export function isFocusMode(value: unknown): value is FocusMode {

@@ -193,7 +193,14 @@ export const MainContent = memo(function MainContent({
 	onOpenPeekedNote,
 }: MainContentProps) {
 	const { spacePath, settingsLoaded, onOpenSpace } = useSpace();
-	const { folioMode, settingsMode, zenMode } = useUILayoutContext();
+	const {
+		folioMode,
+		settingsMode,
+		zenMode,
+		sidebarWidth,
+		sidebarCollapsed,
+		folioNotesWidth,
+	} = useUILayoutContext();
 	const settingsTab = useActiveSettingsTab();
 	const { aiEnabled, aiPanelOpen, setAiPanelOpen } = useAISidebarContext();
 	const { keepMounted: aiPanelKeepMounted } = useAiPanelSession();
@@ -205,6 +212,16 @@ export const MainContent = memo(function MainContent({
 	const [infoSidebarWidth, setInfoSidebarWidth] = useState(defaultInfoSidebarWidth);
 	const [infoSidebarOpen, setInfoSidebarOpen] = useState(false);
 	const handledDailyNoteSetupNoticeRequestRef = useRef(0);
+
+	const effectiveLeftOffset =
+		(sidebarCollapsed ? 0 : sidebarWidth) + (folioMode ? folioNotesWidth : 0);
+	const mainAreaStyle = useMemo<CSSProperties>(
+		() =>
+			({
+				"--editor-left-offset": `${effectiveLeftOffset}px`,
+			}) as CSSProperties,
+		[effectiveLeftOffset],
+	);
 
 	const aiSidebarVisible = !zenMode && aiEnabled && aiPanelOpen && !infoSidebarOpen;
 	const aiSidebarMounted = aiSidebarVisible || aiPanelKeepMounted;
@@ -434,7 +451,11 @@ export const MainContent = memo(function MainContent({
 
 	return (
 		<>
-			<main className="mainArea" data-right-sidebar-open={rightSidebarOpen ? "true" : undefined}>
+			<main
+				className="mainArea"
+				data-right-sidebar-open={rightSidebarOpen ? "true" : undefined}
+				style={mainAreaStyle}
+			>
 				<div className="canvasWrapper">
 					{folioMode &&
 					!Object.values(panes).some(

@@ -73,7 +73,7 @@
 	--button-height: 32px;
 	--button-height-sm: 26px;
 	--input-height: 32px;
-	--readable-content-max-width: 720px;
+	--readable-content-max-width: clamp(720px, 45rem, min(calc(100% - 48px), 1100px));
 	--readable-content-gutter: clamp(24px, 6vw, 64px);
 	--readable-content-gutter-compact: clamp(14px, 3vw, 28px);
 	--editor-readable-content-max-width: var(--readable-content-max-width);

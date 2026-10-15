@@ -314,6 +314,10 @@
 			"ariaLabel": "Editor width",
 			"options": {
 				"compact": "Compact",
+				"ratio-1-3": "1/3 Viewport",
+				"ratio-1-2": "1/2 Viewport (Centered)",
+				"ratio-2-3": "2/3 Viewport",
+				"ratio-3-4": "3/4 Viewport",
 				"comfortable": "Comfortable",
 				"wide": "Wide"
 			}

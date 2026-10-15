@@ -314,9 +314,10 @@
 	border: 0;
 	border-radius: var(--radius-md);
 	color: var(--text-primary);
-	padding: 0 32px 0 10px;
-	height: 32px;
-	min-height: 34px;
+	padding: 6px 36px 6px 12px;
+	height: auto;
+	min-height: 2.25rem;
+	line-height: 1.35;
 }
 
 :root.dark .settingsSelectNative {
