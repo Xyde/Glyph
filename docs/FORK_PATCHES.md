@@ -234,4 +234,25 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Low.
 
+---
+
+## Patch 15: AI Mode Composer Typography & Button Scaling Fix
+- **Problem**:
+  - In AI mode (`AIComposer`), the send button (`button.aiComposerSend`) had fixed `height: 28px; width: 28px;` in CSS while inheriting Tailwind's `size-8` (`2rem` = $75.4\text{px}$ at root rem scale $37.7\text{px}$). This caused the send button to distort into a horizontally stretched, vertically squashed oval pancake (`( ↑ )`).
+  - The arrow icon inside (`ArrowUp02Icon`, `--icon-md` = $38\text{px}$) severely overflowed the $28\text{px}$ container height, clipping its top and bottom.
+  - In `ModelSelector.module.css`, `.trigger` had hardcoded `height: 30px;` while `.triggerLogo` used `--icon-lg` ($46.2\text{px}$) and `.providerSvg` used `--icon-xl` ($49.5\text{px}$), causing the provider spark to overflow the dropdown pill.
+  - `.aiComposerMentionButton` had fixed $26\text{px}$ dimensions against a $30\text{px}$ `AtIcon`.
+  - `.aiComposerInput` had fixed bottom padding of $44\text{px}$, allowing typed text to scroll behind the expanding bottom controls.
+- **Resolution**:
+  - Locked `button.aiComposerSend` and `.aiComposerStop` to a strict 1:1 circular ratio: `min-width: max(28px, calc(var(--icon-md) + 6px)); min-height: max(28px, calc(var(--icon-md) + 6px)); width: max(28px, calc(var(--icon-md) + 6px)); height: max(28px, calc(var(--icon-md) + 6px)); aspect-ratio: 1 / 1; border-radius: 9999px;`, guaranteeing a perfectly centered circular button framing the arrow icon.
+  - Scaled `.aiComposerMentionButton` dynamically: `min-width: max(26px, calc(var(--icon-sm) + 6px)); min-height: max(26px, calc(var(--icon-sm) + 6px)); width: auto; height: auto;`.
+  - Scaled `ModelSelector.module.css` `.trigger` min-height dynamically, balanced `.triggerLogo` and `.providerSvg` to `--icon-md`, and set `object-fit: contain`.
+  - Scaled `.aiComposerInput` bottom padding to `max(44px, calc(var(--icon-md) + 18px))` and min-height to `max(88px, calc(var(--text-sm) * 2 + var(--icon-md) + 24px))`.
+- **Files Modified**:
+  - `src/styles/app/21-ai-composer-context.css`
+  - `src/components/ai/ModelSelector.module.css`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Low.
+
+
 

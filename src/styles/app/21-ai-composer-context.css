@@ -125,11 +125,11 @@
 
 .aiComposerInput {
 	width: 100%;
-	min-height: 88px;
-	max-height: 180px;
+	min-height: max(88px, calc(var(--text-sm) * 2 + var(--icon-md) + 24px));
+	max-height: 220px;
 	overflow-x: visible;
 	overflow-y: auto;
-	padding: 10px 12px 44px;
+	padding: 10px 12px max(44px, calc(var(--icon-md) + 18px));
 	font-size: var(--text-sm);
 	color: var(--text-primary);
 	line-height: var(--leading-relaxed);
@@ -280,8 +280,10 @@
 .aiComposerMentionButton {
 	position: relative;
 	z-index: 1;
-	width: 26px;
-	height: 26px;
+	min-width: max(26px, calc(var(--icon-sm) + 6px));
+	min-height: max(26px, calc(var(--icon-sm) + 6px));
+	width: auto;
+	height: auto;
 	border-radius: var(--radius-md);
 	flex: 0 0 auto;
 	color: var(--text-secondary);
@@ -336,11 +338,20 @@
 }
 
 button.aiComposerSend {
-	height: 28px;
-	width: 28px;
+	min-width: max(28px, calc(var(--icon-md) + 6px));
+	min-height: max(28px, calc(var(--icon-md) + 6px));
+	width: max(28px, calc(var(--icon-md) + 6px));
+	height: max(28px, calc(var(--icon-md) + 6px));
+	aspect-ratio: 1 / 1;
+	border-radius: 9999px;
 	background: var(--interactive-accent);
 	color: var(--text-inverse);
 	box-shadow: 0 1px 2px color-mix(in srgb, var(--text-primary) 12%, transparent);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	flex-shrink: 0;
 }
 
 button.aiComposerSend:hover:not(:disabled) {
@@ -354,15 +365,19 @@ button.aiComposerSend:disabled {
 }
 
 .aiComposerStop {
-	width: 26px;
-	height: 26px;
+	min-width: max(26px, calc(var(--icon-md) + 6px));
+	min-height: max(26px, calc(var(--icon-md) + 6px));
+	width: max(26px, calc(var(--icon-md) + 6px));
+	height: max(26px, calc(var(--icon-md) + 6px));
+	aspect-ratio: 1 / 1;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	border-radius: var(--radius-md);
+	border-radius: 9999px;
 	border: 1px solid var(--status-danger-border);
 	background: var(--status-danger-bg);
 	color: var(--status-danger-fg);
+	flex-shrink: 0;
 }
 
 .aiComposerStop:hover {

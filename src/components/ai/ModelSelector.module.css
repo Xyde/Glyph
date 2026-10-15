@@ -4,8 +4,9 @@
 	gap: var(--space-1);
 	width: fit-content;
 	max-width: 100%;
-	height: 30px;
-	padding: 0 8px;
+	min-height: max(30px, calc(var(--text-base) * 0.8 * 1.35 + 8px));
+	height: auto;
+	padding: 3px 10px;
 	border-radius: var(--radius-lg);
 	font-size: calc(var(--text-base) * 0.8);
 	font-family: var(--font-sans);
@@ -36,8 +37,9 @@
 	align-items: center;
 	justify-content: center;
 	margin-right: 2px;
-	width: var(--icon-lg);
-	height: var(--icon-lg);
+	width: var(--icon-md);
+	height: var(--icon-md);
+	flex-shrink: 0;
 }
 
 .triggerLabel {
@@ -53,8 +55,8 @@
 }
 
 .providerSvg {
-	width: var(--icon-xl);
-	height: var(--icon-xl);
+	width: var(--icon-md);
+	height: var(--icon-md);
 	object-fit: contain;
 	display: block;
 }
