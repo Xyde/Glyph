@@ -56,7 +56,7 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	max-width: 140px;
+	max-width: min(32vw, 320px);
 	color: var(--text-tertiary);
 }
 
@@ -77,8 +77,10 @@
 }
 
 .databasePinButton {
-	min-width: 30px;
-	min-height: 30px;
+	min-width: max(30px, calc(var(--icon-md) + 6px));
+	min-height: max(30px, calc(var(--icon-md) + 6px));
+	width: auto;
+	height: auto;
 }
 
 .databasePinButton[data-pinned="true"] {
@@ -93,8 +95,10 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 30px;
-	height: 30px;
+	min-width: max(30px, calc(var(--icon-md) + 6px));
+	min-height: max(30px, calc(var(--icon-md) + 6px));
+	width: auto;
+	height: auto;
 	padding: 0;
 	border: 1px solid transparent;
 	border-radius: var(--database-radius-md);

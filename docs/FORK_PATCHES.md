@@ -210,3 +210,28 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Low.
 
+---
+
+## Patch 14: Collections & Databases Toolbar Typography & Layout Scaling Fix
+- **Problem**:
+  - In Collections view (`CollectionTopBar`), `.databasesCollectionBreadcrumbLabel` had hardcoded `max-width: 140px;`. At large custom UI font sizes (e.g. font 33), 140px fit only ~7 characters, truncating folder paths prematurely into `Game n...` despite hundreds of pixels of empty header space.
+  - Action buttons (`.databasePinButton`, `.databaseCollectionActionsButton`, `.databasesViewTabMenu`) had fixed $30\text{px}$ bounding boxes with $38\text{px}$ `--icon-md` icons, causing icons to overflow and clip.
+  - In the secondary view bar (`DatabasesPane`, `DatabaseToolbar`), `--database-control-height: 30px;` was hardcoded.
+  - At font size 33, `var(--text-xs)` expands to $29.7\text{px}$. Inside fixed $30\text{px}$ controls with $4\text{px}$ padding and borders, the content area choked to $24\text{px}$, slicing text baselines off in `.databaseToolbarGroupBySelect` (`Tags (multi-lane)`).
+  - The search input (`.databaseToolbarSearch`) had fixed `width: min(200px, 24vw); min-width: 132px;`, severely truncating the "Search Collection..." placeholder to `Search C` with zero typing room.
+  - `button.databasesViewTab` and `button.databaseToolbarChip.databasesNewNoteButton` had fixed $30\text{px}$ heights, vertically choking $27.7\text{px}$ tab text and $31.3\text{px}$ `+ New Note` text.
+- **Resolution**:
+  - Scaled `--database-control-height` dynamically: `max(30px, calc(var(--text-xs) * 1.35 + 8px))`, scaling controls cleanly to $\sim 46\text{px}$ at font size 33 while preserving $30\text{px}$ for standard fonts.
+  - Scaled `.databaseToolbarSearch` dynamically: `width: min(max(200px, calc(var(--text-xs) * 12)), 32vw); min-width: max(132px, calc(var(--text-xs) * 7));`, allowing full placeholder visibility.
+  - Scaled `.databaseToolbarGroupBySelect` with dynamic right padding (`max(28px, calc(var(--icon-xs) + 16px))`) and line-height `1.25`, eliminating baseline clipping and chevron collisions.
+  - Scaled `button.databasesViewTab`, `.databasesViewTabMenu`, and `.databasesNewNoteButton` heights and padding dynamically with font and icon tokens.
+  - Scaled `.databasesCollectionBreadcrumbLabel` max-width to `min(32vw, 320px)` and `.mainTabsBreadcrumbButton` to `min(36vw, 320px)`.
+- **Files Modified**:
+  - `src/styles/app/37-database.css`
+  - `src/styles/app/37-database-views.css`
+  - `src/styles/app/37-database-collections.css`
+  - `src/styles/app/17-main-tabs.css`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Low.
+
+

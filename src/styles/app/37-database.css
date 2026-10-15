@@ -11,7 +11,7 @@
 		0 18px 42px color-mix(in srgb, black 18%, transparent),
 		0 6px 18px color-mix(in srgb, black 10%, transparent),
 		0 1px 0 color-mix(in srgb, white 8%, transparent);
-	--database-control-height: 30px;
+	--database-control-height: max(30px, calc(var(--text-xs) * 1.35 + 8px));
 	--database-control-radius: calc(var(--radius-md) + 1px);
 	--database-control-border: color-mix(in srgb, var(--border-default) 78%, transparent);
 	--database-control-background: color-mix(in srgb, var(--bg-primary) 92%, var(--bg-secondary));
@@ -107,17 +107,18 @@
 .databaseToolbarActions {
 	display: flex;
 	align-items: center;
-	gap: 3px;
+	gap: 6px;
 }
 
 .databaseToolbarSearch {
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
-	width: min(200px, 24vw);
-	min-width: 132px;
+	width: min(max(200px, calc(var(--text-xs) * 12)), 32vw);
+	min-width: max(132px, calc(var(--text-xs) * 7));
 	height: var(--database-control-height);
-	padding: 0 7px;
+	min-height: var(--database-control-height);
+	padding: 0 10px;
 	border: 1px solid var(--database-control-border);
 	border-radius: var(--database-control-radius);
 	background: var(--database-control-background);
@@ -132,7 +133,7 @@
 }
 
 .databaseToolbarSearchInput {
-	height: calc(var(--database-control-height) - 2px);
+	height: calc(var(--database-control-height) - 4px);
 	min-width: 0;
 	flex: 1 1 auto;
 	border: 0;
@@ -140,6 +141,7 @@
 	box-shadow: none;
 	padding: 0;
 	font-size: var(--text-xs);
+	line-height: 1.25;
 	color: var(--text-primary);
 }
 
@@ -226,7 +228,8 @@
 .databaseToolbarGroupBySelect {
 	box-sizing: border-box;
 	height: var(--database-control-height);
-	padding: 2px 28px 2px 10px;
+	min-height: var(--database-control-height);
+	padding: 2px max(28px, calc(var(--icon-xs) + 16px)) 2px 10px;
 	border-radius: var(--database-control-radius);
 	border: 1px solid var(--database-control-border);
 	background: var(--database-control-background);
