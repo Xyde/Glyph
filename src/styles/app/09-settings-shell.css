@@ -396,8 +396,8 @@
 	gap: 4px;
 	padding: 0 0 16px;
 	background: transparent;
-	width: 70%;
-	max-width: 644px;
+	width: 100%;
+	max-width: min(880px, 92vw);
 	margin: 0 auto;
 }
 

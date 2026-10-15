@@ -254,5 +254,27 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Low.
 
+---
+
+## Patch 16: Settings Layout Width Expansion & Model Combobox Overlap Fix
+- **Problem**:
+  - Settings panels (`.settingsPanelHeader`, `.settingsSectionHeader`, `.settingsCard`, and `.shortcutsToolbar`) had a hardcoded `width: 70%; max-width: 644px; margin: 0 auto;`. On widescreen displays, this left $> 50\%$ of the screen width as empty black negative space while cramping settings controls.
+  - Inside settings cards, the left copy description (`.settingsFieldCopy`) was squeezed into $\sim 200\text{px}$, causing explanatory sentences to break into 7-8 awkward vertical lines.
+  - Form controls on the right (`.settingsFieldControl` and `.settingsSelectWrap`) were constrained to `max-width: 360px;`, causing dropdown labels like "Same as chat model" to truncate with ellipses (`Same as chat m...`).
+  - In `33-model-combobox.css`, `.modelCombobox` had hardcoded `max-width: 280px;`, `.settingsSelectNative` had fixed `padding-right: 92px;`, and `.modelComboboxBadge` was positioned at `right: 34px;` with unconstrained font scaling. At large custom UI font sizes (e.g. font 33 / $26.4\text{px}$ text), 92px fits only $\sim 3.5$ characters. The "Default" option text ($\sim 120\text{px}$), the "models" badge ($\sim 110\text{px}$), and the chevron collided directly, creating an overlapping text bug (`Defaultmodels v`).
+- **Resolution**:
+  - Expanded `.settingsPanelHeader`, `.settingsSectionHeader`, `.settingsCard`, and `.shortcutsToolbar` from fixed 70% / $644\text{px}$ to `width: 100%; max-width: min(880px, 92vw); margin: 0 auto;`, efficiently utilizing available screen space while preserving clean readable margins.
+  - Expanded `.settingsFieldControl` and `.settingsSelectWrap` max-width to `min(480px, 55%)` and `min(480px, 100%)`, providing generous breathing room for dropdown labels.
+  - Converted `.modelCombobox` to `max-width: 100%;` and ensured `.modelComboboxInputWrap` spans full width (`width: 100%`).
+  - Scaled `.settingsSelectNative` right padding dynamically: `max(96px, calc(var(--text-base) * 0.75 * 7 + 42px))`, guaranteeing sufficient clearance for the badge and chevron at any font size.
+  - Clamped `.modelComboboxBadge` font size to `clamp(10px, calc(var(--text-base) * 0.72), 14px)` and positioned it at `right: calc(var(--icon-md) + 12px);`, eliminating text collision and badge clipping.
+- **Files Modified**:
+  - `src/styles/app/09-settings-shell.css`
+  - `src/styles/app/10-settings-controls.css`
+  - `src/styles/app/11-settings-misc.css`
+  - `src/styles/app/33-model-combobox.css`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Low.
+
 
 

@@ -1,7 +1,7 @@
 .modelCombobox {
 	position: relative;
 	min-width: 0;
-	max-width: 280px;
+	max-width: 100%;
 	width: 100%;
 }
 
@@ -9,6 +9,7 @@
 	position: relative;
 	display: flex;
 	align-items: center;
+	width: 100%;
 }
 
 .modelComboboxInputWrap > input {
@@ -23,13 +24,13 @@
 
 .modelComboboxInputWrap .settingsSelectNative {
 	width: 100%;
-	padding-right: 92px;
+	padding-right: max(96px, calc(var(--text-base) * 0.75 * 7 + 42px));
 }
 
 .modelComboboxBadge {
 	position: absolute;
-	right: 34px;
-	font-size: calc(var(--text-base) * 0.8);
+	right: calc(var(--icon-md) + 12px);
+	font-size: clamp(10px, calc(var(--text-base) * 0.72), 14px);
 	color: var(--text-tertiary);
 	pointer-events: none;
 	white-space: nowrap;

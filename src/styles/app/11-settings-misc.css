@@ -399,7 +399,8 @@
 	flex-direction: column;
 	gap: 14px;
 	padding: 16px 18px 18px;
-	width: 70%;
+	width: 100%;
+	max-width: min(880px, 92vw);
 	margin: 0 auto;
 }
 
