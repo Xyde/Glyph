@@ -80,6 +80,7 @@ import { useDocumentExport } from "./useDocumentExport";
 import { useTabManager } from "./useTabManager";
 import { useWorkspaceLinkEvents } from "./useWorkspaceLinkEvents";
 import { useWorkspaceSession } from "./useWorkspaceSession";
+import { useUiFontSize } from "../../hooks/useUiFontSize";
 
 const loadCommandPalette = () =>
 	import("./CommandPalette").then((module) => ({
@@ -219,9 +220,19 @@ export function AppShell() {
 		message: string | null;
 	} | null>(null);
 
+	const uiFontSize = useUiFontSize();
+	const fontScale = Math.max(1, uiFontSize / 14);
+	const dynamicMinSidebarWidth = Math.round(
+		SIDEBAR_MIN_WIDTH * Math.min(1.8, Math.max(1, fontScale * 0.72)),
+	);
+	const dynamicMaxSidebarWidth = Math.max(
+		SIDEBAR_MAX_WIDTH,
+		Math.round(SIDEBAR_MAX_WIDTH * fontScale * 0.72),
+	);
+
 	const sidebarResize = useResizablePanel({
-		min: SIDEBAR_MIN_WIDTH,
-		max: SIDEBAR_MAX_WIDTH,
+		min: dynamicMinSidebarWidth,
+		max: dynamicMaxSidebarWidth,
 		disabled: sidebarCollapsed,
 		direction: "right",
 		onResize: setSidebarWidth,

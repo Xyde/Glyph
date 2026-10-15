@@ -571,7 +571,7 @@ export const SidebarContent = memo(function SidebarContent({
 												newNoteShortcut ? ` (${formatShortcutForPlatform(newNoteShortcut)})` : ""
 											}`}
 										>
-											<HugeiconsIcon icon={CursorAddSelection02Icon} size="var(--icon-lg)" />
+											<HugeiconsIcon icon={CursorAddSelection02Icon} size="var(--icon-md)" />
 											<span className="sidebarQuickActionLabel">{t("sidebar.newNote")}</span>
 											{newNoteShortcut ? (
 												<span className="sidebarQuickActionShortcut">

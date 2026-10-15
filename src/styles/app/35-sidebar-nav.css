@@ -3,9 +3,9 @@
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
-	gap: 8px;
-	min-height: 26px;
-	padding: 2px 8px;
+	gap: max(8px, calc(var(--icon-md) * 0.25));
+	min-height: max(26px, calc(var(--text-sm) * 1.35 + 8px));
+	padding: 4px 10px;
 	font-size: var(--text-sm);
 	color: var(--text-primary);
 	background: none;
@@ -66,9 +66,11 @@
 }
 
 button.sidebarNewCanvasIconBtn {
-	flex: 0 0 26px;
-	width: 26px;
-	height: 26px;
+	flex: 0 0 auto;
+	min-width: max(26px, calc(var(--icon-md) + 4px));
+	min-height: max(26px, calc(var(--icon-md) + 4px));
+	width: auto;
+	height: auto;
 	padding: 0;
 	margin-left: auto;
 	border-radius: var(--radius-8);
@@ -186,8 +188,8 @@ button.sidebarNewCanvasIconBtn:active {
 	gap: 7px;
 	width: calc(100% - 16px);
 	margin: 2px 8px;
-	min-height: 30px;
-	padding: 6px 8px 6px 9px;
+	min-height: max(30px, calc(var(--text-sm) * 1.35 + 10px));
+	padding: 4px 10px;
 	background: var(--bg-primary);
 	border: 1px solid var(--border-light);
 	border-radius: var(--radius-8);

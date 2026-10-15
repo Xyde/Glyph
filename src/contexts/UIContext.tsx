@@ -45,6 +45,7 @@ import {
 	normalizeSidebarVisibility,
 } from "../lib/settings/model";
 import { useTauriEvent } from "../lib/tauriEvents";
+import { useUiFontSize } from "../hooks/useUiFontSize";
 import { useSpace } from "./SpaceContext";
 
 interface UILayoutContextValue {
@@ -750,11 +751,20 @@ export function UIProvider({ children }: { children: ReactNode }) {
 		[],
 	);
 
+	const uiFontSize = useUiFontSize();
+	const fontScale = Math.max(1, uiFontSize / 14);
+	const dynamicMinSidebarWidth = Math.round(220 * Math.min(1.8, Math.max(1, fontScale * 0.72)));
+	const dynamicBaseSidebarWidth = Math.round(260 * Math.max(1, fontScale * 0.72));
+	const effectiveSidebarWidth = Math.max(
+		dynamicMinSidebarWidth,
+		sidebarWidth === 260 ? dynamicBaseSidebarWidth : sidebarWidth,
+	);
+
 	const layoutValue = useMemo<UILayoutContextValue>(
 		() => ({
 			sidebarCollapsed,
 			setSidebarCollapsed,
-			sidebarWidth,
+			sidebarWidth: effectiveSidebarWidth,
 			setSidebarWidth,
 			paletteOpen,
 			setPaletteOpen,
@@ -792,7 +802,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
 		[
 			sidebarCollapsed,
 			setSidebarCollapsed,
-			sidebarWidth,
+			effectiveSidebarWidth,
 			setSidebarWidth,
 			paletteOpen,
 			setPaletteOpen,

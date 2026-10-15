@@ -276,5 +276,30 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Low.
 
+---
+
+## Patch 17: Dynamic Navigation Sidebar Width & Proportional Bounds Scaling
+- **Problem**:
+  - Upstream Glyph hardcoded the main navigation sidebar width to a static pixel integer (`sidebarWidth: 260` in `UIContext.tsx`), bounded by `const SIDEBAR_MIN_WIDTH = 220` in `AppShell.tsx`, with CSS fallback `--sidebar-width: 260px` in `semantic-base.css` and `min-width: 220px` in `04-sidebar.css`.
+  - While custom UI font scaling (`ui.fontSize: 33`) expanded typography and icons by $2.357\times$, the sidebar container remained trapped at $260\text{px}$.
+  - At font 33 ($26.4\text{px}$ text with $38\text{px}$ icons), a $260\text{px}$ container accommodates only 6–8 characters before overflowing. Every primary navigation button (`New Note`, `All Notes 743`, `Collections`, `Connections`) and file tree folder path (`178...`, `19th...`) was abruptly amputated with ellipses (`...`).
+  - `.sidebarQuickActionBtn` had fixed `min-height: 26px; padding: 2px 8px;`, `.sidebarTopNavigation` had fixed `gap: 2px;`, and `New Note` used `--icon-lg` ($46.2\text{px}$) while all other items used `--icon-md` ($38\text{px}$), creating unbalanced visual weight.
+- **Resolution**:
+  - In `UIContext.tsx`, dynamically scaled `effectiveSidebarWidth`: when at the default $260\text{px}$ state, it automatically derives `Math.round(260 * Math.max(1, fontScale * 0.72))` ($\approx 441\text{px}$ at font 33), with a dynamic minimum floor `Math.round(220 * Math.min(1.8, Math.max(1, fontScale * 0.72)))` ($\approx 373\text{px}$ at font 33).
+  - In `AppShell.tsx`, dynamically scaled `min` and `max` drag bounds for `useResizablePanel` based on `fontScale`, allowing flexible user adjustment while preventing claustrophobic squashing.
+  - In `semantic-base.css` and `04-sidebar.css`, scaled `--sidebar-width: clamp(260px, calc(var(--text-base) * 15.5), 520px);` and `.sidebar` `min-width: clamp(220px, calc(var(--text-base) * 12.5), 420px);`.
+  - In `SidebarContent.tsx`, harmonized `New Note`'s icon to `var(--icon-md)` to match the rest of the navigation hierarchy.
+  - In `04-sidebar.css` and `35-sidebar-nav.css`, scaled `gap`, `min-height`, and `padding` across action buttons and the search bar so all items maintain generous touch targets and comfortable breathing room matching modern macOS desktop conventions.
+- **Files Modified**:
+  - `src/contexts/UIContext.tsx`
+  - `src/components/app/AppShell.tsx`
+  - `src/components/app/SidebarContent.tsx`
+  - `src/styles/themes/semantic-base.css`
+  - `src/styles/app/04-sidebar.css`
+  - `src/styles/app/35-sidebar-nav.css`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Low.
+
+
 
 
