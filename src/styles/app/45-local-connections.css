@@ -24,8 +24,11 @@
 	z-index: 2;
 	display: grid;
 	place-items: center;
-	width: 28px;
-	height: 28px;
+	width: auto;
+	min-width: max(28px, calc(var(--icon-md) + 6px));
+	height: max(28px, calc(var(--icon-md) + 6px));
+	min-height: max(28px, calc(var(--icon-md) + 6px));
+	padding: 0;
 	border: 1px solid transparent;
 	border-radius: var(--radius-md);
 	background: transparent;
@@ -123,20 +126,27 @@
 	pointer-events: auto;
 	display: flex;
 	align-items: center;
-	gap: 2px;
+	gap: 6px;
 }
 
 .spaceConnectionsToolbar button {
-	width: 28px;
-	height: 28px;
-	min-width: 28px;
-	min-height: 28px;
-	padding: 0;
+	width: auto;
+	min-width: max(28px, calc(var(--icon-md) + 6px));
+	height: max(28px, calc(var(--icon-md) + 6px));
+	min-height: max(28px, calc(var(--icon-md) + 6px));
+	padding: 0 3px;
 	border: 0;
 	border-radius: var(--radius-md);
 	background: transparent;
 	box-shadow: none;
 	transform: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.spaceConnectionsToolbar button svg {
+	flex: 0 0 auto;
 }
 
 .spaceConnectionsToolbar button:hover,
@@ -147,7 +157,8 @@
 
 .spaceConnectionsSearchInput {
 	width: 180px;
-	height: 32px;
+	min-height: max(32px, calc(var(--icon-md) + 6px));
+	height: auto;
 }
 
 .spaceConnectionsOptionsMenu {

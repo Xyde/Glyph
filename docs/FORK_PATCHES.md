@@ -174,3 +174,19 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
   - `src/styles/app/20-main-empty-state.css`
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Low.
+
+---
+
+## Patch 12: Connections Graph Toolbar Icon Collision Fix
+- **Problem**:
+  - In Connections graph view, `.spaceConnectionsToolbar button` had hardcoded `width: 28px; height: 28px;` with `gap: 2px`.
+  - At custom UI font size 33, `--icon-md` scales to 38px, causing the search button (`Search01Icon`) and the filter slider button (`SlidersVerticalIcon`) to overflow their 28px containers and overlap directly into a single tangled glyph on the right screen edge.
+- **Resolution**:
+  - Scaled button boxes dynamically: `min-width: max(28px, calc(var(--icon-md) + 6px)); height: max(28px, calc(var(--icon-md) + 6px)); min-height: max(28px, calc(var(--icon-md) + 6px)); width: auto;`.
+  - Increased toolbar gap to `6px` and ensured `flex: 0 0 auto` on child SVGs.
+  - Dynamically scaled `.localNoteConnectionsClose` button box.
+- **Files Modified**:
+  - `src/styles/app/45-local-connections.css`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Low.
+
