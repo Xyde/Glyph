@@ -83,12 +83,24 @@ export function buildHeatmap({ days, period, today, weekStartsOn }: BuildHeatmap
 		const day = days.get(dateKey);
 		const count = day?.notes.size ?? 0;
 		for (const notePath of day?.notes.keys() ?? []) notePaths.add(notePath);
-		if (cursor.getDate() === 1 || (cells.length === 0 && cursor.getDate() <= 14)) {
+		if (cursor.getDate() === 1 || (cells.length === 0 && cursor.getDate() <= 4)) {
 			week.monthStart = cursor;
 		}
 		const cell: HeatmapCell = { dateKey, date: cursor, count, level: 0 };
 		cells.push(cell);
 		week.days.push(cell);
+	}
+
+	// Drop any month label that is too close to an earlier month (< 3 weeks) to prevent horizontal collisions
+	let lastMonthIndex = -10;
+	for (let i = 0; i < weeks.length; i++) {
+		if (weeks[i].monthStart) {
+			if (i - lastMonthIndex < 3) {
+				weeks[i].monthStart = null;
+			} else {
+				lastMonthIndex = i;
+			}
+		}
 	}
 
 	const activeCounts = cells.filter((cell) => cell.count > 0).map((cell) => cell.count);

@@ -190,3 +190,23 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Low.
 
+---
+
+## Patch 13: All Notes Activity Heatmap Layout & Collision Fix
+- **Problem**:
+  - In All Notes view (`ActivityHeatmapGrid`), `.activityHeatmapWeekday` and `.activityHeatmapMonth` used unconstrained `font-size: calc(var(--text-base) * 0.7);` which expanded to $23.1\text{px}$ at custom UI font size 33.
+  - The $23.1\text{px}$ weekday font exceeded the $15\text{px}$ cell line-height, stretching only the labeled rows (Mon, Wed, Fri) and distorting the grid matrix into irregular, unevenly spaced cells with vertical gaps.
+  - The enlarged weekday labels expanded to $55\text{px}$ width (exceeding the hardcoded $32\text{px}$ scroller reservation), causing the grid to overflow horizontally. In `.activityHeatmapScroller` (`flex-direction: row-reverse`), the default right-anchored scroll position clipped the leftmost $28\text{px}$ offscreen, truncating "Mon" to "on" and "Wed" to "ed".
+  - Week 0 mid-month start logic (`cells.length === 0 && cursor.getDate() <= 14`) placed a month label ("Oct") only 2 weeks away from the 1st of the next month ("Nov"), causing month labels to collide horizontally as a composite string (`OctNov`).
+- **Resolution**:
+  - Clamped `.activityHeatmapMonth` and `.activityHeatmapWeekday` font sizes to `clamp(9px, calc(var(--text-base) * 0.65), 11px)` so labels scale cleanly without exceeding the $15\text{px}$ cell pitch or the $36\text{px}$ weekday column width budget.
+  - Locked grid row heights uniformly with `grid-template-rows: auto repeat(7, var(--activity-heatmap-cell));` in `15-activity-timeline.css` to guarantee all 7 weekday rows maintain identical square proportions.
+  - Scaled `.activityHeatmapScroller` cell calculation to `calc((100cqi - 36px) / 53 - var(--activity-heatmap-gap))` with safe $36\text{px}$ column allocation.
+  - Clamped `.activityHeatmapLegend` font size to `clamp(9px, calc(var(--text-base) * 0.65), 12px)`.
+  - In `heatmapModel.ts`, restricted week 0 month labeling to `cursor.getDate() <= 4` and added a safeguard pass dropping any month start within 3 weeks of the preceding label, mathematically preventing adjacent month collisions.
+- **Files Modified**:
+  - `src/styles/app/15-activity-timeline.css`
+  - `src/components/app/activity/heatmapModel.ts`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Low.
+

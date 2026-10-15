@@ -87,7 +87,7 @@
 .activityHeatmapScroller {
 	--activity-heatmap-cell: clamp(
 		10px,
-		calc((100cqi - 32px) / 53 - var(--activity-heatmap-gap)),
+		calc((100cqi - 36px) / 53 - var(--activity-heatmap-gap)),
 		15px
 	);
 
@@ -99,6 +99,7 @@
 
 .activityHeatmapGrid {
 	display: grid;
+	grid-template-rows: auto repeat(7, var(--activity-heatmap-cell));
 	flex: none;
 	gap: var(--activity-heatmap-gap);
 	margin-right: auto;
@@ -112,7 +113,7 @@
 .activityHeatmapMonth,
 .activityHeatmapWeekday {
 	color: var(--text-tertiary);
-	font-size: calc(var(--text-base) * 0.7);
+	font-size: clamp(9px, calc(var(--text-base) * 0.65), 11px);
 	line-height: 1;
 	white-space: nowrap;
 }
@@ -194,7 +195,7 @@
 	justify-content: flex-end;
 	gap: 5px;
 	color: var(--text-tertiary);
-	font-size: calc(var(--text-base) * 0.72);
+	font-size: clamp(9px, calc(var(--text-base) * 0.65), 12px);
 	line-height: 1;
 }
 
