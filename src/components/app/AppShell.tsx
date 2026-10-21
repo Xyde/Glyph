@@ -202,17 +202,11 @@ export function AppShell() {
 	const [commandPaletteSessionId, setCommandPaletteSessionId] = useState(0);
 	const [rightSidebarOpen, setRightSidebarOpen] = useState(false);
 	const autoUpdater = useUpdaterContext();
-	const [sidebarAutoCollapsed, setSidebarAutoCollapsed] = useState(() =>
-		typeof window === "undefined" ? false : window.innerWidth <= SIDEBAR_AUTO_COLLAPSE_WIDTH,
-	);
+	const sidebarCollapsed = sidebarCollapsedState;
+	const setSidebarCollapsed = setSidebarCollapsedState;
 
-	const sidebarCollapsed = sidebarCollapsedState || sidebarAutoCollapsed;
-	const setSidebarCollapsed = useCallback(
-		(collapsed: boolean) => {
-			setSidebarAutoCollapsed(false);
-			setSidebarCollapsedState(collapsed);
-		},
-		[setSidebarCollapsedState],
+	const wasNarrowRef = useRef(
+		typeof window === "undefined" ? false : window.innerWidth <= SIDEBAR_AUTO_COLLAPSE_WIDTH,
 	);
 	const gitSync = useGitSyncContext();
 	const lastGitSyncStatusRef = useRef<{
@@ -244,13 +238,12 @@ export function AppShell() {
 	useEffect(() => {
 		const syncSidebarBreakpoint = () => {
 			const isNarrow = window.innerWidth <= SIDEBAR_AUTO_COLLAPSE_WIDTH;
-			setSidebarAutoCollapsed(isNarrow);
-			if (isNarrow) {
+			if (isNarrow && !wasNarrowRef.current) {
 				setSidebarCollapsedState(true);
 			}
+			wasNarrowRef.current = isNarrow;
 		};
 
-		syncSidebarBreakpoint();
 		window.addEventListener("resize", syncSidebarBreakpoint);
 		return () => {
 			window.removeEventListener("resize", syncSidebarBreakpoint);
