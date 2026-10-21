@@ -1,6 +1,6 @@
 import { HugeiconsIcon } from "@/components/HugeiconsIcon";
 import { useDraggable } from "@dnd-kit/react";
-import { ArrowRight02Icon, Folder01Icon, Folder03Icon } from "@hugeicons/core-free-icons";
+import { Folder01Icon, Folder03Icon, MoreVerticalIcon } from "@hugeicons/core-free-icons";
 import { m } from "motion/react";
 import type { CSSProperties, KeyboardEvent, MouseEvent, MutableRefObject, Ref } from "react";
 import { memo, useCallback } from "react";
@@ -145,6 +145,15 @@ export const FileTreeDirItem = memo(function FileTreeDirItem({
 					action: () => void onImportFolderInDir(entry.rel_path),
 				},
 				{ type: "separator" },
+				...(onEnterDir
+					? [
+							{
+								label: t("fileTree.focusFolder", "Focus Folder"),
+								action: () => onEnterDir(entry.rel_path),
+							},
+							{ type: "separator" as const },
+						]
+					: []),
 				{
 					label: t("fileTree.showInFinder"),
 					action: () => void handleRevealInFinder(),
@@ -175,6 +184,7 @@ export const FileTreeDirItem = memo(function FileTreeDirItem({
 			canAddSidebarFolderTab,
 			handleRevealInFinder,
 			isSidebarFolderTab,
+			onEnterDir,
 			onOpenAppearancePicker,
 			onCreateFromTemplateInDir,
 			onDeletePath,
@@ -257,55 +267,53 @@ export const FileTreeDirItem = memo(function FileTreeDirItem({
 								/>
 							)}
 							<span className="fileTreeName">{displayDirName}</span>
-							{onEnterDir ? (
-								<div className="fileTreeRowActions">
-									<span
-										role="button"
-										tabIndex={0}
-										className="fileTreeRowAction"
-										title={`Add file to ${displayDirName}`}
-										aria-label={`Add file to ${displayDirName}`}
-										onClick={(event) => {
-											event.preventDefault();
-											event.stopPropagation();
-											void onNewFileInDir(entry.rel_path);
-										}}
-										onKeyDown={(event: KeyboardEvent<HTMLSpanElement>) => {
-											if (event.key === "Enter" || event.key === " ") {
-												event.preventDefault();
-												event.stopPropagation();
-												void onNewFileInDir(entry.rel_path);
-											}
-										}}
-									>
-										<Plus size="var(--icon-sm)" />
-									</span>
-									<span
-										role="button"
-										tabIndex={0}
-										className="fileTreeRowAction"
-										title={`Open ${displayDirName}`}
-										aria-label={`Open ${displayDirName}`}
-										onClick={(event) => {
-											event.preventDefault();
-											event.stopPropagation();
-											onEnterDir(entry.rel_path);
-										}}
-										onKeyDown={(event: KeyboardEvent<HTMLSpanElement>) => {
-											if (event.key === "Enter" || event.key === " ") {
-												event.preventDefault();
-												event.stopPropagation();
-												onEnterDir(entry.rel_path);
-											}
-										}}
-									>
-										<HugeiconsIcon icon={ArrowRight02Icon} size="var(--icon-sm)" />
-									</span>
-								</div>
-							) : null}
 							{typeof fileCount === "number" ? (
 								<span className="fileTreeCounts">{fileCount}</span>
 							) : null}
+							<div className="fileTreeRowActions">
+								<span
+									role="button"
+									tabIndex={0}
+									className="fileTreeRowAction"
+									title={t("fileTree.moreOptions", "More options")}
+									aria-label={t("fileTree.moreOptions", "More options")}
+									onClick={(event) => {
+										event.preventDefault();
+										event.stopPropagation();
+										handleContextMenu(event);
+									}}
+									onKeyDown={(event: KeyboardEvent<HTMLSpanElement>) => {
+										if (event.key === "Enter" || event.key === " ") {
+											event.preventDefault();
+											event.stopPropagation();
+											handleContextMenu(event as unknown as MouseEvent);
+										}
+									}}
+								>
+									<HugeiconsIcon icon={MoreVerticalIcon} size="var(--icon-sm)" />
+								</span>
+								<span
+									role="button"
+									tabIndex={0}
+									className="fileTreeRowAction"
+									title={`Add file to ${displayDirName}`}
+									aria-label={`Add file to ${displayDirName}`}
+									onClick={(event) => {
+										event.preventDefault();
+										event.stopPropagation();
+										void onNewFileInDir(entry.rel_path);
+									}}
+									onKeyDown={(event: KeyboardEvent<HTMLSpanElement>) => {
+										if (event.key === "Enter" || event.key === " ") {
+											event.preventDefault();
+											event.stopPropagation();
+											void onNewFileInDir(entry.rel_path);
+										}
+									}}
+								>
+									<Plus size="var(--icon-sm)" />
+								</span>
+							</div>
 						</m.button>
 					</>
 				)}

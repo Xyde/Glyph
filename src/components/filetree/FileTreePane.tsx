@@ -249,6 +249,7 @@ interface TreeEntriesProps {
 	onCancelRename: () => void;
 	itemAppearance: Record<string, FileTreeAppearance>;
 	folderFileCounts: Record<string, number>;
+	showFolderFileCounts?: boolean;
 	externalDropTargetPath: string | null;
 	onOpenAppearancePicker: (entry: FsEntry) => void;
 	pinnedFiles: string[];
@@ -324,6 +325,7 @@ function TreeEntries({
 	onCancelRename,
 	itemAppearance,
 	folderFileCounts,
+	showFolderFileCounts = false,
 	externalDropTargetPath,
 	onOpenAppearancePicker,
 	pinnedFiles,
@@ -484,7 +486,7 @@ function TreeEntries({
 							onRequestCreateFolder={onRequestCreateFolder}
 							onDeletePath={onDeletePath}
 							appearance={itemAppearance[entry.rel_path] ?? null}
-							fileCount={folderFileCounts[entry.rel_path] ?? null}
+							fileCount={showFolderFileCounts ? (folderFileCounts[entry.rel_path] ?? null) : null}
 							isExternalDropTarget={externalDropTargetPath === entry.rel_path}
 							onOpenAppearancePicker={() => onOpenAppearancePicker(entry)}
 							isSidebarFolderTab={sidebarFolderTabs.includes(entry.rel_path)}
@@ -936,7 +938,6 @@ export const FileTreePane = memo(function FileTreePane({
 		<m.aside
 			ref={paneRef}
 			className="fileTreePane"
-			data-folder-counts={showFolderFileCounts ? undefined : "hover"}
 			initial={{ y: 10 }}
 			animate={{ y: 0 }}
 			transition={springTransition}
@@ -1007,6 +1008,7 @@ export const FileTreePane = memo(function FileTreePane({
 							onCancelRename={onCancelRename}
 							itemAppearance={itemAppearance}
 							folderFileCounts={folderFileCounts}
+							showFolderFileCounts={showFolderFileCounts}
 							externalDropTargetPath={externalDropTargetPath}
 							onOpenAppearancePicker={handleOpenAppearancePicker}
 							pinnedFiles={pinnedFiles}
@@ -1054,6 +1056,7 @@ export const FileTreePane = memo(function FileTreePane({
 						onCancelRename={onCancelRename}
 						itemAppearance={itemAppearance}
 						folderFileCounts={folderFileCounts}
+						showFolderFileCounts={showFolderFileCounts}
 						externalDropTargetPath={externalDropTargetPath}
 						onOpenAppearancePicker={handleOpenAppearancePicker}
 						pinnedFiles={pinnedFiles}

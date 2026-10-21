@@ -132,6 +132,8 @@
 	border-radius: var(--radius-md);
 	margin: 0;
 	border: 1px solid transparent;
+	position: relative;
+	overflow: hidden;
 	transition:
 		background var(--transition-fast),
 		color var(--transition-fast),
@@ -140,19 +142,41 @@
 }
 
 .fileTreeRowActions {
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
 	display: inline-flex;
 	align-items: center;
 	gap: 2px;
+	padding-left: 20px;
+	padding-right: 6px;
+	background: linear-gradient(
+		to right,
+		transparent 0%,
+		var(--bg-hover) 16px,
+		var(--bg-hover) 100%
+	);
 	opacity: 0;
 	pointer-events: none;
 	transition: opacity var(--transition-fast);
-	flex-shrink: 0;
+	border-radius: 0 var(--radius-md) var(--radius-md) 0;
+	z-index: 2;
 }
 
-.fileTreeRowShell:hover .fileTreeRowActions,
-.fileTreeRowShell:focus-within .fileTreeRowActions {
+.fileTreeItem:hover > .fileTreeRowShell > .fileTreeRow .fileTreeRowActions,
+.fileTreeItem:focus-within > .fileTreeRowShell > .fileTreeRow .fileTreeRowActions {
 	opacity: 1;
 	pointer-events: auto;
+}
+
+.fileTreeItem.active > .fileTreeRowShell > .fileTreeRow .fileTreeRowActions {
+	background: linear-gradient(
+		to right,
+		transparent 0%,
+		var(--bg-active) 16px,
+		var(--bg-active) 100%
+	);
 }
 
 .fileTreeRowAction {
@@ -172,7 +196,7 @@
 .fileTreeRowAction:hover,
 .fileTreeRowAction:focus-visible,
 .fileTreeRowAction:active {
-	background: transparent;
+	background: color-mix(in srgb, var(--text-primary) 12%, transparent);
 	box-shadow: none;
 	color: var(--text-primary);
 	outline: none;
@@ -284,6 +308,7 @@
 }
 
 .fileTreeName {
+	flex: 1;
 	font-size: var(--text-sm);
 	color: var(--text-primary);
 	line-height: 1.3;
@@ -335,17 +360,12 @@
 	padding-right: 2px;
 	white-space: nowrap;
 	margin-left: auto;
-}
-
-.fileTreePane[data-folder-counts="hover"] .fileTreeCounts {
-	opacity: 0;
-	pointer-events: none;
 	transition: opacity var(--transition-fast);
 }
 
-.fileTreePane[data-folder-counts="hover"] .fileTreeRowShell:hover .fileTreeCounts,
-.fileTreePane[data-folder-counts="hover"] .fileTreeRowShell:focus-within .fileTreeCounts {
-	opacity: 1;
+.fileTreeItem:hover > .fileTreeRowShell > .fileTreeRow .fileTreeCounts,
+.fileTreeItem:focus-within > .fileTreeRowShell > .fileTreeRow .fileTreeCounts {
+	opacity: 0;
 }
 
 .fileTreeExtBadge {
