@@ -329,6 +329,37 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Low.
 
+---
+
+## Patch 19: Full Window Native Webview Zoom & Dynamic Keyboard Shortcuts
+- **Problem**:
+  - Upstream Glyph provided no native window zoom or viewport magnification. Users seeking larger readable interfaces were forced to set `ui.fontSize` and `ui.editorFontSize` to extreme values (e.g. 40px), which artificially inflated font sizes while keeping layout containers, sidebars, and dialog widths static, resulting in clipped labels and cramped interfaces.
+  - Furthermore, standard macOS zoom keyboard shortcuts (`⌘+` / `⌘-` / `⌘0`) were not bound in the workspace window, making dynamic reading adjustments frustrating.
+- **Resolution**:
+  - Enabled native WebKit webview magnification via Tauri's `@tauri-apps/api/webview` `getCurrentWebview().setZoom(factor)`.
+  - Added `"core:webview:allow-set-webview-zoom"` to `src-tauri/capabilities/default.json` and enabled `"zoomHotkeysEnabled": true` in `src-tauri/tauri.conf.json`.
+  - Created `src/lib/zoom.ts` containing zoom step calculations (`80%` to `200%`), discrete step progression (`80, 90, 100, 110, 125, 150, 175, 200`), state tracking, and synchronization helpers.
+  - Added durable setting `ui.zoomLevel` (default `100`, range 80–200) across `model.ts`, `definitions.ts`, and `settings.ts`.
+  - Integrated capture-phase keydown listeners in `src/main.tsx` for `⌘+`/`⌘=` (zoom in), `⌘-` (zoom out), and `⌘0` (reset to 100%), immediately updating the native webview scale and persisting to `settings.json`.
+  - Added "Interface zoom" control in `AppearanceSettingsPane.tsx` with full search indexing and i18n support.
+- **Files Added / Modified**:
+  - `src-tauri/capabilities/default.json`
+  - `src-tauri/tauri.conf.json`
+  - `src/lib/zoom.ts` (new)
+  - `src/lib/settings/model.ts`
+  - `src/lib/settings/definitions.ts`
+  - `src/lib/settings.ts`
+  - `src/main.tsx`
+  - `src/components/settings/AppearanceSettingsPane.tsx`
+  - `src/components/settings/settingsSearch.ts`
+  - `src/components/app/settingsPaletteIcons.ts`
+  - `src/components/app/settingsPaletteRegistry.ts`
+  - `src/i18n/locales/en/settings.appearance.json`
+  - `src/i18n/locales/en/settings.search.json`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Low.
+
+
 
 
 

@@ -5,6 +5,7 @@
 	"windows": ["main", "space-*", "quick-note", "quick-search", "quick-task", "external-markdown-*"],
 	"permissions": [
 		"core:default",
+		"core:webview:allow-set-webview-zoom",
 		"core:window:allow-close",
 		"core:window:allow-destroy",
 		"core:window:allow-create",

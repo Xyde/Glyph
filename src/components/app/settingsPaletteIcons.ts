@@ -35,6 +35,7 @@ const SETTING_ICONS: Record<string, SettingIcon> = {
 	"appearance-light-theme": Sun01Icon,
 	"appearance-dark-theme": Moon02Icon,
 	"appearance-translucent-app": BrowserIcon,
+	"appearance-zoom-level": Layout01Icon,
 	"typography-interface-font": TextFontIcon,
 	"typography-editor-font": TextFontIcon,
 	"typography-monospace-font": CodeIcon,

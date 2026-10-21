@@ -180,6 +180,12 @@ const editableDefinitions: readonly EditablePaletteSettingDefinition[] = [
 		max: 36,
 	},
 	{
+		...bindApplicationSetting(DURABLE_SETTINGS.zoomLevel),
+		control: "number",
+		min: 80,
+		max: 200,
+	},
+	{
 		...bindApplicationSetting(DURABLE_SETTINGS.aiEnabled),
 		control: "toggle",
 		defaultVisible: true,

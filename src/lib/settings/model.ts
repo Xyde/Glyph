@@ -216,6 +216,7 @@ export interface AppSettings {
 		editorFontSize: UiFontSize;
 		externalFontFamily: UiFontFamily;
 		externalFontSize: UiFontSize;
+		zoomLevel: number;
 		appIcon: "default" | "blue-star" | "blue-glyph" | "confetti-star" | "blueprint";
 		translucentApp: boolean;
 		cornerRadiusStyle: UiCornerRadiusStyle;

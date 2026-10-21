@@ -28,7 +28,8 @@
 					"y": 28
 				},
 				"hiddenTitle": true,
-				"transparent": true
+				"transparent": true,
+				"zoomHotkeysEnabled": true
 			}
 		],
 		"security": {

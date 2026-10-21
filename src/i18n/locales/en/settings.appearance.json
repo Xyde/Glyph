@@ -43,6 +43,14 @@
 			"ariaLabel": "Translucent sidebar"
 		}
 	},
+	"zoom": {
+		"sectionTitle": "Interface zoom",
+		"sectionDescription": "Scale the application interface uniformly with native WebKit magnification.",
+		"label": "Zoom level",
+		"description": "Adjust overall scale. Use ⌘+ / ⌘- to zoom on the fly, and ⌘0 to reset.",
+		"defaultLabel": "Default",
+		"ariaLabel": "Interface zoom level"
+	},
 	"lightTheme": {
 		"label": "Light",
 		"hint": "Pick the palette Glyph uses in light mode."

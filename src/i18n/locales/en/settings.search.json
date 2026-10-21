@@ -199,6 +199,12 @@
 			"description": "Import a JSON palette as a new theme.",
 			"keywords": ["theme", "json", "import", "custom"]
 		},
+		"appearance-zoom-level": {
+			"title": "Interface zoom",
+			"section": "Appearance",
+			"description": "Adjust overall scale. Use ⌘+ / ⌘- to zoom on the fly, and ⌘0 to reset.",
+			"keywords": ["zoom", "scale", "magnify", "size", "interface", "window"]
+		},
 		"sidebar-layout": {
 			"title": "Sidebar",
 			"description": "Choose which navigation items appear in the sidebar and set their order.",

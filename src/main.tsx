@@ -33,6 +33,13 @@ import type { UiCornerRadiusStyle, UiDarkThemeId, UiLightThemeId } from "./lib/s
 import { isEditorWidthMode, isUiCornerRadiusStyle, loadSettings, reloadFromDisk } from "./lib/settings";
 import { invoke } from "./lib/tauri";
 import { useTauriEvent } from "./lib/tauriEvents";
+import {
+	applyWebviewZoom,
+	resetZoom,
+	setActiveZoomLevel,
+	zoomIn,
+	zoomOut,
+} from "./lib/zoom";
 import { isUiDarkThemeId, isUiLightThemeId } from "./lib/uiThemes";
 import {
 	EXTERNAL_MARKDOWN_WINDOW_PREFIX,
@@ -90,6 +97,13 @@ function ThemeAndTypographyBridge() {
 				setMonoFontFamily(settings.ui.monoFontFamily);
 				setUiFontSize(settings.ui.fontSize);
 				setEditorFontSize(settings.ui.editorFontSize);
+				if (
+					typeof settings.ui?.zoomLevel === "number" &&
+					Number.isFinite(settings.ui.zoomLevel)
+				) {
+					setActiveZoomLevel(settings.ui.zoomLevel);
+					void applyWebviewZoom(settings.ui.zoomLevel);
+				}
 				setTranslucentApp(settings.ui.translucentApp);
 				setCornerRadiusStyle(settings.ui.cornerRadiusStyle);
 				applyEditorHeadingPalette(settings.editor.headingPaletteId);
@@ -162,6 +176,13 @@ function ThemeAndTypographyBridge() {
 			Number.isFinite(payload.ui.editorFontSize)
 		) {
 			setEditorFontSize(payload.ui.editorFontSize);
+		}
+		if (
+			typeof payload.ui?.zoomLevel === "number" &&
+			Number.isFinite(payload.ui.zoomLevel)
+		) {
+			setActiveZoomLevel(payload.ui.zoomLevel);
+			void applyWebviewZoom(payload.ui.zoomLevel);
 		}
 		if (typeof payload.ui?.translucentApp === "boolean") {
 			setTranslucentApp(payload.ui.translucentApp);
@@ -300,6 +321,26 @@ const windowLabel = currentWindowLabel();
 const isQuickNoteWindow = windowLabel === QUICK_NOTE_WINDOW_LABEL;
 const isQuickSearchWindow = windowLabel === QUICK_SEARCH_WINDOW_LABEL;
 const isExternalMarkdownWindow = windowLabel.startsWith(EXTERNAL_MARKDOWN_WINDOW_PREFIX);
+
+if (!isExternalMarkdownWindow) {
+	window.addEventListener(
+		"keydown",
+		(e) => {
+			if (!e.metaKey && !e.ctrlKey) return;
+			if (e.key === "=" || e.key === "+") {
+				e.preventDefault();
+				void zoomIn();
+			} else if (e.key === "-") {
+				e.preventDefault();
+				void zoomOut();
+			} else if (e.key === "0") {
+				e.preventDefault();
+				void resetZoom();
+			}
+		},
+		{ capture: true },
+	);
+}
 
 // The main window starts hidden; reveal it once the first commit and its fonts
 // are ready so the native chrome and the content appear together. Hidden

@@ -17,6 +17,12 @@ import {
 import type { FileTreeSortMode } from "../../lib/settings/model";
 import { useTauriEvent } from "../../lib/tauriEvents";
 import {
+	DEFAULT_UI_ZOOM_LEVEL,
+	UI_ZOOM_LEVELS,
+	applyWebviewZoom,
+	setActiveZoomLevel,
+} from "../../lib/zoom";
+import {
 	DARK_THEME_OPTIONS,
 	GLYPH_DEFAULT_DARK_THEME_ID,
 	GLYPH_DEFAULT_LIGHT_THEME_ID,
@@ -65,6 +71,11 @@ export function AppearanceSettingsPane() {
 		DURABLE_SETTINGS.translucentApp.write,
 		setError,
 	);
+	const zoomLevel = useSettingsValue<number>(
+		DEFAULT_UI_ZOOM_LEVEL,
+		DURABLE_SETTINGS.zoomLevel.write,
+		setError,
+	);
 	const {
 		cornerRadiusStyle,
 		setCornerRadiusStyle,
@@ -101,6 +112,9 @@ export function AppearanceSettingsPane() {
 				setInitialFolioMode(settings.ui.folioMode);
 				folioSortMode.setInitialValue(settings.ui.folioSortMode);
 				setInitialCornerRadiusStyle(settings.ui.cornerRadiusStyle);
+				if (typeof settings.ui.zoomLevel === "number") {
+					zoomLevel.setInitialValue(settings.ui.zoomLevel);
+				}
 			} catch (e) {
 				if (!cancelled) {
 					setError(e instanceof Error ? e.message : "Failed to load settings");
@@ -140,6 +154,9 @@ export function AppearanceSettingsPane() {
 		}
 		if (payload.ui?.cornerRadiusStyle) {
 			setCornerRadiusStyle(payload.ui.cornerRadiusStyle);
+		}
+		if (typeof payload.ui?.zoomLevel === "number") {
+			zoomLevel.setValue(payload.ui.zoomLevel);
 		}
 	});
 
@@ -255,6 +272,36 @@ export function AppearanceSettingsPane() {
 					cornerRadiusStyle={cornerRadiusStyle}
 					onCornerRadiusStyleChange={onCornerRadiusStyleChange}
 				/>
+				<SettingsSection
+					title={t("zoom.sectionTitle")}
+					description={t("zoom.sectionDescription")}
+				>
+					<SettingsRow
+						label={t("zoom.label")}
+						description={t("zoom.description")}
+						searchId="appearance-zoom-level"
+					>
+						<SettingsSelect
+							id="settingsInterfaceZoom"
+							value={String(zoomLevel.value)}
+							disabled={zoomLevel.isSaving}
+							onChange={(event) => {
+								const next = Number(event.target.value);
+								if (Number.isFinite(next)) {
+									zoomLevel.onChange(next);
+									setActiveZoomLevel(next);
+									void applyWebviewZoom(next);
+								}
+							}}
+						>
+							{UI_ZOOM_LEVELS.map((level) => (
+								<option key={level} value={level}>
+									{level === 100 ? `${level}% (${t("zoom.defaultLabel")})` : `${level}%`}
+								</option>
+							))}
+						</SettingsSelect>
+					</SettingsRow>
+				</SettingsSection>
 				<SettingsSection
 					title={t("layout.sectionTitle")}
 					description={t("layout.sectionDescription")}

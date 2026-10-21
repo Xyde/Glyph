@@ -73,6 +73,9 @@ export const DEFAULT_FILE_TREE_SORT_MODE: FileTreeSortMode = "name-asc";
 export const DEFAULT_FOLIO_NOTES_WIDTH = 320;
 export const MIN_FOLIO_NOTES_WIDTH = 260;
 export const MAX_FOLIO_NOTES_WIDTH = 420;
+export const DEFAULT_UI_ZOOM_LEVEL = 100;
+export const MIN_UI_ZOOM_LEVEL = 80;
+export const MAX_UI_ZOOM_LEVEL = 200;
 const DEFAULT_EDITOR_WIDTH_MODE: EditorWidthMode = "compact";
 const DEFAULT_FOCUS_MODE: FocusMode = "off";
 const DEFAULT_ATTACHMENT_STORAGE_MODE: AttachmentStorageMode = "note-folder";
@@ -320,6 +323,13 @@ function normalizeExternalFontSize(value: unknown): UiFontSize {
 	return 16;
 }
 
+function normalizeUiZoomLevel(value: unknown): number {
+	if (typeof value === "number" && Number.isFinite(value)) {
+		return Math.max(MIN_UI_ZOOM_LEVEL, Math.min(MAX_UI_ZOOM_LEVEL, Math.round(value)));
+	}
+	return DEFAULT_UI_ZOOM_LEVEL;
+}
+
 function parseFiniteNumber(value: unknown): SettingParseResult<number> {
 	return typeof value === "number" && Number.isFinite(value) ? parsed(value) : INVALID_PARSE_RESULT;
 }
@@ -525,6 +535,15 @@ export const DURABLE_SETTINGS = {
 		parse: parseFiniteNumber,
 		read: (settings) => settings.ui.externalFontSize,
 		change: (value) => ({ ui: { externalFontSize: value } }),
+	}),
+	zoomLevel: defineApplicationSetting({
+		key: "ui.zoomLevel",
+		defaultValue: DEFAULT_UI_ZOOM_LEVEL,
+		discovery: searchable("appearance-zoom-level"),
+		normalize: normalizeUiZoomLevel,
+		parse: parseFiniteNumber,
+		read: (settings) => settings.ui.zoomLevel,
+		change: (value) => ({ ui: { zoomLevel: value } }),
 	}),
 	appIcon: defineApplicationSetting<AppSettings["ui"]["appIcon"]>({
 		key: "ui.appIcon",
