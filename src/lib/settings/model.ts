@@ -214,6 +214,8 @@ export interface AppSettings {
 		monoFontFamily: UiFontFamily;
 		fontSize: UiFontSize;
 		editorFontSize: UiFontSize;
+		externalFontFamily: UiFontFamily;
+		externalFontSize: UiFontSize;
 		appIcon: "default" | "blue-star" | "blue-glyph" | "confetti-star" | "blueprint";
 		translucentApp: boolean;
 		cornerRadiusStyle: UiCornerRadiusStyle;

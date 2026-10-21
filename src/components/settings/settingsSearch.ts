@@ -47,6 +47,8 @@ const SETTINGS_SEARCH_DEFS: readonly SettingsSearchDef[] = [
 	{ id: "typography-heading-font", tab: "typography" },
 	{ id: "typography-ui-font-size", tab: "typography" },
 	{ id: "typography-editor-font-size", tab: "typography" },
+	{ id: "typography-external-font-family", tab: "typography" },
+	{ id: "typography-external-font-size", tab: "typography" },
 	{ id: "shortcuts-customize", tab: "shortcuts" },
 	{ id: "shortcuts-search", tab: "shortcuts" },
 	{ id: "shortcuts-workspace", tab: "shortcuts" },

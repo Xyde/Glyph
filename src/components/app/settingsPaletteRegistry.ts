@@ -174,6 +174,12 @@ const editableDefinitions: readonly EditablePaletteSettingDefinition[] = [
 		max: MAX_EDITOR_FONT_SIZE,
 	},
 	{
+		...bindApplicationSetting(DURABLE_SETTINGS.externalFontSize),
+		control: "number",
+		min: 10,
+		max: 36,
+	},
+	{
 		...bindApplicationSetting(DURABLE_SETTINGS.aiEnabled),
 		control: "toggle",
 		defaultVisible: true,

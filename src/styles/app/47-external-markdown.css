@@ -5,6 +5,28 @@
 		100vh - var(--external-markdown-chrome-height) - var(--external-markdown-status-height) - 24px
 	);
 
+	/* Decouple typography from workspace root values */
+	--editor-font-size: var(--external-editor-font-size, 16px);
+	--editor-inline-font-size: var(--editor-font-size);
+	--editor-raw-font-size: var(--editor-font-size);
+	--font-editor: var(--external-font-family, var(--font-sans));
+	--font-heading: var(--external-font-family, var(--font-sans));
+	--editor-h1-font-size: calc(var(--editor-font-size) * 1.5);
+	--editor-h2-font-size: calc(var(--editor-font-size) * 1.3);
+	--editor-h3-font-size: calc(var(--editor-font-size) * 1.15);
+	--editor-h4-font-size: var(--editor-font-size);
+	--editor-h5-font-size: calc(var(--editor-font-size) * 0.9);
+	--editor-h6-font-size: calc(var(--editor-font-size) * 0.85);
+
+	/* Fixed UI text sizing for external window chrome (prevent UI font bloat) */
+	--text-base: 14px;
+	--text-sm: 13px;
+	--text-xs: 12px;
+	--icon-md: 18px;
+	--icon-sm: 16px;
+	--icon-xs: 14px;
+	font-size: 14px;
+
 	position: relative;
 	display: flex;
 	flex-direction: column;

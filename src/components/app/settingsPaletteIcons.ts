@@ -40,6 +40,8 @@ const SETTING_ICONS: Record<string, SettingIcon> = {
 	"typography-monospace-font": CodeIcon,
 	"typography-ui-font-size": TextFontIcon,
 	"typography-editor-font-size": TextFontIcon,
+	"typography-external-font-family": TextFontIcon,
+	"typography-external-font-size": TextFontIcon,
 	"ai-features": AiBrain01Icon,
 	"ai-assistant-behavior-tools": Robot01Icon,
 	"space-daily-notes-folder": Calendar03Icon,

@@ -31,5 +31,13 @@
 		"label": "Editor font size",
 		"description": "Adjust the reading size for the note editor, markdown preview, and raw text editing.",
 		"valueAriaLabel": "Editor font size value"
+	},
+	"externalNotes": {
+		"title": "External Notes (Default App)",
+		"fontLabel": "Note font",
+		"fontDescription": "Font used when opening standalone markdown notes from Finder.",
+		"sizeLabel": "Note font size",
+		"sizeDescription": "Reading size for standalone notes. Decoupled from the inside workspace editor.",
+		"valueAriaLabel": "External note font size value"
 	}
 }

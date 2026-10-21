@@ -258,6 +258,16 @@
 			"section": "Editor",
 			"keywords": ["font", "text", "notes"]
 		},
+		"typography-external-font-family": {
+			"title": "External note font",
+			"section": "External Notes",
+			"keywords": ["font", "external", "notes", "finder", "standalone"]
+		},
+		"typography-external-font-size": {
+			"title": "External note font size",
+			"section": "External Notes",
+			"keywords": ["font", "text", "size", "external", "finder", "standalone"]
+		},
 		"shortcuts-customize": {
 			"title": "Customize Shortcuts",
 			"section": "Customize Shortcuts",

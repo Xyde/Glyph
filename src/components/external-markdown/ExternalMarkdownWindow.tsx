@@ -9,6 +9,7 @@ import { loadSettings } from "../../lib/settings";
 import { invoke } from "../../lib/tauri";
 import { useTauriEvent } from "../../lib/tauriEvents";
 import { countWords } from "../../lib/textStats";
+import type { CssVars } from "../../lib/utils";
 import {
 	displayFolderFromPath,
 	displayNameFromPath,
@@ -59,6 +60,8 @@ export function ExternalMarkdownWindow() {
 	const [savedText, setSavedText] = useState("");
 	const [mode, setMode] = useState<EditorViewMode>(getDefaultEditorViewMode);
 	const [error, setError] = useState("");
+	const [externalFontFamily, setExternalFontFamily] = useState("Geist");
+	const [externalFontSize, setExternalFontSize] = useState(16);
 	const textRef = useRef("");
 	const savedTextRef = useRef("");
 	const absPathRef = useRef("");
@@ -66,6 +69,7 @@ export function ExternalMarkdownWindow() {
 	const mtimeRef = useRef<number | null>(null);
 	const saveTokenRef = useRef(0);
 	const autosaveTimerRef = useRef<number | null>(null);
+	const initialFontSizeRef = useRef(16);
 	const mountedRef = useRef(true);
 	const { setSaving, setLoading, flashPulse, clearPulse, resolveLabel, resolveState } =
 		useEditorSaveIndicator();
@@ -158,6 +162,18 @@ export function ExternalMarkdownWindow() {
 	useTauriEvent("external-markdown:close_requested", () => {
 		void closeWindow();
 	});
+	useTauriEvent("settings:updated", (payload) => {
+		if (typeof payload.ui?.externalFontFamily === "string" && payload.ui.externalFontFamily) {
+			setExternalFontFamily(payload.ui.externalFontFamily);
+		}
+		if (
+			typeof payload.ui?.externalFontSize === "number" &&
+			Number.isFinite(payload.ui.externalFontSize)
+		) {
+			initialFontSizeRef.current = payload.ui.externalFontSize;
+			setExternalFontSize(payload.ui.externalFontSize);
+		}
+	});
 
 	const queueAutosave = useCallback(() => {
 		if (autosaveTimerRef.current !== null) {
@@ -200,6 +216,16 @@ export function ExternalMarkdownWindow() {
 				if (cancelled) return;
 				if (settings) {
 					setMode(settings.editor.defaultEditorMode);
+					if (settings.ui.externalFontFamily) {
+						setExternalFontFamily(settings.ui.externalFontFamily);
+					}
+					if (
+						typeof settings.ui.externalFontSize === "number" &&
+						Number.isFinite(settings.ui.externalFontSize)
+					) {
+						initialFontSizeRef.current = settings.ui.externalFontSize;
+						setExternalFontSize(settings.ui.externalFontSize);
+					}
 				}
 
 				textRef.current = doc.text;
@@ -220,9 +246,25 @@ export function ExternalMarkdownWindow() {
 			}
 		})();
 
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (!e.metaKey && !e.ctrlKey) return;
+			if (e.key === "=" || e.key === "+") {
+				e.preventDefault();
+				setExternalFontSize((size) => Math.min(36, size + 1));
+			} else if (e.key === "-") {
+				e.preventDefault();
+				setExternalFontSize((size) => Math.max(10, size - 1));
+			} else if (e.key === "0") {
+				e.preventDefault();
+				setExternalFontSize(initialFontSizeRef.current);
+			}
+		};
+		window.addEventListener("keydown", handleKeyDown, { capture: true });
+
 		return () => {
 			cancelled = true;
 			mountedRef.current = false;
+			window.removeEventListener("keydown", handleKeyDown, { capture: true });
 			if (autosaveTimerRef.current !== null) {
 				window.clearTimeout(autosaveTimerRef.current);
 			}
@@ -238,8 +280,13 @@ export function ExternalMarkdownWindow() {
 		[queueAutosave],
 	);
 
+	const windowStyle: CssVars<"--external-editor-font-size" | "--external-font-family"> = {
+		"--external-editor-font-size": `${externalFontSize}px`,
+		"--external-font-family": `"${externalFontFamily}", var(--font-sans)`,
+	};
+
 	return (
-		<div className="externalMarkdownWindow">
+		<div className="externalMarkdownWindow" style={windowStyle}>
 			<ExternalMarkdownHeader
 				title={title}
 				folderLabel={folderLabel}

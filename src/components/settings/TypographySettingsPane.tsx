@@ -10,6 +10,7 @@ import {
 	loadAvailableMonospaceFonts,
 } from "./typographyOptions";
 import { EditorTypographySection } from "./EditorTypographySection";
+import { ExternalTypographySection } from "./ExternalTypographySection";
 import { InterfaceTypographySection } from "./InterfaceTypographySection";
 import { applyIfBoolean, useSettingsBoolean } from "./useSettingsBoolean";
 import { useSettingsValue } from "./useSettingsValue";
@@ -96,6 +97,16 @@ function TypographySettingsContent({
 		DURABLE_SETTINGS.editorFontSize.write,
 		setError,
 	);
+	const externalFontFamily = useSettingsValue(
+		initialUi.externalFontFamily,
+		DURABLE_SETTINGS.externalFontFamily.write,
+		setError,
+	);
+	const externalFontSize = useSettingsValue(
+		initialUi.externalFontSize,
+		DURABLE_SETTINGS.externalFontSize.write,
+		setError,
+	);
 
 	useTauriEvent("settings:updated", (payload) => {
 		if (typeof payload.ui?.fontFamily === "string") fontFamily.setValue(payload.ui.fontFamily);
@@ -113,12 +124,19 @@ function TypographySettingsContent({
 		if (typeof payload.ui?.editorFontSize === "number") {
 			editorFontSize.setValue(payload.ui.editorFontSize);
 		}
+		if (typeof payload.ui?.externalFontFamily === "string") {
+			externalFontFamily.setValue(payload.ui.externalFontFamily);
+		}
+		if (typeof payload.ui?.externalFontSize === "number") {
+			externalFontSize.setValue(payload.ui.externalFontSize);
+		}
 	});
 
 	const availableFonts = includeSelectedFonts(fonts, [
 		fontFamily.value,
 		editorFontFamily.value,
 		headingFontFamily.value,
+		externalFontFamily.value,
 	]);
 	const availableMonospaceFonts = includeSelectedFonts(monospaceFonts, [monoFontFamily.value]);
 
@@ -148,6 +166,13 @@ function TypographySettingsContent({
 					onHeadingFontEnabledChange={headingFontEnabled.onCheckedChange}
 					onHeadingFontFamilyChange={headingFontFamily.onChange}
 					onEditorFontSizeChange={editorFontSize.onChange}
+				/>
+				<ExternalTypographySection
+					externalFontFamily={externalFontFamily.value}
+					externalFontSize={externalFontSize.value}
+					availableFonts={availableFonts}
+					onExternalFontFamilyChange={externalFontFamily.onChange}
+					onExternalFontSizeChange={externalFontSize.onChange}
 				/>
 			</div>
 		</div>

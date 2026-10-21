@@ -309,6 +309,17 @@ function normalizeEditorFontSize(value: unknown): UiFontSize {
 	return DEFAULT_EDITOR_FONT_SIZE;
 }
 
+function normalizeExternalFontFamily(value: unknown): UiFontFamily {
+	return normalizeUiFontFamily(value, DEFAULT_UI_FONT_FAMILY);
+}
+
+function normalizeExternalFontSize(value: unknown): UiFontSize {
+	if (typeof value === "number" && Number.isFinite(value)) {
+		return Math.max(10, Math.min(36, Math.round(value)));
+	}
+	return 16;
+}
+
 function parseFiniteNumber(value: unknown): SettingParseResult<number> {
 	return typeof value === "number" && Number.isFinite(value) ? parsed(value) : INVALID_PARSE_RESULT;
 }
@@ -496,6 +507,24 @@ export const DURABLE_SETTINGS = {
 		parse: parseFiniteNumber,
 		read: (settings) => settings.ui.editorFontSize,
 		change: (value) => ({ ui: { editorFontSize: value } }),
+	}),
+	externalFontFamily: defineApplicationSetting({
+		key: "ui.externalFontFamily",
+		defaultValue: DEFAULT_UI_FONT_FAMILY,
+		discovery: searchable("typography-external-font-family"),
+		normalize: normalizeExternalFontFamily,
+		parse: parseString,
+		read: (settings) => settings.ui.externalFontFamily,
+		change: (value) => ({ ui: { externalFontFamily: value } }),
+	}),
+	externalFontSize: defineApplicationSetting({
+		key: "ui.externalFontSize",
+		defaultValue: 16,
+		discovery: searchable("typography-external-font-size"),
+		normalize: normalizeExternalFontSize,
+		parse: parseFiniteNumber,
+		read: (settings) => settings.ui.externalFontSize,
+		change: (value) => ({ ui: { externalFontSize: value } }),
 	}),
 	appIcon: defineApplicationSetting<AppSettings["ui"]["appIcon"]>({
 		key: "ui.appIcon",

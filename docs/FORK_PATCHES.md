@@ -300,6 +300,36 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Low.
 
+---
+
+## Patch 18: Decoupled External Markdown Viewer Typography & Keyboard Zoom
+- **Problem**:
+  - Standalone markdown notes opened from Finder (where Glyph acts as the default system `.md` handler via `ExternalMarkdownWindow`) unconditionally inherited workspace editor typography (`ui.editorFontSize`, `ui.editorFontFamily`) and global UI scaling applied to `:root`.
+  - When users set large typography for workspace editing (e.g. 40px), external notes opened with enormous text, making quick document viewing practically unreadable and distorting window chrome.
+  - Furthermore, external note windows had no independent typography settings and lacked keyboard zoom controls (`⌘+` / `⌘-` / `⌘0`).
+- **Resolution**:
+  - Added independent settings `ui.externalFontFamily` (default `"Geist"`) and `ui.externalFontSize` (default `16`, clamped 10–36) in `src/lib/settings/model.ts`, `definitions.ts`, and `settings.ts`.
+  - Created `<ExternalTypographySection />` in `src/components/settings/ExternalTypographySection.tsx` and mounted it inside `TypographySettingsPane.tsx`, allowing users to customize external note font family and font size independently.
+  - Registered settings in search index and command palette (`settingsSearch.ts`, `settingsPaletteIcons.ts`, `settingsPaletteRegistry.ts`, i18n locales).
+  - In `47-external-markdown.css`, scoped `--editor-font-size`, `--editor-inline-font-size`, `--editor-raw-font-size`, `--font-editor`, `--font-heading`, and heading scales to `--external-editor-font-size` and `--external-font-family`, completely isolating external windows from workspace `:root` cascades. Added static UI token resets (`--text-base: 14px`, etc.) to keep chrome crisp.
+  - In `ExternalMarkdownWindow.tsx`, loaded external typography preferences, listened to `settings:updated`, and implemented on-the-fly `⌘+` / `⌘=` (zoom in), `⌘-` (zoom out), and `⌘0` (reset to configured size) keyboard shortcuts with capture handling.
+- **Files Added / Modified**:
+  - `src/lib/settings/model.ts`
+  - `src/lib/settings/definitions.ts`
+  - `src/lib/settings.ts`
+  - `src/components/settings/ExternalTypographySection.tsx` (new)
+  - `src/components/settings/TypographySettingsPane.tsx`
+  - `src/components/settings/settingsSearch.ts`
+  - `src/components/app/settingsPaletteIcons.ts`
+  - `src/components/app/settingsPaletteRegistry.ts`
+  - `src/i18n/locales/en/settings.typography.json`
+  - `src/i18n/locales/en/settings.search.json`
+  - `src/components/external-markdown/ExternalMarkdownWindow.tsx`
+  - `src/styles/app/47-external-markdown.css`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Low.
+
+
 
 
 

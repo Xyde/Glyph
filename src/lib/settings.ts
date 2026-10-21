@@ -451,6 +451,8 @@ export async function loadSettings(scope?: SettingsScope): Promise<AppSettings> 
 	const monoFontFamily = DURABLE_SETTINGS.monoFontFamily.load(entries);
 	const fontSize = DURABLE_SETTINGS.fontSize.load(entries);
 	const editorFontSize = DURABLE_SETTINGS.editorFontSize.load(entries);
+	const externalFontFamily = DURABLE_SETTINGS.externalFontFamily.load(entries);
+	const externalFontSize = DURABLE_SETTINGS.externalFontSize.load(entries);
 	const translucentApp = DURABLE_SETTINGS.translucentApp.load(entries);
 	const cornerRadiusStyle = DURABLE_SETTINGS.cornerRadiusStyle.load(entries);
 	const showToc = DURABLE_SETTINGS.showToc.load(entries);
@@ -607,6 +609,8 @@ export async function loadSettings(scope?: SettingsScope): Promise<AppSettings> 
 			monoFontFamily,
 			fontSize,
 			editorFontSize,
+			externalFontFamily,
+			externalFontSize,
 			translucentApp,
 			appIcon: DURABLE_SETTINGS.appIcon.load(entries),
 			cornerRadiusStyle,
