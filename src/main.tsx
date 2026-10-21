@@ -35,6 +35,7 @@ import { invoke } from "./lib/tauri";
 import { useTauriEvent } from "./lib/tauriEvents";
 import {
 	applyWebviewZoom,
+	getActiveZoomLevel,
 	resetZoom,
 	setActiveZoomLevel,
 	zoomIn,
@@ -179,7 +180,8 @@ function ThemeAndTypographyBridge() {
 		}
 		if (
 			typeof payload.ui?.zoomLevel === "number" &&
-			Number.isFinite(payload.ui.zoomLevel)
+			Number.isFinite(payload.ui.zoomLevel) &&
+			payload.ui.zoomLevel !== getActiveZoomLevel()
 		) {
 			setActiveZoomLevel(payload.ui.zoomLevel);
 			void applyWebviewZoom(payload.ui.zoomLevel);

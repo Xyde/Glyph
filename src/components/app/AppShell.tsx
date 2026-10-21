@@ -1,4 +1,6 @@
 import { cn } from "@/lib/utils";
+import { HugeiconsIcon } from "@/components/HugeiconsIcon";
+import { SidebarLeftIcon } from "@hugeicons/core-free-icons";
 import { join } from "@tauri-apps/api/path";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { openPath } from "@tauri-apps/plugin-opener";
@@ -207,10 +209,10 @@ export function AppShell() {
 	const sidebarCollapsed = sidebarCollapsedState || sidebarAutoCollapsed;
 	const setSidebarCollapsed = useCallback(
 		(collapsed: boolean) => {
-			if (!collapsed && sidebarAutoCollapsed) return;
+			setSidebarAutoCollapsed(false);
 			setSidebarCollapsedState(collapsed);
 		},
-		[setSidebarCollapsedState, sidebarAutoCollapsed],
+		[setSidebarCollapsedState],
 	);
 	const gitSync = useGitSyncContext();
 	const lastGitSyncStatusRef = useRef<{
@@ -240,18 +242,18 @@ export function AppShell() {
 	});
 
 	useEffect(() => {
-		const query = window.matchMedia(`(max-width: ${SIDEBAR_AUTO_COLLAPSE_WIDTH}px)`);
 		const syncSidebarBreakpoint = () => {
-			setSidebarAutoCollapsed(query.matches);
-			if (query.matches) {
+			const isNarrow = window.innerWidth <= SIDEBAR_AUTO_COLLAPSE_WIDTH;
+			setSidebarAutoCollapsed(isNarrow);
+			if (isNarrow) {
 				setSidebarCollapsedState(true);
 			}
 		};
 
 		syncSidebarBreakpoint();
-		query.addEventListener("change", syncSidebarBreakpoint);
+		window.addEventListener("resize", syncSidebarBreakpoint);
 		return () => {
-			query.removeEventListener("change", syncSidebarBreakpoint);
+			window.removeEventListener("resize", syncSidebarBreakpoint);
 		};
 	}, [setSidebarCollapsedState]);
 
@@ -1376,6 +1378,15 @@ export function AppShell() {
 			/>
 			{(!zenMode || settingsMode) && sidebarCollapsed ? (
 				<div className="sidebarCollapsedToggle">
+					<button
+						type="button"
+						className="sidebarToggleBtn"
+						title={t(sidebarCollapsed ? "sidebar.expand" : "sidebar.collapse")}
+						aria-label={t(sidebarCollapsed ? "sidebar.expand" : "sidebar.collapse")}
+						onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+					>
+						<HugeiconsIcon icon={SidebarLeftIcon} size="var(--icon-md)" />
+					</button>
 					<WindowChromeUpdateButton
 						updateReady={autoUpdater.updateReady}
 						updateVersion={autoUpdater.updateVersion}

@@ -1,9 +1,14 @@
-import { useUpdaterContext } from "../../contexts";
+import { HugeiconsIcon } from "@/components/HugeiconsIcon";
+import { SidebarLeftIcon } from "@hugeicons/core-free-icons";
+import { useTranslation } from "react-i18next";
+import { useUILayoutContext, useUpdaterContext } from "../../contexts";
 import { onWindowDragMouseDown } from "../../utils/window";
 import { WindowChromeUpdateButton } from "./WindowChromeUpdateButton";
 
 export function SidebarHeader() {
 	const autoUpdater = useUpdaterContext();
+	const { sidebarCollapsed, setSidebarCollapsed } = useUILayoutContext();
+	const { t } = useTranslation("shell");
 
 	return (
 		<>
@@ -15,6 +20,15 @@ export function SidebarHeader() {
 			/>
 			<div className="sidebarHeader" data-tauri-drag-region>
 				<div className="sidebarActions">
+					<button
+						type="button"
+						className="sidebarToggleBtn"
+						title={t("sidebar.collapse")}
+						aria-label={t("sidebar.collapse")}
+						onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+					>
+						<HugeiconsIcon icon={SidebarLeftIcon} size="var(--icon-md)" />
+					</button>
 					<WindowChromeUpdateButton
 						updateReady={autoUpdater.updateReady}
 						updateVersion={autoUpdater.updateVersion}

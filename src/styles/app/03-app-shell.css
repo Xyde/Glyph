@@ -3,7 +3,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 .appShell {
 	--window-control-toggle-offset: 78px;
-	--window-control-toggle-top: calc((var(--header-height) + 6px) / 2);
+	--window-control-toggle-top: 19px;
 	--collapsed-sidebar-top-reserve: calc(var(--window-control-toggle-offset) + 38px);
 
 	isolation: isolate;
@@ -236,34 +236,39 @@ body:has(.indexingNotice) [data-sileo-viewport][data-position="top-center"] {
 	display: flex;
 	align-items: center;
 	gap: 6px;
+	-webkit-app-region: no-drag;
+}
+
+.sidebarToggleBtn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	border: 0;
+	border-radius: var(--radius-sm);
+	background: transparent;
+	color: var(--text-secondary);
+	cursor: pointer;
+	-webkit-app-region: no-drag;
+	transition:
+		background var(--transition-fast),
+		color var(--transition-fast);
+}
+
+.sidebarToggleBtn:hover {
+	background: color-mix(in srgb, var(--text-primary) 10%, transparent);
+	color: var(--text-primary);
+}
+
+.sidebarToggleBtn:focus-visible {
+	outline: 2px solid var(--border-focus);
+	outline-offset: 1px;
 }
 
 .appShell.appShellSidebarCollapsed .mainArea {
 	margin-left: 0;
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
-}
-
-@media (max-width: 760px) {
-	.appShell .sidebar {
-		width: 0 !important;
-		min-width: 0;
-		border: 0;
-		overflow: hidden;
-	}
-
-	.appShell .sidebarContentRoot {
-		display: none;
-	}
-
-	.appShell .sidebarResizeHandle {
-		width: 0;
-		margin-left: 0;
-		margin-right: 0;
-		pointer-events: none;
-	}
-
-	.appShell .mainArea {
-		border-left-width: 0;
-	}
 }

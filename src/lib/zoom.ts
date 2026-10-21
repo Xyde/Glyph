@@ -39,25 +39,45 @@ export function getActiveZoomLevel(): number {
 	return activeZoomLevel;
 }
 
+let pendingWriteTimeout: ReturnType<typeof setTimeout> | null = null;
+const ZOOM_WRITE_DEBOUNCE_MS = 250;
+
+function schedulePersistZoomLevel(level: number): void {
+	if (pendingWriteTimeout) {
+		clearTimeout(pendingWriteTimeout);
+	}
+	pendingWriteTimeout = setTimeout(() => {
+		pendingWriteTimeout = null;
+		void DURABLE_SETTINGS.zoomLevel.write(level);
+	}, ZOOM_WRITE_DEBOUNCE_MS);
+}
+
 export async function zoomIn(): Promise<number> {
 	const next = getNextZoomLevel(activeZoomLevel);
+	if (next === activeZoomLevel) return activeZoomLevel;
 	activeZoomLevel = next;
 	await applyWebviewZoom(next);
-	await DURABLE_SETTINGS.zoomLevel.write(next);
+	schedulePersistZoomLevel(next);
 	return next;
 }
 
 export async function zoomOut(): Promise<number> {
 	const prev = getPreviousZoomLevel(activeZoomLevel);
+	if (prev === activeZoomLevel) return activeZoomLevel;
 	activeZoomLevel = prev;
 	await applyWebviewZoom(prev);
-	await DURABLE_SETTINGS.zoomLevel.write(prev);
+	schedulePersistZoomLevel(prev);
 	return prev;
 }
 
 export async function resetZoom(): Promise<number> {
+	if (activeZoomLevel === DEFAULT_UI_ZOOM_LEVEL) return DEFAULT_UI_ZOOM_LEVEL;
 	activeZoomLevel = DEFAULT_UI_ZOOM_LEVEL;
 	await applyWebviewZoom(DEFAULT_UI_ZOOM_LEVEL);
+	if (pendingWriteTimeout) {
+		clearTimeout(pendingWriteTimeout);
+		pendingWriteTimeout = null;
+	}
 	await DURABLE_SETTINGS.zoomLevel.write(DEFAULT_UI_ZOOM_LEVEL);
 	return DEFAULT_UI_ZOOM_LEVEL;
 }
