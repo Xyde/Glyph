@@ -4,8 +4,6 @@ import {
 	type CSSProperties,
 	type Dispatch,
 	type SetStateAction,
-	Suspense,
-	lazy,
 	memo,
 	useCallback,
 	useEffect,
