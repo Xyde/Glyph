@@ -578,16 +578,96 @@ export const SidebarContent = memo(function SidebarContent({
 		[folioMode, onSelectTag, setFolioScope],
 	);
 
+	const isGutterMode = sidebarLayoutStyle === "gutter";
+
 	if (!spacePath) {
-		return (
+		const emptyPanelContent = (
 			<div className="sidebarSection sidebarSectionGrow sidebarEmpty">
-				<div className="sidebarEmptyTitle">No space open</div>
-				<div className="sidebarEmptyHint">Open or create a space to get started.</div>
+				<div className="sidebarEmptyTitle">
+					{t("spaceSwitcher.noSpaceOpen", { defaultValue: "No vault open" })}
+				</div>
+				<div className="sidebarEmptyHint">
+					{t("spaceSwitcher.noSpaceHint", {
+						defaultValue: "Open or create a vault to get started.",
+					})}
+				</div>
+				<div
+					style={{
+						display: "flex",
+						flexDirection: "column",
+						gap: "8px",
+						marginTop: "16px",
+						width: "100%",
+						padding: "0 16px",
+					}}
+				>
+					{onOpenSpace ? (
+						<button
+							type="button"
+							className="sidebarActionBtn"
+							onClick={() => void onOpenSpace()}
+							style={{ justifyContent: "center" }}
+						>
+							{t("spaceSwitcher.openSpace", { defaultValue: "Open Vault…" })}
+						</button>
+					) : null}
+					{onCreateSpace ? (
+						<button
+							type="button"
+							className="sidebarActionBtn"
+							onClick={() => void onCreateSpace()}
+							style={{ justifyContent: "center" }}
+						>
+							{t("spaceSwitcher.createSpace", { defaultValue: "New Vault…" })}
+						</button>
+					) : null}
+				</div>
 			</div>
 		);
-	}
 
-	const isGutterMode = sidebarLayoutStyle === "gutter";
+		if (isGutterMode) {
+			return (
+				<div className="sidebarBodyGutterMode">
+					<SidebarGutter
+						sidebarOrder={sidebarOrder}
+						sidebarVisibility={sidebarVisibility}
+						aiEnabled={aiEnabled}
+						activeTopSection={null}
+						onOpenAgent={onOpenAgent}
+						onOpenInbox={onOpenInbox}
+						onOpenArchive={onOpenArchive}
+						onOpenAllDocs={handleOpenAllNotes}
+						onOpenDatabases={onOpenDatabases}
+						onOpenTasks={onOpenTasks}
+						onOpenConnections={onOpenConnections}
+						onOpenCalendar={onOpenCalendar}
+						onOpenSearch={onOpenSearch}
+						onOpenQuickNote={onOpenQuickNote}
+						onCreateFromTemplate={onCreateFromTemplate}
+						onGitSyncNow={onGitSyncNow}
+						onOpenPeriodNotes={() => onOpenPeriodNote("day")}
+						periodNotesEnabled={periodNotesEnabled}
+						archiveEnabled={archiveEnabled}
+						settingsSpacePath={settingsSpacePath}
+						spacePath={spacePath}
+						spaces={spaces}
+						activeSpacePath={activeSpacePath}
+						onSelectSpace={onSelectSpace}
+						onSetSpaceIcon={onSetSpaceIcon}
+						onCloseSpace={onCloseSpace}
+						onOpenSpace={onOpenSpace}
+						onCreateSpace={onCreateSpace}
+						onRevealSpace={onRevealSpace}
+						onOpenSpaceSettings={onOpenSpaceSettings}
+						openSettings={openSettings}
+					/>
+					<div className="sidebarFilePane">{emptyPanelContent}</div>
+				</div>
+			);
+		}
+
+		return emptyPanelContent;
+	}
 
 	const handleCreateOptionsClick = useCallback(
 		(event: MouseEvent<HTMLButtonElement>) => {

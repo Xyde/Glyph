@@ -115,8 +115,8 @@ export function SpaceProvider({ children }: { children: ReactNode }) {
 	}, []);
 
 	useEffect(() => {
-		syncRecentSpacesMenu(spacePaths.filter((path) => path !== spacePath).slice(0, 20));
-	}, [spacePaths, spacePath, syncRecentSpacesMenu]);
+		syncRecentSpacesMenu(spacePaths.slice(0, 20));
+	}, [spacePaths, syncRecentSpacesMenu]);
 
 	const refreshSpaceRegistry = useCallback(
 		async ({ currentSpacePath }: { currentSpacePath?: string | null } = {}) => {
@@ -310,7 +310,6 @@ export function SpaceProvider({ children }: { children: ReactNode }) {
 			setSpacePath(null);
 			setWelcomeNotePath(null);
 			if (closingSpacePath) {
-				await removeRegisteredSpacePath({ path: closingSpacePath });
 				await refreshSpaceRegistry({ currentSpacePath: null });
 			}
 		} catch (err) {

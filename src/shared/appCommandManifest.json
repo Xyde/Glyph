@@ -11,7 +11,7 @@
 				"alt": true,
 				"key": "1"
 			},
-			"allowInEditable": false,
+			"allowInEditable": true,
 			"commandPalette": false
 		},
 		"activate-tab-2": {
@@ -25,7 +25,7 @@
 				"alt": true,
 				"key": "2"
 			},
-			"allowInEditable": false,
+			"allowInEditable": true,
 			"commandPalette": false
 		},
 		"activate-tab-3": {
@@ -39,7 +39,7 @@
 				"alt": true,
 				"key": "3"
 			},
-			"allowInEditable": false,
+			"allowInEditable": true,
 			"commandPalette": false
 		},
 		"activate-tab-4": {
@@ -53,7 +53,7 @@
 				"alt": true,
 				"key": "4"
 			},
-			"allowInEditable": false,
+			"allowInEditable": true,
 			"commandPalette": false
 		},
 		"activate-tab-5": {
@@ -67,7 +67,7 @@
 				"alt": true,
 				"key": "5"
 			},
-			"allowInEditable": false,
+			"allowInEditable": true,
 			"commandPalette": false
 		},
 		"activate-tab-6": {
@@ -81,7 +81,7 @@
 				"alt": true,
 				"key": "6"
 			},
-			"allowInEditable": false,
+			"allowInEditable": true,
 			"commandPalette": false
 		},
 		"activate-tab-7": {
@@ -95,7 +95,7 @@
 				"alt": true,
 				"key": "7"
 			},
-			"allowInEditable": false,
+			"allowInEditable": true,
 			"commandPalette": false
 		},
 		"activate-tab-8": {
@@ -109,7 +109,7 @@
 				"alt": true,
 				"key": "8"
 			},
-			"allowInEditable": false,
+			"allowInEditable": true,
 			"commandPalette": false
 		},
 		"activate-tab-9": {
@@ -123,7 +123,7 @@
 				"alt": true,
 				"key": "9"
 			},
-			"allowInEditable": false,
+			"allowInEditable": true,
 			"commandPalette": false
 		},
 		"ai-attach-all-open-notes": {
@@ -264,7 +264,7 @@
 				"meta": true,
 				"key": "w"
 			},
-			"allowInEditable": false,
+			"allowInEditable": true,
 			"commandPalette": true,
 			"menuId": "file.close_tab"
 		},
@@ -840,7 +840,7 @@
 				"alt": true,
 				"key": "]"
 			},
-			"allowInEditable": false,
+			"allowInEditable": true,
 			"commandPalette": true
 		},
 		"numbered_list": {
@@ -1120,7 +1120,7 @@
 				"alt": true,
 				"key": "["
 			},
-			"allowInEditable": false,
+			"allowInEditable": true,
 			"commandPalette": true
 		},
 		"print-note": {

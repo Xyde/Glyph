@@ -139,13 +139,26 @@ export async function showNativeContextMenu(
 	return result.didSelectItem;
 }
 
+export interface NativePopupMenuOptions {
+	placement?: "bottom-start" | "right-end" | "right-start";
+}
+
 export async function showNativePopupMenu(
 	event: NativePopupMenuEvent,
 	items: NativeContextMenuItem[],
+	options?: NativePopupMenuOptions,
 ): Promise<boolean> {
-	// For popup menus triggered by button clicks, omitting explicit coordinates
-	// allows Cocoa on macOS to position the NSMenu natively at NSEvent::mouseLocation()
-	// in global screen space without WKWebView coordinate inversion or clipping.
-	const result = await showNativeMenu(event, items);
+	let position: LogicalPosition | undefined;
+	if (event.currentTarget instanceof Element) {
+		const rect = event.currentTarget.getBoundingClientRect();
+		if (options?.placement === "right-end") {
+			position = new LogicalPosition(Math.round(rect.right + 4), Math.round(rect.bottom));
+		} else if (options?.placement === "right-start") {
+			position = new LogicalPosition(Math.round(rect.right + 4), Math.round(rect.top));
+		} else {
+			position = new LogicalPosition(Math.round(rect.left), Math.round(rect.bottom));
+		}
+	}
+	const result = await showNativeMenu(event, items, position);
 	return result.didSelectItem;
 }

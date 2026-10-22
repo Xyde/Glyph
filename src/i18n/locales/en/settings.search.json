@@ -8,7 +8,7 @@
 		"experimental": "Experimental",
 		"shortcuts": "Shortcuts",
 		"ai": "AI",
-		"space": "Space",
+		"space": "Feature Folder Destinations",
 		"git": "Git Sync",
 		"about": "About",
 		"developer": "Developer"
@@ -55,9 +55,9 @@
 			"keywords": ["AI"]
 		},
 		"space": {
-			"title": "Space settings",
-			"description": "Open Space settings.",
-			"keywords": ["Space"]
+			"title": "Feature Folder Destinations",
+			"description": "Designate destination folders inside this vault for Inbox, Daily Notes, Templates, and Attachments.",
+			"keywords": ["Feature", "Folders", "Destinations", "Inbox", "Daily Notes", "Templates", "Attachments"]
 		},
 		"git": {
 			"title": "Git Sync settings",

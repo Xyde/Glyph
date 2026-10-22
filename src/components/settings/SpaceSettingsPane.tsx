@@ -356,6 +356,17 @@ export function SpaceSettingsPane() {
 		<div className="settingsPane">
 			{error ? <div className="settingsError">{error}</div> : null}
 
+			<p
+				style={{
+					margin: "0 0 20px 0",
+					fontSize: "calc(var(--text-base) * 0.9)",
+					color: "var(--text-secondary)",
+					lineHeight: 1.5,
+				}}
+			>
+				Designate destination folders inside this vault for Inbox, Daily Notes, Templates, and Attachments.
+			</p>
+
 			<div className="settingsGrid">
 				<SettingsSection
 					title={t("newNotes.sectionTitle")}
@@ -382,11 +393,11 @@ export function SpaceSettingsPane() {
 
 				<SettingsSection
 					title="Daily Notes"
-					description="Choose where dated notes are created in the current space."
+					description="Choose where dated notes are created in this vault."
 				>
 					<SettingsRow
 						label="Folder"
-						description="Glyph stores dated notes relative to the active space."
+						description="Glyph stores dated notes relative to the active vault."
 						stacked
 						interactive={false}
 					>
@@ -448,7 +459,7 @@ export function SpaceSettingsPane() {
 
 				<SettingsSection
 					title="Attachments"
-					description="Choose where note attachments are stored within the current space."
+					description="Choose where note attachments are stored within this vault."
 				>
 					<SettingsRow
 						label="Location"
@@ -584,7 +595,7 @@ export function SpaceSettingsPane() {
 					>
 						<div className="dailyNotesFolderRow">
 							<div className="dailyNotesFolderPath">
-								{reindexStatus || (!currentSpacePath ? "No space selected." : "Index is ready.")}
+								{reindexStatus || (!currentSpacePath ? "No vault selected." : "Index is ready.")}
 							</div>
 							<div className="settingsActions dailyNotesActions">
 								<Button

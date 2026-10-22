@@ -1140,7 +1140,7 @@
 }
 
 .markdownEditorPane .rfNodeNoteEditorBody {
-	padding-top: 9vh;
+	padding-top: 0;
 }
 
 .markdownEditorPane .rfNodeNoteEditor.rfNodeNoteEditorFlatEdges {
@@ -1193,6 +1193,8 @@
 		calc(50vw - var(--editor-left-offset, 0px) - (var(--editor-readable-content-max-width) / 2))
 	);
 	margin-right: auto;
+	padding-top: 18px;
+	padding-bottom: 50vh;
 	transition: max-width 180ms ease, margin-left 180ms ease;
 }
 

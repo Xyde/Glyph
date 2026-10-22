@@ -430,11 +430,13 @@ export function useAppCommands({
 			{
 				id: "next-tab",
 				enabled: tabsLength > 1,
+				allowInEditable: true,
 				action: activateNextTab,
 			},
 			{
 				id: "previous-tab",
 				enabled: tabsLength > 1,
+				allowInEditable: true,
 				action: activatePreviousTab,
 			},
 			{

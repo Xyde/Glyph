@@ -179,7 +179,7 @@ export const SidebarGutter = memo(function SidebarGutter({
 					});
 				}
 			}
-			void showNativePopupMenu(event, menuItems);
+			void showNativePopupMenu(event, menuItems, { placement: "right-end" });
 		},
 		[
 			activeSpacePath,
@@ -420,26 +420,32 @@ export const SidebarGutter = memo(function SidebarGutter({
 				</div>
 
 				<div className="sidebarGutterFooterGroup">
-					{currentSpace ? (
-						<button
-							type="button"
-							className="sidebarGutterBtn sidebarGutterSpaceBtn"
-							onClick={handleSpaceClick}
-							onContextMenu={handleSpaceClick}
-							title={`${t("spaceSwitcher.label", { defaultValue: "Vault" })}: ${currentSpace.name}`}
-							aria-label={`${t("spaceSwitcher.label", { defaultValue: "Vault" })}: ${currentSpace.name}`}
-						>
-							<AppearanceIcon
-								iconName={currentSpace.iconName}
-								size="var(--icon-md)"
-								strokeWidth={1.75}
-							/>
-						</button>
-					) : null}
+					<button
+						type="button"
+						className="sidebarGutterBtn sidebarGutterSpaceBtn"
+						onClick={handleSpaceClick}
+						onContextMenu={handleSpaceClick}
+						title={
+							currentSpace
+								? `${t("spaceSwitcher.label", { defaultValue: "Vault" })}: ${currentSpace.name}`
+								: t("spaceSwitcher.label", { defaultValue: "Vault" })
+						}
+						aria-label={
+							currentSpace
+								? `${t("spaceSwitcher.label", { defaultValue: "Vault" })}: ${currentSpace.name}`
+								: t("spaceSwitcher.label", { defaultValue: "Vault" })
+						}
+					>
+						<AppearanceIcon
+							iconName={currentSpace?.iconName ?? "folder"}
+							size="var(--icon-md)"
+							strokeWidth={1.75}
+						/>
+					</button>
 					<button
 						type="button"
 						className="sidebarGutterBtn sidebarGutterSettingsBtn"
-						onClick={openSettings}
+						onClick={() => openSettings()}
 						title={`${t("sidebar.settings", { defaultValue: "Settings" })} (⌘,)`}
 						aria-label={t("sidebar.settings", { defaultValue: "Settings" })}
 					>

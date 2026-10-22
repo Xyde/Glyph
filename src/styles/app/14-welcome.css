@@ -68,3 +68,7 @@
 	cursor: wait;
 	opacity: 0.5;
 }
+
+.welcomeRecentVaultItem:hover {
+	background: var(--bg-hover) !important;
+}

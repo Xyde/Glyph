@@ -11,12 +11,12 @@
 		"textColor": "Text Color",
 		"textHighlight": "Text Highlight",
 		"ai": "AI",
-		"space": "Space",
-		"recentSpaces": "Spaces",
+		"space": "Vault",
+		"recentSpaces": "Vaults",
 		"window": "Window",
 		"help": "Help"
 	},
 	"recentSpaces": {
-		"empty": "No Spaces"
+		"empty": "No Vaults"
 	}
 }

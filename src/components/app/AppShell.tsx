@@ -1309,10 +1309,25 @@ export function AppShell() {
 				id: `activate-tab-${index + 1}`,
 				shortcut: getBinding(`activate-tab-${index + 1}`),
 				enabled: Boolean(tabs[index]),
+				allowInEditable: true,
 				action: () => {
 					activateTabByIndex(index);
 				},
 			})),
+			{
+				id: "next-tab-ctrl-tab",
+				shortcut: { ctrl: true, key: "Tab" },
+				enabled: tabs.length > 1,
+				allowInEditable: true,
+				action: activateNextTab,
+			},
+			{
+				id: "previous-tab-ctrl-shift-tab",
+				shortcut: { ctrl: true, shift: true, key: "Tab" },
+				enabled: tabs.length > 1,
+				allowInEditable: true,
+				action: activatePreviousTab,
+			},
 			...commands
 				.filter((command) => !(command.id in GLOBAL_SHORTCUT_COMMANDS))
 				.map((command) => ({
@@ -1324,6 +1339,8 @@ export function AppShell() {
 				})),
 		],
 		[
+			activateNextTab,
+			activatePreviousTab,
 			activateTabByIndex,
 			closeSettings,
 			commands,

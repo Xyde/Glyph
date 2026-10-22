@@ -99,8 +99,8 @@
 			"description": "Close every open tab."
 		},
 		"close-space": {
-			"label": "Close Current Space",
-			"description": "Close the currently open space."
+			"label": "Close Vault",
+			"description": "Close the currently open vault."
 		},
 		"code_block": {
 			"label": "Code Block",
@@ -155,8 +155,8 @@
 			"description": "Create a new note from a template."
 		},
 		"create-space": {
-			"label": "Create Space",
-			"description": "Create a new space."
+			"label": "New Vault",
+			"description": "Create a new vault."
 		},
 		"details_block": {
 			"label": "Details Block",
@@ -375,12 +375,12 @@
 			"description": "Open the settings view."
 		},
 		"open-space": {
-			"label": "Open Space",
-			"description": "Open an existing space."
+			"label": "Open Vault",
+			"description": "Open an existing vault."
 		},
 		"open-space-settings": {
-			"label": "Open Space Settings",
-			"description": "Open settings for the current space."
+			"label": "Feature Folder Destinations…",
+			"description": "Configure destination folders for Inbox, Daily Notes, Templates, and Attachments."
 		},
 		"paste_without_formatting": {
 			"label": "Paste without Formatting",
@@ -407,8 +407,8 @@
 			"description": "Toggle a blockquote."
 		},
 		"reveal-space": {
-			"label": "Reveal Space",
-			"description": "Show the current space in the system file browser."
+			"label": "Reveal Vault in Finder",
+			"description": "Show the current vault in the system file browser."
 		},
 		"save-note": {
 			"label": "Save Note",

@@ -259,17 +259,22 @@ struct OpenRecentSpacePayload {
     path: String,
 }
 
-fn format_recent_space_label(path: &str) -> String {
+fn format_recent_space_label(path: &str, is_current: bool) -> String {
     let normalized = path.replace('\\', "/").trim_end_matches('/').to_string();
     let name = normalized
         .rsplit('/')
         .next()
         .filter(|segment| !segment.is_empty())
         .unwrap_or(path);
-    if name == path {
+    let base = if name == path {
         name.to_string()
     } else {
         format!("{name} — {path}")
+    };
+    if is_current {
+        format!("✓ {base}")
+    } else {
+        base
     }
 }
 
@@ -312,6 +317,12 @@ fn build_recent_spaces_submenu<R: tauri::Runtime, M: Manager<R>>(
     recent_spaces: &[String],
     menu_labels: &HashMap<String, String>,
 ) -> tauri::Result<Submenu<R>> {
+    let current_space_path = app.try_state::<space::SpaceState>().and_then(|state| {
+        state
+            .root_for_window_label(window_geometry::MAIN_WINDOW_LABEL)
+            .ok()
+            .map(|path| path.to_string_lossy().to_string())
+    });
     let revision = next_recent_spaces_menu_revision();
     let mut builder = SubmenuBuilder::with_id(
         app,
@@ -331,9 +342,13 @@ fn build_recent_spaces_submenu<R: tauri::Runtime, M: Manager<R>>(
     }
 
     for (index, path) in recent_spaces.iter().enumerate() {
+        let is_current = current_space_path
+            .as_deref()
+            .map(|p| p.trim_end_matches('/'))
+            == Some(path.trim_end_matches('/'));
         builder = builder.text(
             recent_space_item_id(revision, index),
-            format_recent_space_label(path),
+            format_recent_space_label(path, is_current),
         );
     }
     builder.build()
@@ -398,11 +413,22 @@ fn try_update_recent_spaces_submenu<R: tauri::Runtime>(
         return Ok(true);
     }
 
+    let current_space_path = app.try_state::<space::SpaceState>().and_then(|state| {
+        state
+            .root_for_window_label(window_geometry::MAIN_WINDOW_LABEL)
+            .ok()
+            .map(|path| path.to_string_lossy().to_string())
+    });
+
     for (index, path) in recent_spaces.iter().enumerate() {
+        let is_current = current_space_path
+            .as_deref()
+            .map(|p| p.trim_end_matches('/'))
+            == Some(path.trim_end_matches('/'));
         let item = MenuItem::with_id(
             app,
             recent_space_item_id(revision, index),
-            format_recent_space_label(path),
+            format_recent_space_label(path, is_current),
             true,
             None::<&str>,
         )
@@ -1226,17 +1252,10 @@ fn set_recent_spaces_menu(
     menu_state: State<'_, MenuState>,
     recent_spaces: Vec<String>,
 ) -> Result<(), String> {
-    let current_space_path = app.try_state::<space::SpaceState>().and_then(|state| {
-        state
-            .root_for_window_label(window_geometry::MAIN_WINDOW_LABEL)
-            .ok()
-            .map(|path| path.to_string_lossy().to_string())
-    });
     let filtered: Vec<String> = recent_spaces
         .into_iter()
         .map(|path| path.trim().to_string())
         .filter(|path| !path.is_empty())
-        .filter(|path| current_space_path.as_deref() != Some(path.as_str()))
         .take(20)
         .collect();
 

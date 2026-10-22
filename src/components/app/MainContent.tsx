@@ -192,7 +192,14 @@ export const MainContent = memo(function MainContent({
 	onCloseNotePeek,
 	onOpenPeekedNote,
 }: MainContentProps) {
-	const { spacePath, settingsLoaded, onOpenSpace } = useSpace();
+	const {
+		spacePath,
+		settingsLoaded,
+		onOpenSpace,
+		onCreateSpace,
+		spaces,
+		onOpenSpaceAtPath,
+	} = useSpace();
 	const {
 		folioMode,
 		settingsMode,
@@ -444,7 +451,12 @@ export const MainContent = memo(function MainContent({
 					duration: 0.4,
 				}}
 			>
-				<WelcomeScreen onOpenSpace={onOpenSpace} />
+				<WelcomeScreen
+					onOpenSpace={onOpenSpace}
+					onCreateSpace={onCreateSpace}
+					spaces={spaces}
+					onSelectSpace={onOpenSpaceAtPath}
+				/>
 			</m.main>
 		);
 	}

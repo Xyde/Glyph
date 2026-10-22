@@ -49,8 +49,7 @@ export function SettingsTabContent({ tab }: { tab: SettingsTab }) {
 		case "experimental":
 			return <ExperimentalSettingsPane />;
 		default: {
-			const _exhaustive: never = tab;
-			return _exhaustive;
+			return <GeneralSettingsPane />;
 		}
 	}
 }

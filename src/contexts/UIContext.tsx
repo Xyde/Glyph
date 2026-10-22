@@ -330,13 +330,15 @@ function uiReducer(state: UIState, action: UIAction): UIState {
 			return { ...state, sidebarPinnedStyle: action.value };
 		case "setSidebarLayoutStyle":
 			return { ...state, sidebarLayoutStyle: action.value };
-		case "openSettings":
+		case "openSettings": {
+			const nextTab = typeof action.tab === "string" ? action.tab : state.settingsTab;
 			return {
 				...state,
 				settingsMode: true,
-				settingsTab: action.tab ?? state.settingsTab,
+				settingsTab: nextTab,
 				sidebarCollapsed: false,
 			};
+		}
 		case "closeSettings":
 			return { ...state, settingsMode: false };
 		case "setSettingsTab":
@@ -784,7 +786,10 @@ export function UIProvider({ children }: { children: ReactNode }) {
 	);
 
 	const openSettings = useCallback(
-		(tab?: SettingsTab) => dispatch({ type: "openSettings", tab }),
+		(tab?: SettingsTab) => {
+			const nextTab = typeof tab === "string" ? tab : undefined;
+			dispatch({ type: "openSettings", tab: nextTab });
+		},
 		[],
 	);
 	const closeSettings = useCallback(() => dispatch({ type: "closeSettings" }), []);

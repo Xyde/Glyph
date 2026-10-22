@@ -201,7 +201,6 @@ export function TabBar({
 						→
 					</button>
 				</div>
-				<ActiveFileTitle path={activeMarkdownPath} onRenameFile={onRenameFile} />
 				{tabs.length > 1 || tabs[0]?.isPinned ? (
 					<div className="mainTabsStrip">
 						<div className="mainTabsStripTabs" ref={measureTabsRef}>
@@ -267,7 +266,9 @@ export function TabBar({
 							</div>
 						) : null}
 					</div>
-				) : null}
+				) : (
+					<ActiveFileTitle path={activeMarkdownPath} onRenameFile={onRenameFile} />
+				)}
 			</div>
 			<MainTabsBreadcrumbs
 				activeTabPath={activeTabPath}

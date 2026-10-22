@@ -359,6 +359,69 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Low.
 
+---
+
+## Patch 20: Feature Folder Destinations Terminology Decoupling, Settings Crash Hardening & Native Gutter Anchoring
+- **Problem**:
+  - Upstream labeled the folder destination configuration tab as "Space" under the "WORKSPACE" category, causing acute cognitive confusion (users thought they were picking a workspace rather than setting automated destination folders for Inbox, Daily Notes, Templates, and Attachments).
+  - Clicking the Settings gear in `SidebarGutter.tsx` passed a synthetic React `MouseEvent` into `openSettings()`, crashing the entire frontend because the settings reducer expected a string tab ID.
+  - Native macOS context menus in the navigation gutter rendered detached across the screen rather than anchored to the rail.
+  - Native macOS application menus used confusing "Space" terminology and filtered out the active vault from recent lists instead of marking it with a checkmark.
+- **Resolution**:
+  - Renamed the settings tab to **"Feature Folder Destinations"** across UI, commands, and search metadata (`settings.search.json`, `commands.json`, `shell.json`, `SpaceSettingsPane.tsx`).
+  - Added an explicit subtitle explaining its exact purpose: *"Designate destination folders inside this vault for Inbox, Daily Notes, Templates, and Attachments."*
+  - Aligned native macOS menus and command palette to "Vault" ("New Vault", "Open Vault", "Vaults >", "Close Vault", "Reveal Vault in Finder").
+  - Fixed active space filtering in `src-tauri/src/lib.rs` and added `✓ ` active vault checkmarks.
+  - Sanitized `openSettings()` in `SidebarGutter.tsx` and `UIContext.tsx`, and added a fallback in `SettingsTabContent.tsx`.
+  - Added `placement: "right-end"` to gutter native context menus in `nativeContextMenu.ts`.
+- **Files Added / Modified**:
+  - `src/components/app/SidebarGutter.tsx`
+  - `src/contexts/UIContext.tsx`
+  - `src/components/settings/SettingsTabContent.tsx`
+  - `src/components/settings/SpaceSettingsPane.tsx`
+  - `src/lib/nativeContextMenu.ts`
+  - `src-tauri/src/lib.rs`
+  - `src/i18n/locales/en/commands.json`
+  - `src/i18n/locales/en/shell.json`
+  - `src/i18n/locales/en/settings.search.json`
+  - `docs/FORK_PATCHES.md`
+  - `docs/TERMINOLOGY_AND_RATIONALE.md` (new)
+- **Upstream Conflict Risk**: Low.
+
+---
+
+## Patch 21: Toolbar Tab Stutter Elimination & Editor Void Removal
+- **Problem**:
+  - In `TabBar.tsx`, `<ActiveFileTitle />` was hardcoded to render unconditionally next to navigation arrows. When `tabs.length > 1`, Glyph rendered both `<ActiveFileTitle />` AND the active tab in `mainTabsStrip`, producing duplicate titles 15 pixels apart: `[← →] !index [!Land...] [!index] [+]`.
+  - In `30-markdown-editor-pane.css`, `.markdownEditorPane .rfNodeNoteEditorBody` applied `padding-top: 9vh`, pushing the first line of every note 100+ pixels down the viewport into an artificial black void.
+- **Resolution**:
+  - Made `<ActiveFileTitle />` and `mainTabsStrip` mutually exclusive in `TabBar.tsx`: when tabs are visible (`tabs.length > 1 || tabs[0]?.isPinned`), `<ActiveFileTitle />` yields to the tab strip. When only a single unpinned note is active, `<ActiveFileTitle />` serves as the clean breadcrumb title.
+  - Replaced `padding-top: 9vh` with `padding-top: 0` on `.rfNodeNoteEditorBody` in `30-markdown-editor-pane.css`, and set `padding-top: 18px; padding-bottom: 50vh;` on `.rfNodeNoteEditorRaw .cm-content` to match Rich mode's top padding, aligning Raw and Rich modes at a comfortable 18px below the toolbar.
+- **Files Modified**:
+  - `src/components/app/TabBar.tsx`
+  - `src/styles/app/30-markdown-editor-pane.css`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Low.
+
+---
+
+## Patch 22: Keyboard Tab Navigation in Editor & Safari/Obsidian Ctrl+Tab Support
+- **Problem**:
+  - `next-tab` (`⌥⌘]`), `previous-tab` (`⌥⌘[`), `close-active-tab` (`⌘W`), and `activate-tab-1..9` (`⌥⌘1..9`) had `"allowInEditable": false` in `appCommandManifest.json`.
+  - Consequently, whenever an author was actively typing inside a note or had the editor focused (the vast majority of PKM workflow time), keyboard shortcuts to cycle tabs or close tabs were completely ignored by `useCommandShortcuts`. Users were forced to mouse-click outside the note buffer to switch tabs.
+  - Furthermore, standard macOS / Safari / Obsidian tab-cycling hotkeys (`⌃⇥` / `⌃⇧⇥`) were absent.
+- **Resolution**:
+  - Enabled `"allowInEditable": true` across `next-tab`, `previous-tab`, `close-active-tab`, and `activate-tab-1..9` in `appCommandManifest.json` and `useAppCommands.tsx`.
+  - Added universal macOS `⌃⇥` (Control+Tab) and `⌃⇧⇥` (Control+Shift+Tab) keyboard listeners in `AppShell.tsx`, allowing authors to cycle tabs effortlessly without leaving the typing flow.
+- **Files Modified**:
+  - `src/shared/appCommandManifest.json`
+  - `src/components/app/useAppCommands.tsx`
+  - `src/components/app/AppShell.tsx`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Low.
+
+
+
 
 
 
