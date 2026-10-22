@@ -51,12 +51,15 @@ import type {
 	UiFontSize,
 } from "./model";
 import {
+	DEFAULT_SIDEBAR_LAYOUT_STYLE,
 	DEFAULT_SIDEBAR_ORDER,
 	DEFAULT_SIDEBAR_PINNED_STYLE,
 	DEFAULT_SIDEBAR_VISIBILITY,
+	isSidebarLayoutStyle,
 	isSidebarPinnedStyle,
 	normalizeSidebarOrder,
 	normalizeSidebarVisibility,
+	type SidebarLayoutStyle,
 	type SidebarPinnedStyle,
 } from "./model";
 
@@ -84,7 +87,12 @@ const DEFAULT_FOCUS_MODE: FocusMode = "off";
 const DEFAULT_ATTACHMENT_STORAGE_MODE: AttachmentStorageMode = "note-folder";
 
 export const MAX_SIDEBAR_FOLDER_TABS = 3;
-export { DEFAULT_SIDEBAR_PINNED_STYLE, isSidebarPinnedStyle } from "./model";
+export {
+	DEFAULT_SIDEBAR_LAYOUT_STYLE,
+	DEFAULT_SIDEBAR_PINNED_STYLE,
+	isSidebarLayoutStyle,
+	isSidebarPinnedStyle,
+} from "./model";
 
 export const DEFAULT_UI_CORNER_RADIUS_STYLE: UiCornerRadiusStyle = "default";
 
@@ -625,6 +633,15 @@ export const DURABLE_SETTINGS = {
 		parse: (value) => (isSidebarPinnedStyle(value) ? parsed(value) : INVALID_PARSE_RESULT),
 		read: (settings) => settings.ui.sidebarPinnedStyle,
 		change: (value) => ({ ui: { sidebarPinnedStyle: value } }),
+	}),
+	sidebarLayoutStyle: defineApplicationSetting<SidebarLayoutStyle>({
+		key: "ui.sidebarLayoutStyle",
+		defaultValue: DEFAULT_SIDEBAR_LAYOUT_STYLE,
+		discovery: searchable("sidebar-layout-style"),
+		normalize: (value) => (isSidebarLayoutStyle(value) ? value : DEFAULT_SIDEBAR_LAYOUT_STYLE),
+		parse: (value) => (isSidebarLayoutStyle(value) ? parsed(value) : INVALID_PARSE_RESULT),
+		read: (settings) => settings.ui.sidebarLayoutStyle,
+		change: (value) => ({ ui: { sidebarLayoutStyle: value } }),
 	}),
 	showFileTreeFolderCounts: booleanSetting({
 		key: "ui.fileTree.showFolderFileCounts",

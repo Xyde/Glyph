@@ -5,10 +5,13 @@ import { extractErrorMessage } from "../../lib/errorUtils";
 import { loadSettings } from "../../lib/settings";
 import { DURABLE_SETTINGS, writeSidebarLayout } from "../../lib/settings/definitions";
 import {
+	DEFAULT_SIDEBAR_LAYOUT_STYLE,
 	DEFAULT_SIDEBAR_ORDER,
 	DEFAULT_SIDEBAR_PINNED_STYLE,
 	DEFAULT_SIDEBAR_VISIBILITY,
+	isSidebarLayoutStyle,
 	isSidebarPinnedStyle,
+	type SidebarLayoutStyle,
 	type SidebarOrder,
 	type SidebarPinnedStyle,
 	type SidebarVisibility,
@@ -42,6 +45,7 @@ export function SidebarSettingsPane() {
 			initialVisibility={settingsQuery.data.ui.sidebarVisibility}
 			initialOrder={settingsQuery.data.ui.sidebarOrder}
 			initialPinnedStyle={settingsQuery.data.ui.sidebarPinnedStyle}
+			initialLayoutStyle={settingsQuery.data.ui.sidebarLayoutStyle}
 		/>
 	);
 }
@@ -50,10 +54,12 @@ function SidebarSettingsContent({
 	initialVisibility,
 	initialOrder,
 	initialPinnedStyle = DEFAULT_SIDEBAR_PINNED_STYLE,
+	initialLayoutStyle = DEFAULT_SIDEBAR_LAYOUT_STYLE,
 }: {
 	initialVisibility: SidebarVisibility;
 	initialOrder: SidebarOrder;
 	initialPinnedStyle?: SidebarPinnedStyle;
+	initialLayoutStyle?: SidebarLayoutStyle;
 }) {
 	const { t } = useTranslation("settings.sidebar");
 	const [error, setError] = useState("");
@@ -69,11 +75,17 @@ function SidebarSettingsContent({
 		DURABLE_SETTINGS.sidebarPinnedStyle.write,
 		setError,
 	);
+	const layoutStyle = useSettingsValue(
+		initialLayoutStyle,
+		DURABLE_SETTINGS.sidebarLayoutStyle.write,
+		setError,
+	);
 
 	useTauriEvent("settings:updated", (payload) => {
 		if (payload.ui?.sidebarVisibility) visibility.setValue(payload.ui.sidebarVisibility);
 		if (payload.ui?.sidebarOrder) order.setValue(payload.ui.sidebarOrder);
 		if (payload.ui?.sidebarPinnedStyle) pinnedStyle.setValue(payload.ui.sidebarPinnedStyle);
+		if (payload.ui?.sidebarLayoutStyle) layoutStyle.setValue(payload.ui.sidebarLayoutStyle);
 	});
 
 	const onVisibilityChange = useCallback(
@@ -135,6 +147,32 @@ function SidebarSettingsContent({
 						onVisibilityChange={onVisibilityChange}
 					/>
 				</SettingsSection>
+				<SettingsSection
+					title={t("layoutStyleTitle")}
+					description={t("layoutStyleDescription")}
+				>
+					<SettingsRow
+						label={t("layoutStyleLabel")}
+						description={t("layoutStyleHelp")}
+						htmlFor="settings-layout-style-select"
+					>
+						<SettingsSelect
+							id="settings-layout-style-select"
+							value={layoutStyle.value}
+							disabled={disabled}
+							onChange={(event) => {
+								const next = event.target.value;
+								if (isSidebarLayoutStyle(next)) {
+									layoutStyle.onChange(next);
+								}
+							}}
+						>
+							<option value="gutter">{t("layoutStyleGutter")}</option>
+							<option value="stacked">{t("layoutStyleStacked")}</option>
+						</SettingsSelect>
+					</SettingsRow>
+				</SettingsSection>
+
 				<SettingsSection
 					title={t("pinnedStyleTitle")}
 					description={t("pinnedStyleDescription")}

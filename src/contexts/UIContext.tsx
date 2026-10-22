@@ -30,10 +30,13 @@ import {
 } from "../lib/periodNotes";
 import {
 	type AiAssistantMode,
+	DEFAULT_SIDEBAR_LAYOUT_STYLE,
 	DEFAULT_SIDEBAR_PINNED_STYLE,
+	isSidebarLayoutStyle,
 	isSidebarPinnedStyle,
 	loadSettings,
 	reloadFromDisk,
+	type SidebarLayoutStyle,
 	type SidebarPinnedStyle,
 } from "../lib/settings";
 import {
@@ -85,6 +88,7 @@ interface UILayoutContextValue {
 	zenMode: boolean;
 	folioMode: boolean;
 	sidebarPinnedStyle: SidebarPinnedStyle;
+	sidebarLayoutStyle: SidebarLayoutStyle;
 	setFolioMode: (enabled: boolean) => void;
 	folioScope: FolioScope;
 	setFolioScope: (scope: FolioScope) => void;
@@ -131,6 +135,7 @@ type UIState = {
 	zenMode: boolean;
 	folioMode: boolean;
 	sidebarPinnedStyle: SidebarPinnedStyle;
+	sidebarLayoutStyle: SidebarLayoutStyle;
 	folioScope: FolioScope;
 	folioSortMode: FileTreeSortMode;
 	folioNotesWidth: number;
@@ -175,6 +180,7 @@ type UIAction =
 	| { type: "setSidebarVisibility"; value: SidebarVisibility }
 	| { type: "setSidebarOrder"; value: SidebarOrder }
 	| { type: "setSidebarPinnedStyle"; value: SidebarPinnedStyle }
+	| { type: "setSidebarLayoutStyle"; value: SidebarLayoutStyle }
 	| { type: "openSettings"; tab?: SettingsTab }
 	| { type: "closeSettings" }
 	| { type: "setSettingsTab"; value: SettingsTab }
@@ -193,6 +199,7 @@ type UIAction =
 			sidebarVisibility: SidebarVisibility;
 			sidebarOrder: SidebarOrder;
 			sidebarPinnedStyle: SidebarPinnedStyle;
+			sidebarLayoutStyle: SidebarLayoutStyle;
 			showToc: boolean;
 			zenMode: boolean;
 			folioMode: boolean;
@@ -226,6 +233,7 @@ const initialUIState: UIState = {
 	sidebarVisibility: DEFAULT_SIDEBAR_VISIBILITY,
 	sidebarOrder: DEFAULT_SIDEBAR_ORDER,
 	sidebarPinnedStyle: DEFAULT_SIDEBAR_PINNED_STYLE,
+	sidebarLayoutStyle: DEFAULT_SIDEBAR_LAYOUT_STYLE,
 	settingsSpacePath: null,
 	showToc: true,
 	zenMode: false,
@@ -320,6 +328,8 @@ function uiReducer(state: UIState, action: UIAction): UIState {
 			return { ...state, sidebarOrder: action.value };
 		case "setSidebarPinnedStyle":
 			return { ...state, sidebarPinnedStyle: action.value };
+		case "setSidebarLayoutStyle":
+			return { ...state, sidebarLayoutStyle: action.value };
 		case "openSettings":
 			return {
 				...state,
@@ -369,6 +379,7 @@ function uiReducer(state: UIState, action: UIAction): UIState {
 				sidebarVisibility: action.sidebarVisibility,
 				sidebarOrder: action.sidebarOrder,
 				sidebarPinnedStyle: action.sidebarPinnedStyle,
+				sidebarLayoutStyle: action.sidebarLayoutStyle,
 				showToc: action.showToc,
 				zenMode: action.zenMode,
 				folioMode: action.folioMode,
@@ -412,6 +423,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
 		sidebarVisibility,
 		sidebarOrder,
 		sidebarPinnedStyle,
+		sidebarLayoutStyle,
 		settingsSpacePath,
 		showToc,
 		zenMode,
@@ -460,6 +472,12 @@ export function UIProvider({ children }: { children: ReactNode }) {
 			dispatch({
 				type: "setSidebarPinnedStyle",
 				value: payload.ui.sidebarPinnedStyle,
+			});
+		}
+		if (isSidebarLayoutStyle(payload.ui?.sidebarLayoutStyle)) {
+			dispatch({
+				type: "setSidebarLayoutStyle",
+				value: payload.ui.sidebarLayoutStyle,
 			});
 		}
 		const nextMode = payload.ui?.aiAssistantMode;
@@ -627,6 +645,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
 					sidebarVisibility: nextSidebarVisibility,
 					sidebarOrder: nextSidebarOrder,
 					sidebarPinnedStyle: s.ui.sidebarPinnedStyle,
+					sidebarLayoutStyle: s.ui.sidebarLayoutStyle,
 					showToc: s.ui.showToc,
 					zenMode: nextZenMode,
 					folioMode: s.ui.folioMode,
@@ -804,6 +823,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
 			sidebarVisibility,
 			sidebarOrder,
 			sidebarPinnedStyle,
+			sidebarLayoutStyle,
 			settingsSpacePath,
 			showToc,
 			setShowToc,
@@ -843,6 +863,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
 			sidebarVisibility,
 			sidebarOrder,
 			sidebarPinnedStyle,
+			sidebarLayoutStyle,
 			settingsSpacePath,
 			showToc,
 			setShowToc,

@@ -58,7 +58,7 @@ import { type PeriodKind, isPeriodNoteEnabled } from "../../lib/periodNotes";
 import { isFileTreeSortMode } from "../../lib/settings";
 import type { SidebarOrder, SidebarVisibilityKey } from "../../lib/settings/model";
 import { formatShortcutForPlatform } from "../../lib/shortcuts/platform";
-import { spaceDisplayName } from "../../lib/spaceRegistry";
+import { spaceDisplayName, type SpaceDefinition } from "../../lib/spaceRegistry";
 import type { FsEntry } from "../../lib/tauri";
 import { toast } from "../../lib/toast";
 import { basename } from "../../utils/path";
@@ -67,6 +67,7 @@ import { AppearanceIcon } from "../AppearanceIcon";
 import { FileTreePane } from "../filetree";
 import { PinnedProjectsSection } from "./PinnedProjectsSection";
 import { PinnedFilesPane, RecentFilesPane } from "./RecentFilesPane";
+import { SidebarGutter } from "./SidebarGutter";
 
 export interface SidebarContentProps {
 	onToggleDir: (dirPath: string) => void;
@@ -119,6 +120,12 @@ export interface SidebarContentProps {
 	onOpenQuickNote: () => void;
 	onCreateFromTemplate: () => void;
 	onGitSyncNow: () => void;
+	spaces?: SpaceDefinition[];
+	activeSpacePath?: string | null;
+	switchingSpacePath?: string | null;
+	onSelectSpace?: (path: string) => Promise<boolean>;
+	onSetSpaceIcon?: (path: string, iconName: string | null) => Promise<void>;
+	onCloseSpace?: (path: string) => Promise<void>;
 }
 
 type SidebarView =
@@ -264,6 +271,11 @@ export const SidebarContent = memo(function SidebarContent({
 	onOpenQuickNote,
 	onCreateFromTemplate,
 	onGitSyncNow,
+	spaces = [],
+	activeSpacePath = null,
+	onSelectSpace,
+	onSetSpaceIcon,
+	onCloseSpace,
 }: SidebarContentProps) {
 	const { t } = useTranslation("shell");
 	// Contexts
@@ -296,8 +308,10 @@ export const SidebarContent = memo(function SidebarContent({
 		setFolioScope,
 		sidebarVisibility,
 		sidebarPinnedStyle,
+		sidebarLayoutStyle,
 		archiveEnabled,
 		settingsSpacePath,
+		openSettings,
 	} = useUILayoutContext();
 	const [renamingPath, setRenamingPath] = useState<string | null>(null);
 	const [pendingNewNotePath, setPendingNewNotePath] = useState<string | null>(null);
@@ -561,11 +575,56 @@ export const SidebarContent = memo(function SidebarContent({
 		);
 	}
 
-	return (
-		<>
-			<div className="sidebarSection sidebarSectionGrow">
-				<div className="sidebarSectionContent">
-					<div className="sidebarTopNavigation">
+	const isGutterMode = sidebarLayoutStyle === "gutter";
+
+	const createRow =
+		sidebarVisibility.newNote || sidebarVisibility.newCanvas ? (
+			<div
+				key="create"
+				className="sidebarCreateRow"
+				data-sidebar-key={sidebarVisibility.newNote ? "newNote" : "newCanvas"}
+			>
+				{sidebarVisibility.newNote ? (
+					<button
+						type="button"
+						className="sidebarQuickActionBtn sidebarNavBtn sidebarNewNoteBtn"
+						data-kind="new-note"
+						aria-label={t("sidebar.newNote")}
+						onClick={onNewNote}
+						title={`${newNoteTitle}${
+							newNoteShortcut ? ` (${formatShortcutForPlatform(newNoteShortcut)})` : ""
+						}`}
+					>
+						<HugeiconsIcon icon={CursorAddSelection02Icon} size="var(--icon-md)" />
+						<span className="sidebarQuickActionLabel">{t("sidebar.newNote")}</span>
+						{newNoteShortcut ? (
+							<span className="sidebarQuickActionShortcut">
+								{formatShortcutForPlatform(newNoteShortcut)}
+							</span>
+						) : null}
+					</button>
+				) : null}
+				{sidebarVisibility.newCanvas ? (
+					<button
+						type="button"
+						className="sidebarNewCanvasIconBtn"
+						aria-label={t("sidebar.newCanvas")}
+						title={t("sidebar.newCanvas")}
+						onClick={onNewCanvas}
+					>
+						<HugeiconsIcon icon={CanvasIcon} size="var(--icon-md)" aria-hidden="true" />
+					</button>
+				) : null}
+			</div>
+		) : null;
+
+	const filePaneContent = (
+		<div className="sidebarSection sidebarSectionGrow">
+			<div className="sidebarSectionContent">
+				<div className="sidebarTopNavigation">
+					{isGutterMode ? (
+						createRow
+					) : (
 						<OrderedSidebarItems order={sidebarOrder}>
 							{aiEnabled && sidebarVisibility.agent ? (
 								<SidebarActionButton
@@ -577,45 +636,7 @@ export const SidebarContent = memo(function SidebarContent({
 									onClick={onOpenAgent}
 								/>
 							) : null}
-							{sidebarVisibility.newNote || sidebarVisibility.newCanvas ? (
-								<div
-									key="create"
-									className="sidebarCreateRow"
-									data-sidebar-key={sidebarVisibility.newNote ? "newNote" : "newCanvas"}
-								>
-									{sidebarVisibility.newNote ? (
-										<button
-											type="button"
-											className="sidebarQuickActionBtn sidebarNavBtn sidebarNewNoteBtn"
-											data-kind="new-note"
-											aria-label={t("sidebar.newNote")}
-											onClick={onNewNote}
-											title={`${newNoteTitle}${
-												newNoteShortcut ? ` (${formatShortcutForPlatform(newNoteShortcut)})` : ""
-											}`}
-										>
-											<HugeiconsIcon icon={CursorAddSelection02Icon} size="var(--icon-md)" />
-											<span className="sidebarQuickActionLabel">{t("sidebar.newNote")}</span>
-											{newNoteShortcut ? (
-												<span className="sidebarQuickActionShortcut">
-													{formatShortcutForPlatform(newNoteShortcut)}
-												</span>
-											) : null}
-										</button>
-									) : null}
-									{sidebarVisibility.newCanvas ? (
-										<button
-											type="button"
-											className="sidebarNewCanvasIconBtn"
-											aria-label={t("sidebar.newCanvas")}
-											title={t("sidebar.newCanvas")}
-											onClick={onNewCanvas}
-										>
-											<HugeiconsIcon icon={CanvasIcon} size="var(--icon-md)" aria-hidden="true" />
-										</button>
-									) : null}
-								</div>
-							) : null}
+							{createRow}
 							{sidebarVisibility.inbox ? (
 								<SidebarActionButton
 									key="inbox"
@@ -809,6 +830,7 @@ export const SidebarContent = memo(function SidebarContent({
 								</div>
 							) : null}
 						</OrderedSidebarItems>
+					)}
 						<div className="sidebarViewTabs" role="tablist" aria-label={sidebarViewTabsLabel}>
 							<button
 								type="button"
@@ -1109,6 +1131,47 @@ export const SidebarContent = memo(function SidebarContent({
 					</div>
 				</div>
 			</div>
-		</>
 	);
+
+	if (isGutterMode) {
+		return (
+			<div className="sidebarBodyGutterMode">
+				<SidebarGutter
+					sidebarOrder={sidebarOrder}
+					sidebarVisibility={sidebarVisibility}
+					aiEnabled={aiEnabled}
+					activeTopSection={activeTopSection}
+					onOpenAgent={onOpenAgent}
+					onOpenInbox={onOpenInbox}
+					onOpenArchive={onOpenArchive}
+					onOpenAllDocs={handleOpenAllNotes}
+					onOpenDatabases={() => {
+						cancelDatabasesHoverPrefetch();
+						onOpenDatabases();
+					}}
+					onOpenTasks={onOpenTasks}
+					onOpenConnections={onOpenConnections}
+					onOpenCalendar={onOpenCalendar}
+					onOpenSearch={onOpenSearch}
+					onOpenQuickNote={onOpenQuickNote}
+					onCreateFromTemplate={onCreateFromTemplate}
+					onGitSyncNow={onGitSyncNow}
+					onOpenPeriodNotes={() => onOpenPeriodNote("day")}
+					periodNotesEnabled={periodNotesEnabled}
+					archiveEnabled={archiveEnabled}
+					settingsSpacePath={settingsSpacePath}
+					spacePath={spacePath}
+					spaces={spaces}
+					activeSpacePath={activeSpacePath}
+					onSelectSpace={onSelectSpace}
+					onSetSpaceIcon={onSetSpaceIcon}
+					onCloseSpace={onCloseSpace}
+					openSettings={openSettings}
+				/>
+				<div className="sidebarFilePane">{filePaneContent}</div>
+			</div>
+		);
+	}
+
+	return filePaneContent;
 });

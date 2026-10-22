@@ -41,6 +41,7 @@ import { GLYPH_DEFAULT_DARK_THEME_ID, GLYPH_DEFAULT_LIGHT_THEME_ID } from "./uiT
 
 export {
 	DEFAULT_QUICK_NOTES_FOLDER,
+	DEFAULT_SIDEBAR_LAYOUT_STYLE,
 	DEFAULT_SIDEBAR_PINNED_STYLE,
 	DEFAULT_UI_CORNER_RADIUS_STYLE,
 	DEFAULT_UI_TRANSLUCENT_APP,
@@ -56,6 +57,7 @@ export {
 	isEditorWidthMode,
 	isFileTreeSortMode,
 	isFocusMode,
+	isSidebarLayoutStyle,
 	isSidebarPinnedStyle,
 	isUiCornerRadiusStyle,
 } from "./settings/definitions";
@@ -70,6 +72,7 @@ export type {
 	RecentFile,
 	ReleaseChannel,
 	SettingsUpdatedPayload,
+	SidebarLayoutStyle,
 	SidebarOrder,
 	SidebarPinnedStyle,
 	SidebarVisibility,
@@ -463,6 +466,7 @@ export async function loadSettings(scope?: SettingsScope): Promise<AppSettings> 
 	const sidebarVisibility = DURABLE_SETTINGS.sidebarVisibility.load(entries);
 	const sidebarOrder = DURABLE_SETTINGS.sidebarOrder.load(entries);
 	const sidebarPinnedStyle = DURABLE_SETTINGS.sidebarPinnedStyle.load(entries);
+	const sidebarLayoutStyle = DURABLE_SETTINGS.sidebarLayoutStyle.load(entries);
 	const showFileTreeFolderCounts = DURABLE_SETTINGS.showFileTreeFolderCounts.load(entries);
 	const fileTreeSortMode = DURABLE_SETTINGS.fileTreeSortMode.load(entries);
 	const folioMode = DURABLE_SETTINGS.folioMode.load(entries);
@@ -624,6 +628,7 @@ export async function loadSettings(scope?: SettingsScope): Promise<AppSettings> 
 			sidebarVisibility,
 			sidebarOrder,
 			sidebarPinnedStyle,
+			sidebarLayoutStyle,
 			showFileTreeFolderCounts,
 			fileTreeSortMode,
 			sidebarFolderTabs,

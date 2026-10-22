@@ -42,6 +42,12 @@ export function isSidebarPinnedStyle(value: unknown): value is SidebarPinnedStyl
 	return value === "classic" || value === "projects";
 }
 
+export type SidebarLayoutStyle = "gutter" | "stacked";
+export const DEFAULT_SIDEBAR_LAYOUT_STYLE: SidebarLayoutStyle = "gutter";
+export function isSidebarLayoutStyle(value: unknown): value is SidebarLayoutStyle {
+	return value === "gutter" || value === "stacked";
+}
+
 const SIDEBAR_VISIBILITY_KEYS = [
 	"agent",
 	"newNote",
@@ -241,6 +247,7 @@ export interface AppSettings {
 		sidebarVisibility: SidebarVisibility;
 		sidebarOrder: SidebarOrder;
 		sidebarPinnedStyle: SidebarPinnedStyle;
+		sidebarLayoutStyle: SidebarLayoutStyle;
 	};
 	dailyNotes: {
 		folder: string | null;

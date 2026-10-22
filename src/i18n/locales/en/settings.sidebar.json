@@ -54,5 +54,11 @@
 	"pinnedStyleLabel": "Pinned Organization",
 	"pinnedStyleHelp": "Classic displays notes in a dedicated tab. Projects anchors pinned folders with recent file previews at the top of the tree.",
 	"pinnedStyleClassic": "Classic (Note Cards Tab)",
-	"pinnedStyleProjects": "Projects (Antigravity Folders)"
+	"pinnedStyleProjects": "Projects (Antigravity Folders)",
+	"layoutStyleTitle": "Sidebar Layout",
+	"layoutStyleDescription": "Choose between a minimalist vertical activity gutter (IDE style) or traditional stacked navigation rows.",
+	"layoutStyleLabel": "Layout Style",
+	"layoutStyleHelp": "Activity Gutter places navigation icons in a slim rail on the left, keeping New Note atop the file tree.",
+	"layoutStyleGutter": "Activity Gutter (Minimalist IDE)",
+	"layoutStyleStacked": "Stacked Navigation (Classic)"
 }

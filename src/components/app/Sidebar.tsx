@@ -38,7 +38,7 @@ export const Sidebar = memo(function Sidebar({
 	onGoForward,
 	...contentProps
 }: SidebarProps) {
-	const { sidebarWidth, settingsMode, openSettings } = useUILayoutContext();
+	const { sidebarWidth, settingsMode, openSettings, sidebarLayoutStyle } = useUILayoutContext();
 	const { t } = useTranslation("shell");
 	const shouldReduceMotion = useReducedMotion();
 	const sidebarState = sidebarCollapsed ? "collapsed" : "expanded";
@@ -87,22 +87,33 @@ export const Sidebar = memo(function Sidebar({
 								onGoBack={onGoBack}
 								onGoForward={onGoForward}
 							/>
-							<SidebarContent key={activeSpacePath ?? "no-space"} {...contentProps} />
-							<div className="sidebarFooter">
-								<button
-									type="button"
-									className="sidebarFooterBtn sidebarSettingsBtn"
-									onClick={() => openSettings()}
-									aria-label={t("sidebar.settings", { defaultValue: "Settings" })}
-									title={`${t("sidebar.settings", { defaultValue: "Settings" })} (⌘,)`}
-								>
-									<Settings size={16} />
-									<span className="sidebarFooterLabel">
-										{t("sidebar.settings", { defaultValue: "Settings" })}
-									</span>
-								</button>
-								<div className="sidebarBottomLayer">{spaceSwitcher}</div>
-							</div>
+							<SidebarContent
+								key={activeSpacePath ?? "no-space"}
+								spaces={spaces}
+								activeSpacePath={activeSpacePath}
+								switchingSpacePath={switchingSpacePath}
+								onSelectSpace={onSelectSpace}
+								onSetSpaceIcon={onSetSpaceIcon}
+								onCloseSpace={onCloseSpace}
+								{...contentProps}
+							/>
+							{sidebarLayoutStyle !== "gutter" ? (
+								<div className="sidebarFooter">
+									<button
+										type="button"
+										className="sidebarFooterBtn sidebarSettingsBtn"
+										onClick={() => openSettings()}
+										aria-label={t("sidebar.settings", { defaultValue: "Settings" })}
+										title={`${t("sidebar.settings", { defaultValue: "Settings" })} (⌘,)`}
+									>
+										<Settings size={16} />
+										<span className="sidebarFooterLabel">
+											{t("sidebar.settings", { defaultValue: "Settings" })}
+										</span>
+									</button>
+									<div className="sidebarBottomLayer">{spaceSwitcher}</div>
+								</div>
+							) : null}
 						</>
 					)}
 				</div>

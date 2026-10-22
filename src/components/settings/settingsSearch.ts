@@ -41,6 +41,7 @@ const SETTINGS_SEARCH_DEFS: readonly SettingsSearchDef[] = [
 	{ id: "appearance-custom-themes", tab: "appearance" },
 	{ id: "appearance-zoom-level", tab: "appearance" },
 	{ id: "sidebar-layout", tab: "sidebar" },
+	{ id: "sidebar-layout-style", tab: "sidebar" },
 	{ id: "sidebar-pinned-style", tab: "sidebar" },
 	{ id: "typography-interface-font", tab: "typography" },
 	{ id: "typography-monospace-font", tab: "typography" },
