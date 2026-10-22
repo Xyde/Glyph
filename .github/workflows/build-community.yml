@@ -36,7 +36,7 @@ jobs:
 
       - name: Build macOS Application
         run: |
-          vp run tauri build --config '{"bundle": {"createUpdaterArtifacts": false}}'
+          vp run tauri build --config '{"bundle": {"createUpdaterArtifacts": false, "targets": ["app"]}}'
 
       - name: Archive Application Bundle
         run: |
