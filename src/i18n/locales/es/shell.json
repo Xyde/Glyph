@@ -235,6 +235,7 @@
 		"collections": "Colecciones"
 	},
 	"ai": {
+		"closeContextSearch": "Cerrar búsqueda de contexto",
 		"toolFailed": "Falló {{tool}}",
 		"activeFile": "Archivo activo",
 		"addToContext": "Añadir {{name}} al contexto",

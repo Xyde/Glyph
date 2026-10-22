@@ -281,6 +281,7 @@
 		"switchSaveFailed": "Nie udało się zapisać bieżącej przestrzeni. Spróbuj ponownie."
 	},
 	"ai": {
+		"closeContextSearch": "Zamknij wyszukiwanie kontekstu",
 		"toolFailed": "Narzędzie {{tool}} nie powiodło się",
 		"activeFile": "Aktywny plik",
 		"addToContext": "Dodaj {{name}} do kontekstu",

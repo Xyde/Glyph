@@ -58,6 +58,7 @@ export function AIPanel(props: AIPanelProps) {
 	const [input, setInput] = useState("");
 	const [addPanelOpen, setAddPanelOpen] = useState(false);
 	const [addPanelQuery, setAddPanelQuery] = useState("");
+	const [dismissedTriggerStart, setDismissedTriggerStart] = useState<number | null>(null);
 	const [historyExpanded, setHistoryExpanded] = useState(false);
 	const [showScrollFab, setShowScrollFab] = useState(false);
 	const [selectionContext, setSelectionContext] = useState<AiSelectionContext | null>(null);
@@ -75,7 +76,19 @@ export function AIPanel(props: AIPanelProps) {
 	const restored = useRestoredAiChat(shouldRestore ? session.jobId : null);
 	const profiles = useAiProfiles();
 	const trigger = parseAddTrigger(input);
-	const showAddPanel = addPanelOpen || Boolean(trigger);
+	const hasTrigger = Boolean(trigger);
+	const [prevHadTrigger, setPrevHadTrigger] = useState(false);
+	if (!hasTrigger && prevHadTrigger) {
+		setPrevHadTrigger(false);
+		if (dismissedTriggerStart !== null) {
+			setDismissedTriggerStart(null);
+		}
+	} else if (hasTrigger && !prevHadTrigger) {
+		setPrevHadTrigger(true);
+	}
+
+	const isTriggerActive = Boolean(trigger && trigger.start !== dismissedTriggerStart);
+	const showAddPanel = addPanelOpen || isTriggerActive;
 	const panelQuery = addPanelOpen ? addPanelQuery : (trigger?.query ?? "");
 	const context = useAiContext(panelQuery);
 	const actions = useAiActions(chat);
@@ -121,6 +134,7 @@ export function AIPanel(props: AIPanelProps) {
 					prev.includes(marker) ? prev : `${prev}${prev && !/\s$/.test(prev) ? " " : ""}${marker} `,
 				);
 			}
+			setDismissedTriggerStart(null);
 			setAddPanelOpen(false);
 			setAddPanelQuery("");
 			window.requestAnimationFrame(() => composerInputRef.current?.focus());
@@ -253,11 +267,26 @@ export function AIPanel(props: AIPanelProps) {
 					prev.includes(marker) ? prev : `${prev}${prev && !/\s$/.test(prev) ? " " : ""}${marker} `,
 				);
 			}
+			setDismissedTriggerStart(null);
 			setAddPanelOpen(false);
 			setAddPanelQuery("");
 		},
 		[context.addContext, trigger],
 	);
+
+	const handleCloseAddPanel = useCallback(() => {
+		setAddPanelOpen(false);
+		setAddPanelQuery("");
+		if (trigger) {
+			setDismissedTriggerStart(trigger.start);
+		}
+		setInput((prev) => (prev.trim() === "@" ? "" : prev));
+	}, [trigger]);
+
+	const handleOpenAddPanel = useCallback(() => {
+		setDismissedTriggerStart(null);
+		setAddPanelOpen(true);
+	}, []);
 
 	const handleRemoveContext = useCallback(
 		(kind: "folder" | "file", path: string) => {
@@ -564,6 +593,8 @@ export function AIPanel(props: AIPanelProps) {
 					addPanelOpen={addPanelOpen}
 					setAddPanelOpen={setAddPanelOpen}
 					setAddPanelQuery={setAddPanelQuery}
+					onCloseAddPanel={handleCloseAddPanel}
+					onOpenAddPanel={handleOpenAddPanel}
 					onAddContext={handleAddContext}
 					onRemoveContext={handleRemoveContext}
 				/>

@@ -234,6 +234,7 @@
 		"collections": "컬렉션"
 	},
 	"ai": {
+		"closeContextSearch": "컨텍스트 검색 닫기",
 		"toolFailed": "{{tool}} 실패",
 		"activeFile": "활성 파일",
 		"addToContext": "{{name}}을(를) 컨텍스트에 추가",

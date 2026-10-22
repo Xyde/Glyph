@@ -234,6 +234,7 @@
 		"collections": "コレクション"
 	},
 	"ai": {
+		"closeContextSearch": "コンテキスト検索を閉じる",
 		"toolFailed": "{{tool}} に失敗しました",
 		"activeFile": "アクティブなファイル",
 		"addToContext": "{{name}} をコンテキストに追加",

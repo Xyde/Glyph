@@ -60,6 +60,8 @@ interface AIComposerProps {
 	addPanelOpen: boolean;
 	setAddPanelOpen: (open: boolean) => void;
 	setAddPanelQuery: (query: string) => void;
+	onCloseAddPanel: () => void;
+	onOpenAddPanel: () => void;
 	onAddContext: (kind: "folder" | "file", path: string) => void;
 	onRemoveContext: (kind: "folder" | "file", path: string) => void;
 }
@@ -243,6 +245,8 @@ export function AIComposer({
 	addPanelOpen,
 	setAddPanelOpen,
 	setAddPanelQuery,
+	onCloseAddPanel,
+	onOpenAddPanel,
 	onAddContext,
 	onRemoveContext,
 }: AIComposerProps) {
@@ -268,6 +272,15 @@ export function AIComposer({
 
 	const handleInsertMentionTrigger = useCallback(() => {
 		if (isAwaitingResponse) return;
+		if (showAddPanel) {
+			onCloseAddPanel();
+			setInput((prev) => {
+				if (prev.trim() === "@") return "";
+				return prev.replace(/\s?@$/, "");
+			});
+			return;
+		}
+		onOpenAddPanel();
 		setInput((prev) => {
 			const trimmedEnd = prev.replace(/\s+$/, "");
 			if (!trimmedEnd) return "@";
@@ -276,7 +289,15 @@ export function AIComposer({
 		});
 		scheduleComposerInputResize();
 		window.requestAnimationFrame(() => composerInputRef.current?.focus());
-	}, [isAwaitingResponse, setInput, scheduleComposerInputResize, composerInputRef]);
+	}, [
+		composerInputRef,
+		isAwaitingResponse,
+		onCloseAddPanel,
+		onOpenAddPanel,
+		scheduleComposerInputResize,
+		setInput,
+		showAddPanel,
+	]);
 
 	const suggestedFilePath = activeFilePath ? normalizeRelPath(activeFilePath) : "";
 	const showActiveFileSuggestion =
@@ -422,6 +443,12 @@ export function AIComposer({
 
 	const handleKeyDown = useCallback(
 		(event: ReactKeyboardEvent<HTMLDivElement>) => {
+			if (event.key === "Escape" && showAddPanel) {
+				event.preventDefault();
+				event.stopPropagation();
+				onCloseAddPanel();
+				return;
+			}
 			const selectsCanvasCommand =
 				event.key === "Tab" ||
 				(event.key === "Enter" &&
@@ -440,7 +467,7 @@ export function AIComposer({
 				onSend();
 			}
 		},
-		[canSend, onSend, selectCanvasCommand, showCanvasCommand],
+		[canSend, onCloseAddPanel, onSend, selectCanvasCommand, showAddPanel, showCanvasCommand],
 	);
 
 	return (
@@ -469,7 +496,7 @@ export function AIComposer({
 			{showAddPanel ? (
 				<div className="aiAddPanel">
 					<input
-						type="search"
+						type="text"
 						className="aiAddPanelInput"
 						placeholder="Search files & folders…"
 						value={panelQuery}
@@ -477,6 +504,15 @@ export function AIComposer({
 							if (!addPanelOpen) setAddPanelOpen(true);
 							setAddPanelQuery(e.target.value);
 						}}
+						onKeyDown={(e) => {
+							if (e.key === "Escape") {
+								e.preventDefault();
+								e.stopPropagation();
+								onCloseAddPanel();
+								composerInputRef.current?.focus();
+							}
+						}}
+						autoFocus
 					/>
 					{context.folderIndexError ? (
 						<div className="aiPanelError">{context.folderIndexError}</div>
@@ -499,7 +535,14 @@ export function AIComposer({
 							</div>
 						)}
 					</div>
-					<button type="button" className="aiAddPanelClose" onClick={() => setAddPanelOpen(false)}>
+					<button
+						type="button"
+						className="aiAddPanelClose"
+						aria-label={t("ai.closeContextSearch")}
+						title={t("ai.closeContextSearch")}
+						onMouseDown={(event) => event.preventDefault()}
+						onClick={onCloseAddPanel}
+					>
 						<X size="var(--icon-xs)" />
 					</button>
 				</div>
