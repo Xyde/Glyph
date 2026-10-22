@@ -253,3 +253,146 @@ button.sidebarNewCanvasIconBtn:active {
 	letter-spacing: 0.02em;
 	white-space: nowrap;
 }
+
+/* Pinned Projects Section (Antigravity Style) */
+.sidebarPinnedProjectsSection {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	padding: 6px 8px 10px;
+	border-bottom: 1px solid var(--border-subtle);
+	margin-bottom: 6px;
+}
+
+.sidebarPinnedProjectsHeader {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 2px 6px 4px;
+	font-size: 11px;
+	font-weight: var(--font-semibold);
+	letter-spacing: 0.05em;
+	color: var(--text-tertiary);
+	text-transform: uppercase;
+}
+
+.sidebarPinnedProjectsPinIcon {
+	opacity: 0.7;
+}
+
+.sidebarPinnedProjectsList {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.sidebarPinnedProject {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	border-radius: var(--radius-6);
+	transition: background var(--transition-fast);
+}
+
+.sidebarPinnedProjectHeader {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 5px 8px;
+	border-radius: var(--radius-6);
+	font-size: var(--text-sm);
+	font-weight: var(--font-medium);
+	color: var(--text-primary);
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	text-align: left;
+	width: 100%;
+}
+
+.sidebarPinnedProject[data-active="true"] .sidebarPinnedProjectHeader {
+	background: var(--bg-hover);
+	color: var(--interactive-accent);
+}
+
+.sidebarPinnedProjectHeader:hover {
+	background: var(--bg-hover);
+}
+
+.sidebarPinnedProjectIcon {
+	flex-shrink: 0;
+	color: var(--text-secondary);
+}
+
+.sidebarPinnedProjectName {
+	flex: 1 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.sidebarPinnedProjectAction {
+	opacity: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2px;
+	background: none;
+	border: none;
+	border-radius: var(--radius-4);
+	color: var(--text-tertiary);
+	cursor: pointer;
+	transition: opacity var(--transition-fast), background var(--transition-fast);
+}
+
+.sidebarPinnedProjectHeader:hover .sidebarPinnedProjectAction {
+	opacity: 0.8;
+}
+
+.sidebarPinnedProjectAction:hover {
+	opacity: 1;
+	background: var(--bg-secondary);
+	color: var(--text-primary);
+}
+
+.sidebarPinnedProjectNote {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-left: 20px;
+	padding: 3px 8px;
+	border-radius: var(--radius-6);
+	font-size: 12px;
+	color: var(--text-secondary);
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	text-align: left;
+	transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.sidebarPinnedProjectNote:hover {
+	background: var(--bg-hover);
+	color: var(--text-primary);
+}
+
+.sidebarPinnedProjectNoteIcon {
+	flex-shrink: 0;
+	opacity: 0.6;
+}
+
+.sidebarPinnedProjectNoteTitle {
+	flex: 1 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.sidebarPinnedProjectNoteAge {
+	flex-shrink: 0;
+	font-size: 11px;
+	color: var(--text-tertiary);
+	margin-left: auto;
+}

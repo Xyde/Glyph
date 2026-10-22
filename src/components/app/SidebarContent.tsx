@@ -65,6 +65,7 @@ import { basename } from "../../utils/path";
 import { TagsPane } from "../TagsPane";
 import { AppearanceIcon } from "../AppearanceIcon";
 import { FileTreePane } from "../filetree";
+import { PinnedProjectsSection } from "./PinnedProjectsSection";
 import { PinnedFilesPane, RecentFilesPane } from "./RecentFilesPane";
 
 export interface SidebarContentProps {
@@ -294,6 +295,7 @@ export const SidebarContent = memo(function SidebarContent({
 		sidebarOrder,
 		setFolioScope,
 		sidebarVisibility,
+		sidebarPinnedStyle,
 		archiveEnabled,
 		settingsSpacePath,
 	} = useUILayoutContext();
@@ -453,6 +455,10 @@ export const SidebarContent = memo(function SidebarContent({
 	);
 	const handleSidebarViewChange = useCallback(
 		(view: "files" | "pinned" | "recents" | "tags") => {
+			if (sidebarPinnedStyle === "projects" && folioMode && view === "pinned") {
+				setFolioScope({ kind: "pinned" });
+				return;
+			}
 			if (
 				folioMode &&
 				activeSidebarView.kind !== view &&
@@ -472,7 +478,15 @@ export const SidebarContent = memo(function SidebarContent({
 				void ensureTagsFresh();
 			}
 		},
-		[activeSidebarView.kind, ensureTagsFresh, folioMode, handleSelectFolioFolder, onSelectDir],
+		[
+			activeSidebarView.kind,
+			ensureTagsFresh,
+			folioMode,
+			handleSelectFolioFolder,
+			onSelectDir,
+			setFolioScope,
+			sidebarPinnedStyle,
+		],
 	);
 	const handleSelectSidebarFolder = useCallback(
 		(folderPath: string) => {
@@ -864,44 +878,51 @@ export const SidebarContent = memo(function SidebarContent({
 								/>
 								<span className="sidebarViewTabLabel">{t("sidebar.recents")}</span>
 							</button>
-							{sidebarFolderTabs.map((folderPath, index) => {
-								const appearance = itemAppearance[folderPath];
-								return (
-									<button
-										key={folderPath}
-										type="button"
-										className="sidebarViewTab"
-										id={`sidebar-folder-tab-${index + 1}`}
-										role="tab"
-										aria-label={t("sidebar.openFolderTab", {
-											folder: folderPath,
-										})}
-										aria-selected={
-											activeSidebarView.kind === "folder" && activeSidebarView.path === folderPath
-										}
-										aria-controls="sidebar-files-panel"
-										title={folderPath}
-										onClick={() => handleSelectSidebarFolder(folderPath)}
-										onContextMenu={(event) => handleFolderTabContextMenu(event, folderPath)}
-									>
-										{appearance?.icon ? (
-											<AppearanceIcon
-												iconName={appearance.icon}
-												size="var(--icon-md)"
-												className="sidebarViewTabIcon sidebarViewTabIconFilled"
-											/>
-										) : (
-											<HugeiconsIcon
-												icon={Folder01Icon}
-												size="var(--icon-md)"
-												className="sidebarViewTabIcon sidebarViewTabIconFilled"
-												aria-hidden="true"
-											/>
-										)}
-										<span className="sidebarViewTabLabel">{basename(folderPath)}</span>
-									</button>
-								);
-							})}
+							{sidebarPinnedStyle === "classic"
+								? sidebarFolderTabs.map((folderPath, index) => {
+										const appearance = itemAppearance[folderPath];
+										return (
+											<button
+												key={folderPath}
+												type="button"
+												className="sidebarViewTab"
+												id={`sidebar-folder-tab-${index + 1}`}
+												role="tab"
+												aria-label={t("sidebar.openFolderTab", {
+													folder: folderPath,
+												})}
+												aria-selected={
+													activeSidebarView.kind === "folder" &&
+													activeSidebarView.path === folderPath
+												}
+												aria-controls="sidebar-files-panel"
+												title={folderPath}
+												onClick={() => handleSelectSidebarFolder(folderPath)}
+												onContextMenu={(event) =>
+													handleFolderTabContextMenu(event, folderPath)
+												}
+											>
+												{appearance?.icon ? (
+													<AppearanceIcon
+														iconName={appearance.icon}
+														size="var(--icon-md)"
+														className="sidebarViewTabIcon sidebarViewTabIconFilled"
+													/>
+												) : (
+													<HugeiconsIcon
+														icon={Folder01Icon}
+														size="var(--icon-md)"
+														className="sidebarViewTabIcon sidebarViewTabIconFilled"
+														aria-hidden="true"
+													/>
+												)}
+												<span className="sidebarViewTabLabel">
+													{basename(folderPath)}
+												</span>
+											</button>
+										);
+									})
+								: null}
 						</div>
 					</div>
 					<div className="sidebarViewContent">
@@ -978,6 +999,17 @@ export const SidebarContent = memo(function SidebarContent({
 										</button>
 									</div>
 								</div>
+								{sidebarPinnedStyle === "projects" &&
+								activeSidebarView.kind === "files" ? (
+									<PinnedProjectsSection
+										folders={sidebarFolderTabs}
+										activeDirPath={activeDirPath}
+										onSelectFolder={folioMode ? handleSelectFolioFolder : onSelectDir}
+										onOpenFile={onOpenFile}
+										onRemoveFolder={handleToggleSidebarFolderTab}
+										itemAppearance={itemAppearance}
+									/>
+								) : null}
 								<FileTreePane
 									key={
 										activeSidebarView.kind === "folder"

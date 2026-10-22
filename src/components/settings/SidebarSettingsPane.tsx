@@ -2,20 +2,25 @@ import { useQuery } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { extractErrorMessage } from "../../lib/errorUtils";
-import { loadSettings } from "../../lib/settings";
-import { DURABLE_SETTINGS, writeSidebarLayout } from "../../lib/settings/definitions";
 import {
 	DEFAULT_SIDEBAR_ORDER,
+	DEFAULT_SIDEBAR_PINNED_STYLE,
 	DEFAULT_SIDEBAR_VISIBILITY,
+	DURABLE_SETTINGS,
+	isSidebarPinnedStyle,
+	loadSettings,
 	type SidebarOrder,
+	type SidebarPinnedStyle,
 	type SidebarVisibility,
 	type SidebarVisibilityKey,
-} from "../../lib/settings/model";
+	writeSidebarLayout,
+} from "../../lib/settings";
 import { useTauriEvent } from "../../lib/tauriEvents";
 import { RefreshCw } from "../Icons";
 import { Button } from "../ui/shadcn/button";
 import { SidebarItems } from "./SidebarItems";
-import { SettingsSection } from "./SettingsScaffold";
+import { SettingsRow, SettingsSection } from "./SettingsScaffold";
+import { SettingsSelect } from "./SettingsSelect";
 import { useSettingsValue } from "./useSettingsValue";
 
 export function SidebarSettingsPane() {
@@ -37,6 +42,7 @@ export function SidebarSettingsPane() {
 			key={settingsQuery.dataUpdatedAt}
 			initialVisibility={settingsQuery.data.ui.sidebarVisibility}
 			initialOrder={settingsQuery.data.ui.sidebarOrder}
+			initialPinnedStyle={settingsQuery.data.ui.sidebarPinnedStyle}
 		/>
 	);
 }
@@ -44,9 +50,11 @@ export function SidebarSettingsPane() {
 function SidebarSettingsContent({
 	initialVisibility,
 	initialOrder,
+	initialPinnedStyle = DEFAULT_SIDEBAR_PINNED_STYLE,
 }: {
 	initialVisibility: SidebarVisibility;
 	initialOrder: SidebarOrder;
+	initialPinnedStyle?: SidebarPinnedStyle;
 }) {
 	const { t } = useTranslation("settings.sidebar");
 	const [error, setError] = useState("");
@@ -57,10 +65,16 @@ function SidebarSettingsContent({
 		setError,
 	);
 	const order = useSettingsValue(initialOrder, DURABLE_SETTINGS.sidebarOrder.write, setError);
+	const pinnedStyle = useSettingsValue(
+		initialPinnedStyle,
+		DURABLE_SETTINGS.sidebarPinnedStyle.write,
+		setError,
+	);
 
 	useTauriEvent("settings:updated", (payload) => {
 		if (payload.ui?.sidebarVisibility) visibility.setValue(payload.ui.sidebarVisibility);
 		if (payload.ui?.sidebarOrder) order.setValue(payload.ui.sidebarOrder);
+		if (payload.ui?.sidebarPinnedStyle) pinnedStyle.setValue(payload.ui.sidebarPinnedStyle);
 	});
 
 	const onVisibilityChange = useCallback(
@@ -121,6 +135,31 @@ function SidebarSettingsContent({
 						onReorder={order.onChange}
 						onVisibilityChange={onVisibilityChange}
 					/>
+				</SettingsSection>
+				<SettingsSection
+					title={t("pinnedStyleTitle")}
+					description={t("pinnedStyleDescription")}
+				>
+					<SettingsRow
+						label={t("pinnedStyleLabel")}
+						description={t("pinnedStyleHelp")}
+						htmlFor="settings-pinned-style-select"
+					>
+						<SettingsSelect
+							id="settings-pinned-style-select"
+							value={pinnedStyle.value}
+							disabled={disabled}
+							onChange={(event) => {
+								const next = event.target.value;
+								if (isSidebarPinnedStyle(next)) {
+									pinnedStyle.onChange(next);
+								}
+							}}
+						>
+							<option value="classic">{t("pinnedStyleClassic")}</option>
+							<option value="projects">{t("pinnedStyleProjects")}</option>
+						</SettingsSelect>
+					</SettingsRow>
 				</SettingsSection>
 			</div>
 		</div>

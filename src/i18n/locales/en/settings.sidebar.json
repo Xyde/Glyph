@@ -48,5 +48,11 @@
 		"archive": {
 			"label": "Archive"
 		}
-	}
+	},
+	"pinnedStyleTitle": "Pinned Items Style",
+	"pinnedStyleDescription": "Choose how pinned items are organized and displayed in the sidebar.",
+	"pinnedStyleLabel": "Pinned Organization",
+	"pinnedStyleHelp": "Classic displays notes in a dedicated tab. Projects anchors pinned folders with recent file previews at the top of the tree.",
+	"pinnedStyleClassic": "Classic (Note Cards Tab)",
+	"pinnedStyleProjects": "Projects (Antigravity Folders)"
 }

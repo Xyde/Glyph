@@ -28,7 +28,14 @@ import {
 	periodNoteTemplatesFromSettings,
 	periodNotesEnabledFromSettings,
 } from "../lib/periodNotes";
-import { type AiAssistantMode, loadSettings, reloadFromDisk } from "../lib/settings";
+import {
+	type AiAssistantMode,
+	DEFAULT_SIDEBAR_PINNED_STYLE,
+	isSidebarPinnedStyle,
+	loadSettings,
+	reloadFromDisk,
+	type SidebarPinnedStyle,
+} from "../lib/settings";
 import {
 	DEFAULT_FOLIO_NOTES_WIDTH,
 	DEFAULT_FILE_TREE_SORT_MODE,
@@ -77,6 +84,7 @@ interface UILayoutContextValue {
 	setShowToc: (show: boolean) => void;
 	zenMode: boolean;
 	folioMode: boolean;
+	sidebarPinnedStyle: SidebarPinnedStyle;
 	setFolioMode: (enabled: boolean) => void;
 	folioScope: FolioScope;
 	setFolioScope: (scope: FolioScope) => void;
@@ -122,6 +130,7 @@ type UIState = {
 	showToc: boolean;
 	zenMode: boolean;
 	folioMode: boolean;
+	sidebarPinnedStyle: SidebarPinnedStyle;
 	folioScope: FolioScope;
 	folioSortMode: FileTreeSortMode;
 	folioNotesWidth: number;
@@ -165,6 +174,7 @@ type UIAction =
 	| { type: "setDateDisplayFormat"; value: DateDisplayFormat }
 	| { type: "setSidebarVisibility"; value: SidebarVisibility }
 	| { type: "setSidebarOrder"; value: SidebarOrder }
+	| { type: "setSidebarPinnedStyle"; value: SidebarPinnedStyle }
 	| { type: "openSettings"; tab?: SettingsTab }
 	| { type: "closeSettings" }
 	| { type: "setSettingsTab"; value: SettingsTab }
@@ -182,6 +192,7 @@ type UIAction =
 			periodNotesEnabled: PeriodNotesEnabled;
 			sidebarVisibility: SidebarVisibility;
 			sidebarOrder: SidebarOrder;
+			sidebarPinnedStyle: SidebarPinnedStyle;
 			showToc: boolean;
 			zenMode: boolean;
 			folioMode: boolean;
@@ -214,6 +225,7 @@ const initialUIState: UIState = {
 	periodNotesEnabled: DEFAULT_PERIOD_NOTES_ENABLED,
 	sidebarVisibility: DEFAULT_SIDEBAR_VISIBILITY,
 	sidebarOrder: DEFAULT_SIDEBAR_ORDER,
+	sidebarPinnedStyle: DEFAULT_SIDEBAR_PINNED_STYLE,
 	settingsSpacePath: null,
 	showToc: true,
 	zenMode: false,
@@ -306,6 +318,8 @@ function uiReducer(state: UIState, action: UIAction): UIState {
 			return { ...state, sidebarVisibility: action.value };
 		case "setSidebarOrder":
 			return { ...state, sidebarOrder: action.value };
+		case "setSidebarPinnedStyle":
+			return { ...state, sidebarPinnedStyle: action.value };
 		case "openSettings":
 			return {
 				...state,
@@ -354,6 +368,7 @@ function uiReducer(state: UIState, action: UIAction): UIState {
 				periodNotesEnabled: action.periodNotesEnabled,
 				sidebarVisibility: action.sidebarVisibility,
 				sidebarOrder: action.sidebarOrder,
+				sidebarPinnedStyle: action.sidebarPinnedStyle,
 				showToc: action.showToc,
 				zenMode: action.zenMode,
 				folioMode: action.folioMode,
@@ -396,6 +411,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
 		periodNotesEnabled,
 		sidebarVisibility,
 		sidebarOrder,
+		sidebarPinnedStyle,
 		settingsSpacePath,
 		showToc,
 		zenMode,
@@ -438,6 +454,12 @@ export function UIProvider({ children }: { children: ReactNode }) {
 			dispatch({
 				type: "setSidebarOrder",
 				value: nextSidebarOrder,
+			});
+		}
+		if (isSidebarPinnedStyle(payload.ui?.sidebarPinnedStyle)) {
+			dispatch({
+				type: "setSidebarPinnedStyle",
+				value: payload.ui.sidebarPinnedStyle,
 			});
 		}
 		const nextMode = payload.ui?.aiAssistantMode;
@@ -604,6 +626,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
 					periodNotesEnabled: periodNotesEnabledFromSettings(s.dailyNotes),
 					sidebarVisibility: nextSidebarVisibility,
 					sidebarOrder: nextSidebarOrder,
+					sidebarPinnedStyle: s.ui.sidebarPinnedStyle,
 					showToc: s.ui.showToc,
 					zenMode: nextZenMode,
 					folioMode: s.ui.folioMode,
@@ -780,6 +803,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
 			periodNotesEnabled,
 			sidebarVisibility,
 			sidebarOrder,
+			sidebarPinnedStyle,
 			settingsSpacePath,
 			showToc,
 			setShowToc,
@@ -818,6 +842,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
 			periodNotesEnabled,
 			sidebarVisibility,
 			sidebarOrder,
+			sidebarPinnedStyle,
 			settingsSpacePath,
 			showToc,
 			setShowToc,

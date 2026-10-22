@@ -36,6 +36,11 @@ export type EditorWidthMode =
 	| "ratio-2-3"
 	| "ratio-3-4";
 export type FocusMode = "off" | "paragraph" | "sentence";
+export type SidebarPinnedStyle = "classic" | "projects";
+export const DEFAULT_SIDEBAR_PINNED_STYLE: SidebarPinnedStyle = "classic";
+export function isSidebarPinnedStyle(value: unknown): value is SidebarPinnedStyle {
+	return value === "classic" || value === "projects";
+}
 
 const SIDEBAR_VISIBILITY_KEYS = [
 	"agent",
@@ -235,6 +240,7 @@ export interface AppSettings {
 		dateDisplayFormat: DateDisplayFormat;
 		sidebarVisibility: SidebarVisibility;
 		sidebarOrder: SidebarOrder;
+		sidebarPinnedStyle: SidebarPinnedStyle;
 	};
 	dailyNotes: {
 		folder: string | null;

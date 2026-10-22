@@ -24,6 +24,8 @@ function scopeQueryKey(scope: FolioScope): readonly string[] {
 			return ["tag", scope.tag.trim()];
 		case "person":
 			return ["person", scope.handle.trim()];
+		case "pinned":
+			return ["pinned"];
 		default:
 			return ["all"];
 	}
@@ -81,6 +83,14 @@ async function listNotesPage(
 		query: query.trim() || null,
 		pinned_paths: pinnedPaths,
 	});
+	if (scope.kind === "pinned") {
+		const pinnedSet = new Set(pinnedPaths);
+		const pinnedItems = items.filter((item) => pinnedSet.has(item.path));
+		return {
+			items: pinnedItems.slice(0, FOLIO_NOTES_PAGE_SIZE),
+			nextOffset: null,
+		};
+	}
 	const pageItems = items.slice(0, FOLIO_NOTES_PAGE_SIZE);
 	return {
 		items: pageItems,
@@ -117,7 +127,8 @@ export function useFolioNotes(
 ) {
 	const folderPrefix =
 		scope.kind === "folder" ? normalizeRelPath(scope.folderPrefix) || null : null;
-	const includesNonMarkdownFiles = scope.kind !== "tag" && scope.kind !== "person";
+	const includesNonMarkdownFiles =
+		scope.kind !== "tag" && scope.kind !== "person" && scope.kind !== "pinned";
 
 	const notesQuery = useInfiniteQuery({
 		queryKey: [
