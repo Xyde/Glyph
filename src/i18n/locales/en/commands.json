@@ -514,5 +514,21 @@
 			"label": "Raw Mode",
 			"description": "Switch to the raw Markdown editing mode."
 		}
+	},
+	"ui": {
+		"allCategories": "All Commands",
+		"searchPlaceholder": "Search commands, categories, or shortcuts...",
+		"concise": "Concise",
+		"detailed": "Detailed",
+		"filterAll": "All",
+		"filterAssigned": "Assigned",
+		"filterUnassigned": "Unassigned",
+		"assign": "Assign",
+		"recordingPrompt": "Press shortcut...",
+		"clearShortcut": "Remove shortcut",
+		"resetShortcut": "Reset to default",
+		"customized": "Customized",
+		"noResults": "No shortcuts found matching your search.",
+		"clearFilters": "Clear all filters"
 	}
 }

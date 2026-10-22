@@ -420,6 +420,48 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Low.
 
+---
+
+## Patch 23: High-Density Desktop Shortcuts Architecture & Redundant Subtitle Elimination
+- **Problem**:
+  - The upstream shortcuts pane recycled a generic mobile-style stacked `SettingsRow` component for 60+ commands, wasting 75px per row. On a standard 1440p desktop viewport, only 5–7 shortcuts could fit on screen, forcing endless scrolling.
+  - Tautological descriptions duplicated command names on every row ("Open Vault" stacked above "Open an existing vault"), doubling height for zero information gain.
+  - Unassigned shortcuts were rendered as loud, dreary gray `"Disabled"` buttons taking up 180px, making the app appear broken rather than unassigned.
+  - Persistent Trash and Reset buttons were rendered unconditionally on every row, visual clutter multiplying by 60.
+- **Resolution**:
+  - Re-architected `ShortcutsSettingsPane.tsx` into a high-density, two-column desktop master-detail layout:
+    - **Category Rail (~190px sticky)**: Instant category navigation (`All Commands`, `Workspace`, `Navigation`, `Search`, `File Operations`, `Tabs`, `AI`, `Editor`, `Settings`) with live count badges.
+    - **Top Controls**: Live search bar with clear button, filter status pills (`All`, `Assigned`, `Unassigned`), and a segmented **Concise vs Detailed** view toggle.
+    - **Concise Mode (Default)**: Compact 38px rows displaying clean action labels with native hover tooltip `title={description}` for zero vertical waste.
+    - **Detailed Mode**: Full multi-line layout displaying action labels and descriptions for users who prefer verbose reference.
+    - **Keycap Badges**: Native macOS `<kbd>` pill styling, customized shortcut accent dot indicator, and subtle dashed `+ Assign` badges replacing the old `"Disabled"` buttons.
+    - **Hover Actions**: Row actions (Remove / Reset to default) smoothly fade in on hover, eliminating 80px of permanent button clutter per row.
+- **Files Modified**:
+  - `src/components/settings/ShortcutsSettingsPane.tsx`
+  - `src/styles/app/11-settings-misc.css`
+  - `src/i18n/locales/en/commands.json`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Low.
+
+---
+
+## Patch 24: Sidebar Explorer Header Transposition & Stutter Elimination
+- **Problem**:
+  - In `SidebarContent.tsx`, the `sidebarFileTreeToolbar` (`FILES` header + Sort, Expand All, Collapse All controls) was rendered *above* `PinnedProjectsSection`, while the `FileTreePane` it controls was rendered *below* `PinnedProjectsSection`.
+  - This inverted containment: `Pinned Projects` appeared as an arbitrary child of `FILES`, while the tree controls were physically severed from the tree canvas by the pinned projects block.
+  - Furthermore, `FILES` repeated the gutter tab title `[📁 Files]` verbatim, producing a third visual title stutter in the sidebar.
+- **Resolution**:
+  - Transposed `PinnedProjectsSection` to the top of the sidebar panel, allowing pinned quick-access cards to lead cleanly.
+  - Moved `sidebarFileTreeToolbar` immediately above `FileTreePane`, restoring direct physical proximity between tree controls (`Sort`, `Expand All`, `Collapse All`) and the file tree.
+  - Renamed the header title from `FILES` to **`EXPLORER`** (`t("sidebar.explorer", "Explorer")`), aligning with standard IDE conventions (Antigravity IDE / VS Code) and completely eliminating the title stutter.
+- **Files Modified**:
+  - `src/components/app/SidebarContent.tsx`
+  - `src/i18n/locales/en/shell.json`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Low.
+
+
+
 
 
 

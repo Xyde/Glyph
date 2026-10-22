@@ -1082,11 +1082,22 @@ export const SidebarContent = memo(function SidebarContent({
 										: "sidebar-files-tab"
 								}
 							>
+								{sidebarPinnedStyle === "projects" &&
+								activeSidebarView.kind === "files" ? (
+									<PinnedProjectsSection
+										folders={sidebarFolderTabs}
+										activeDirPath={activeDirPath}
+										onSelectFolder={folioMode ? handleSelectFolioFolder : onSelectDir}
+										onOpenFile={onOpenFile}
+										onRemoveFolder={handleToggleSidebarFolderTab}
+										itemAppearance={itemAppearance}
+									/>
+								) : null}
 								<div className="sidebarStackHeader sidebarFileTreeToolbar">
 									<h2 className="sidebarFileTreeToolbarTitle">
 										{activeSidebarView.kind === "folder"
 											? basename(activeSidebarView.path)
-											: t("sidebar.files")}
+											: t("sidebar.explorer", "Explorer")}
 									</h2>
 									<div className="sidebarStackHeaderActions">
 										<label className="sidebarStackHeaderSortNative">
@@ -1137,17 +1148,6 @@ export const SidebarContent = memo(function SidebarContent({
 										</button>
 									</div>
 								</div>
-								{sidebarPinnedStyle === "projects" &&
-								activeSidebarView.kind === "files" ? (
-									<PinnedProjectsSection
-										folders={sidebarFolderTabs}
-										activeDirPath={activeDirPath}
-										onSelectFolder={folioMode ? handleSelectFolioFolder : onSelectDir}
-										onOpenFile={onOpenFile}
-										onRemoveFolder={handleToggleSidebarFolderTab}
-										itemAppearance={itemAppearance}
-									/>
-								) : null}
 								<FileTreePane
 									key={
 										activeSidebarView.kind === "folder"

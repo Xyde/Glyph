@@ -390,51 +390,246 @@
 	}
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   SHORTCUTS SETTINGS (HIGH-DENSITY TWO-COLUMN MASTER-DETAIL)
+   ───────────────────────────────────────────────────────────────────────────── */
+
 .shortcutsPane {
-	padding-bottom: 24px;
+	padding-bottom: 32px;
+	max-width: min(1080px, 96vw);
+	width: 100%;
+	margin: 0 auto;
 }
 
-.shortcutsToolbar {
+.shortcutsLayout {
+	display: flex;
+	gap: 20px;
+	align-items: flex-start;
+	width: 100%;
+}
+
+/* ── Left Rail (Categories) ── */
+.shortcutsSidebar {
+	width: 190px;
+	flex-shrink: 0;
+	position: sticky;
+	top: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.shortcutsSidebarHeader {
+	font-size: calc(var(--text-base) * 0.75);
+	font-weight: var(--font-semibold);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--text-tertiary);
+	padding: 4px 10px;
+}
+
+.shortcutsCategoryList {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.shortcutsCategoryButton {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	height: 32px;
+	padding: 0 10px;
+	border: none;
+	border-radius: var(--radius-md);
+	background: transparent;
+	color: var(--text-secondary);
+	font-size: var(--text-sm);
+	font-weight: var(--font-medium);
+	cursor: pointer;
+	text-align: left;
+	transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.shortcutsCategoryButton:hover {
+	background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+	color: var(--text-primary);
+}
+
+.shortcutsCategoryButton.is-active {
+	background: color-mix(in srgb, var(--interactive-accent) 15%, transparent);
+	color: var(--interactive-accent);
+	font-weight: var(--font-semibold);
+}
+
+.shortcutsCategoryCount {
+	font-size: calc(var(--text-base) * 0.72);
+	font-weight: var(--font-medium);
+	padding: 1px 6px;
+	border-radius: var(--radius-full);
+	background: color-mix(in srgb, var(--text-primary) 8%, transparent);
+	color: var(--text-tertiary);
+}
+
+.shortcutsCategoryButton.is-active .shortcutsCategoryCount {
+	background: color-mix(in srgb, var(--interactive-accent) 20%, transparent);
+	color: var(--interactive-accent);
+}
+
+/* ── Right Content Area ── */
+.shortcutsContent {
+	flex: 1;
+	min-width: 0;
 	display: flex;
 	flex-direction: column;
 	gap: 14px;
-	padding: 16px 18px 18px;
+}
+
+.shortcutsControls {
+	display: flex;
+	align-items: center;
+	gap: 12px;
 	width: 100%;
-	max-width: min(880px, 92vw);
-	margin: 0 auto;
+}
+
+.shortcutsSearchBox {
+	position: relative;
+	flex: 1;
+	display: flex;
+	align-items: center;
+}
+
+.shortcutsSearchIcon {
+	position: absolute;
+	left: 12px;
+	pointer-events: none;
+	color: var(--text-tertiary);
 }
 
 .shortcutsSearchInput {
 	width: 100%;
-	height: 40px;
-	padding: 0 14px;
+	height: 36px;
+	padding: 0 32px 0 34px;
 	border-radius: var(--radius-md);
 	border: 1px solid color-mix(in srgb, var(--border-light) 82%, transparent);
 	background: var(--settings-control-surface);
 	color: var(--text-primary);
 	font-size: var(--text-sm);
+	outline: none;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.shortcutsSearchInput:focus {
+	border-color: color-mix(in srgb, var(--interactive-accent) 70%, transparent);
+	box-shadow: 0 0 0 2px color-mix(in srgb, var(--interactive-accent) 18%, transparent);
 }
 
 .shortcutsSearchInput::placeholder {
 	color: var(--text-tertiary);
 }
 
-.shortcutActionButton {
-	padding: 0 8px;
-	border: none !important;
-	background: transparent !important;
-	color: var(--text-tertiary);
-	box-shadow: none;
+.shortcutsSearchClear {
+	position: absolute;
+	right: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+	border: none;
+	border-radius: var(--radius-full);
+	background: color-mix(in srgb, var(--text-primary) 10%, transparent);
+	color: var(--text-secondary);
+	cursor: pointer;
+	padding: 0;
 }
 
-.shortcutActionButton:hover {
+.shortcutsSearchClear:hover {
+	background: color-mix(in srgb, var(--text-primary) 18%, transparent);
 	color: var(--text-primary);
-	background: transparent !important;
-	border-color: transparent !important;
 }
 
+/* ── View Mode Toggle (Concise / Detailed) ── */
+.shortcutsViewModeToggle {
+	display: inline-flex;
+	padding: 2px;
+	border-radius: var(--radius-md);
+	background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+	border: 1px solid color-mix(in srgb, var(--border-light) 75%, transparent);
+	flex-shrink: 0;
+}
+
+.shortcutsViewModeButton {
+	height: 28px;
+	padding: 0 10px;
+	border: none;
+	border-radius: calc(var(--radius-md) - 2px);
+	background: transparent;
+	color: var(--text-secondary);
+	font-size: calc(var(--text-base) * 0.8);
+	font-weight: var(--font-medium);
+	cursor: pointer;
+	transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.shortcutsViewModeButton:hover {
+	color: var(--text-primary);
+}
+
+.shortcutsViewModeButton.is-active {
+	background: var(--bg-primary);
+	color: var(--text-primary);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	font-weight: var(--font-semibold);
+}
+
+:root.dark .shortcutsViewModeButton.is-active {
+	background: var(--bg-tertiary);
+}
+
+/* ── Filter Pills (All / Assigned / Unassigned) ── */
+.shortcutsFilterPillRow {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.shortcutsFilterPill {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	height: 26px;
+	padding: 0 10px;
+	border-radius: var(--radius-full);
+	border: 1px solid color-mix(in srgb, var(--border-light) 70%, transparent);
+	background: transparent;
+	color: var(--text-secondary);
+	font-size: calc(var(--text-base) * 0.78);
+	font-weight: var(--font-medium);
+	cursor: pointer;
+	transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.shortcutsFilterPill:hover {
+	background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+	color: var(--text-primary);
+}
+
+.shortcutsFilterPill.is-active {
+	background: color-mix(in srgb, var(--interactive-accent) 14%, transparent);
+	border-color: color-mix(in srgb, var(--interactive-accent) 45%, transparent);
+	color: var(--interactive-accent);
+	font-weight: var(--font-semibold);
+}
+
+/* ── Error Banner ── */
 .shortcutError {
-	padding: 10px 12px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 8px 12px;
 	border-radius: var(--radius-md);
 	border: 1px solid color-mix(in srgb, var(--status-danger-fg) 38%, transparent);
 	background: color-mix(in srgb, var(--status-danger-fg) 10%, var(--bg-primary));
@@ -443,37 +638,307 @@
 	line-height: 1.45;
 }
 
-.shortcutBindingRow {
+.shortcutErrorDismiss {
+	border: none;
+	background: transparent;
+	color: var(--text-secondary);
+	cursor: pointer;
+	padding: 0;
+	display: flex;
+	align-items: center;
+}
+
+/* ── Shortcuts List Card ── */
+.shortcutsListCard {
+	border: 1px solid color-mix(in srgb, var(--border-default) 84%, transparent);
+	border-radius: calc(var(--radius-lg) + 2px);
+	background: var(--bg-primary);
+	overflow: hidden;
+}
+
+:root.dark .shortcutsListCard {
+	background: var(--bg-tertiary);
+}
+
+.shortcutsCategoryGroup {
+	border-bottom: 1px solid color-mix(in srgb, var(--border-light) 60%, transparent);
+}
+
+.shortcutsCategoryGroup:last-child {
+	border-bottom: none;
+}
+
+.shortcutsCategoryHeader {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 12px;
-	flex-wrap: wrap;
-	width: 100%;
+	padding: 8px 14px;
+	background: color-mix(in srgb, var(--text-primary) 3%, transparent);
+	border-bottom: 1px solid color-mix(in srgb, var(--border-light) 50%, transparent);
 }
 
-.shortcutRecordButton {
-	min-width: 180px;
-	height: 38px;
-	padding: 0 12px;
-	border-radius: var(--radius-md);
-	border: 1px solid color-mix(in srgb, var(--border-light) 82%, transparent);
-	background: var(--settings-control-surface);
-	color: var(--text-primary);
+.shortcutsCategoryHeaderTitle {
+	font-size: calc(var(--text-base) * 0.78);
+	font-weight: var(--font-semibold);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--text-secondary);
+}
+
+.shortcutsCategoryHeaderCount {
+	font-size: calc(var(--text-base) * 0.72);
+	font-weight: var(--font-medium);
+	color: var(--text-tertiary);
+}
+
+/* ── Individual Shortcut Rows ── */
+.shortcutRow {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	min-height: 38px;
+	padding: 4px 14px;
+	border-bottom: 1px solid color-mix(in srgb, var(--border-light) 40%, transparent);
+	transition: background-color 0.12s ease;
+}
+
+.shortcutRow:last-child {
+	border-bottom: none;
+}
+
+.shortcutRow:hover {
+	background: color-mix(in srgb, var(--text-primary) 3%, transparent);
+}
+
+.shortcutRow.is-detailed {
+	min-height: 52px;
+	padding: 8px 14px;
+}
+
+.shortcutRow.is-recording-row {
+	background: color-mix(in srgb, var(--interactive-accent) 6%, transparent);
+}
+
+.shortcutLabelArea {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+	flex: 1;
+}
+
+.shortcutLabel {
 	font-size: var(--text-sm);
 	font-weight: var(--font-medium);
-	text-align: left;
+	color: var(--text-primary);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
-.shortcutRecordButton.is-recording {
-	border-color: color-mix(in srgb, var(--interactive-accent) 60%, transparent);
-	box-shadow: 0 0 0 3px color-mix(in srgb, var(--interactive-accent) 14%, transparent);
-	background: color-mix(in srgb, var(--interactive-accent) 8%, var(--settings-control-surface));
+.shortcutDescription {
+	font-size: calc(var(--text-base) * 0.78);
+	color: var(--text-tertiary);
+	line-height: 1.35;
+	text-wrap: pretty;
 }
 
-.shortcutBindingActions {
-	display: inline-flex;
+.shortcutTrailing {
+	display: flex;
 	align-items: center;
 	gap: 8px;
-	flex-wrap: wrap;
+	flex-shrink: 0;
+}
+
+/* ── Row Hover Action Buttons (Trash / Reset) ── */
+.shortcutRowActions {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	opacity: 0;
+	transition: opacity 0.15s ease;
+}
+
+.shortcutRow:hover .shortcutRowActions,
+.shortcutRow:focus-within .shortcutRowActions,
+.shortcutRow.is-recording-row .shortcutRowActions {
+	opacity: 1;
+}
+
+.shortcutRowActionBtn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	border: none;
+	border-radius: var(--radius-sm);
+	background: transparent;
+	color: var(--text-tertiary);
+	cursor: pointer;
+	padding: 0;
+	transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.shortcutRowActionBtn:hover {
+	background: color-mix(in srgb, var(--text-primary) 8%, transparent);
+	color: var(--text-primary);
+}
+
+.shortcutRowActionBtn:disabled {
+	opacity: 0.5;
+	cursor: default;
+}
+
+/* ── Keycap Badge / Record Trigger ── */
+.shortcutKeycap {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 72px;
+	height: 26px;
+	padding: 0 10px;
+	border: 1px solid color-mix(in srgb, var(--border-light) 80%, transparent);
+	border-radius: var(--radius-md);
+	background: var(--settings-control-surface);
+	color: var(--text-primary);
+	font-family: var(--font-sans);
+	font-size: calc(var(--text-base) * 0.82);
+	font-weight: var(--font-medium);
+	cursor: pointer;
+	outline: none;
+	transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+	user-select: none;
+}
+
+.shortcutKeycap:hover {
+	border-color: color-mix(in srgb, var(--text-primary) 30%, transparent);
+	background: color-mix(in srgb, var(--text-primary) 5%, var(--settings-control-surface));
+}
+
+.shortcutKeycap.is-unassigned {
+	border-style: dashed;
+	background: transparent;
+	color: var(--text-tertiary);
+	min-width: 64px;
+}
+
+.shortcutKeycap.is-unassigned:hover {
+	border-color: var(--interactive-accent);
+	color: var(--interactive-accent);
+	background: color-mix(in srgb, var(--interactive-accent) 8%, transparent);
+}
+
+.shortcutUnassignedPlaceholder {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: calc(var(--text-base) * 0.76);
+}
+
+.shortcutUnassignedPlus {
+	opacity: 0.7;
+}
+
+.shortcutKeycap.is-recording {
+	border-color: var(--interactive-accent);
+	box-shadow: 0 0 0 2px color-mix(in srgb, var(--interactive-accent) 24%, transparent);
+	background: color-mix(in srgb, var(--interactive-accent) 10%, var(--settings-control-surface));
+	color: var(--interactive-accent);
+	font-weight: var(--font-semibold);
+	animation: pulseRecord 1.5s infinite ease-in-out;
+}
+
+@keyframes pulseRecord {
+	0%, 100% {
+		border-color: var(--interactive-accent);
+		box-shadow: 0 0 0 2px color-mix(in srgb, var(--interactive-accent) 24%, transparent);
+	}
+	50% {
+		border-color: color-mix(in srgb, var(--interactive-accent) 50%, transparent);
+		box-shadow: 0 0 0 4px color-mix(in srgb, var(--interactive-accent) 10%, transparent);
+	}
+}
+
+.shortcutRecordingText {
+	display: inline-flex;
+	align-items: center;
+	letter-spacing: 0.02em;
+}
+
+.shortcutCombo {
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+	position: relative;
+}
+
+.shortcutKbdPart {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 2px;
+	background: transparent;
+	border: none;
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	line-height: 1;
+}
+
+.shortcutCustomDot {
+	width: 5px;
+	height: 5px;
+	margin-left: 6px;
+	border-radius: var(--radius-full);
+	background: var(--interactive-accent);
+	display: inline-block;
+}
+
+/* ── Empty State ── */
+.shortcutsEmptyState {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 40px 20px;
+	gap: 12px;
+	color: var(--text-tertiary);
+	font-size: var(--text-sm);
+}
+
+.shortcutsResetFiltersButton {
+	height: 28px;
+	padding: 0 12px;
+	border-radius: var(--radius-md);
+	border: 1px solid color-mix(in srgb, var(--border-light) 80%, transparent);
+	background: var(--settings-control-surface);
+	color: var(--text-secondary);
+	font-size: calc(var(--text-base) * 0.8);
+	cursor: pointer;
+}
+
+.shortcutsResetFiltersButton:hover {
+	color: var(--text-primary);
+}
+
+/* ── Responsive Mobile/Narrow Fallback ── */
+@media (max-width: 768px) {
+	.shortcutsLayout {
+		flex-direction: column;
+	}
+	.shortcutsSidebar {
+		width: 100%;
+		position: static;
+	}
+	.shortcutsCategoryList {
+		flex-direction: row;
+		overflow-x: auto;
+		padding-bottom: 6px;
+	}
+	.shortcutsCategoryButton {
+		width: auto;
+		flex-shrink: 0;
+	}
 }

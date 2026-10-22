@@ -31,6 +31,7 @@
 		"templates": "Templates",
 		"gitSync": "Git Sync",
 		"files": "Files",
+		"explorer": "Explorer",
 		"recents": "Recents",
 		"noPinnedFiles": "No pinned files yet.",
 		"noRecentFiles": "No recent files yet.",
