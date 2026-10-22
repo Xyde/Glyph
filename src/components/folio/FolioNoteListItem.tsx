@@ -385,7 +385,7 @@ export const FolioNoteListItem = memo(
 							</span>
 						))
 					) : firstUrl ? null : (
-						<span className="folioNoteFolder">{folder || t("folio.noFolder")}</span>
+						<span className="folioNoteFolder">{folder || "./"}</span>
 					)}
 					{hiddenTagCount > 0 ? <span className="folioNoteTag">+{hiddenTagCount}</span> : null}
 				</span>

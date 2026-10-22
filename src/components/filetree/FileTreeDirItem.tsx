@@ -88,6 +88,7 @@ export const FileTreeDirItem = memo(function FileTreeDirItem({
 	const { spacePath } = useSpace();
 	const customColor =
 		appearance?.color && isEditorTextColor(appearance.color) ? appearance.color : null;
+	const isRootDir = entry.rel_path === "";
 	const rowStyle = buildRowStyle(depth, entry.rel_path, customColor);
 	const displayDirName = entry.name.trim() || "New Folder";
 	const {
@@ -98,6 +99,7 @@ export const FileTreeDirItem = memo(function FileTreeDirItem({
 		id: fileTreeEntryDragId("dir", entry.rel_path),
 		type: FILE_TREE_ENTRY_TYPE,
 		sensors: FILE_TREE_ENTRY_SENSORS,
+		disabled: isRootDir,
 		data: {
 			path: entry.rel_path,
 			kind: "dir",
@@ -123,6 +125,39 @@ export const FileTreeDirItem = memo(function FileTreeDirItem({
 	}, [entry.rel_path]);
 	const handleContextMenu = useCallback(
 		(event: MouseEvent) => {
+			if (isRootDir) {
+				void showNativeContextMenu(event, [
+					{
+						label: t("fileTree.addFile"),
+						action: () => void onNewFileInDir(""),
+					},
+					{
+						label: t("fileTree.createFromTemplate"),
+						action: () => void onCreateFromTemplateInDir(""),
+					},
+					{
+						label: t("fileTree.addFolder"),
+						action: () => void onRequestCreateFolder(""),
+					},
+					{
+						label: t("fileTree.importFilesHere"),
+						action: () => void onImportFilesInDir(""),
+					},
+					{
+						label: t("fileTree.importFolderHere"),
+						action: () => void onImportFolderInDir(""),
+					},
+					{ type: "separator" },
+					{
+						label: t("fileTree.showInFinder"),
+						action: () => void handleRevealInFinder(),
+					},
+					...buildPathCopyMenuItems(spacePath, ""),
+				]).catch((error: unknown) => {
+					console.error("Failed to show root folder context menu", error);
+				});
+				return;
+			}
 			void showNativeContextMenu(event, [
 				{
 					label: t("fileTree.addFile"),
@@ -181,6 +216,7 @@ export const FileTreeDirItem = memo(function FileTreeDirItem({
 		},
 		[
 			entry.rel_path,
+			isRootDir,
 			canAddSidebarFolderTab,
 			handleRevealInFinder,
 			isSidebarFolderTab,
@@ -236,7 +272,9 @@ export const FileTreeDirItem = memo(function FileTreeDirItem({
 									return;
 								}
 								onSelectDir(entry.rel_path);
-								onToggleDir(entry.rel_path);
+								if (entry.rel_path) {
+									onToggleDir(entry.rel_path);
+								}
 							}}
 							onContextMenu={handleContextMenu}
 							style={rowStyle}

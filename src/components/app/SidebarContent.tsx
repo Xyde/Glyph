@@ -140,17 +140,26 @@ function folderEntries(entries: FsEntry[] | undefined): FsEntry[] {
 	return (entries ?? []).filter((entry) => entry.kind === "dir");
 }
 
+const ROOT_DIR_ENTRY: FsEntry = {
+	name: "./ (Root)",
+	rel_path: "",
+	kind: "dir",
+	is_markdown: false,
+};
+
 function folioTreeRootEntries(
 	rootEntries: FsEntry[],
 	childrenByDir: Record<string, FsEntry[] | undefined>,
 	spaceLabel: string,
 ): FsEntry[] {
 	const spaceContainer = rootEntries.find((entry) => isSpaceContainerEntry(entry, spaceLabel));
-	if (!spaceContainer) return folderEntries(rootEntries);
-	return folderEntries([
-		...rootEntries.filter((entry) => entry !== spaceContainer),
-		...(childrenByDir[spaceContainer.rel_path] ?? []),
-	]);
+	const dirs = !spaceContainer
+		? folderEntries(rootEntries)
+		: folderEntries([
+				...rootEntries.filter((entry) => entry !== spaceContainer),
+				...(childrenByDir[spaceContainer.rel_path] ?? []),
+			]);
+	return [ROOT_DIR_ENTRY, ...dirs];
 }
 
 function AllNotesCountBadge({ inbox = false }: { inbox?: boolean }) {

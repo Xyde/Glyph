@@ -5,6 +5,7 @@ import {
 	memo,
 	useCallback,
 	useDeferredValue,
+	useEffect,
 	useMemo,
 	useRef,
 	useState,
@@ -13,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { useFileTreeContext, useUILayoutContext } from "../../contexts";
 import { useVirtualLoadMore } from "../../hooks/useLoadMoreTriggers";
 import { useTaskSummariesForPaths } from "../../hooks/useTaskSummariesForPaths";
+import { FILE_TREE_START_RENAME_EVENT } from "../../lib/appEvents";
 import { extractErrorMessage } from "../../lib/errorUtils";
 import { prefetchNote } from "../../lib/navigationPrefetch";
 import type { FileTreeSortMode } from "../../lib/settings";
@@ -229,6 +231,35 @@ export const FolioNotesListPane = memo(function FolioNotesListPane({
 		totalItems: paginationBoundary,
 		remainingItems: 4,
 	});
+
+	// Synchronize external TanStack virtualizer scroll offset when the active tab path changes.
+	useEffect(() => {
+		if (!activeTabPath || selectedIndex < 0) return;
+		rowVirtualizer.scrollToIndex(selectedIndex, { align: "auto" });
+	}, [activeTabPath, rowVirtualizer, selectedIndex]);
+
+	// Listen to file tree start-rename events to trigger inline rename in Folio mode.
+	useEffect(() => {
+		const handleStartRenameEvent = (event: Event) => {
+			const customEvent = event as CustomEvent<{ path?: string }>;
+			const path = customEvent.detail?.path;
+			if (!path) return;
+			setRenamingPath(path);
+		};
+		window.addEventListener(FILE_TREE_START_RENAME_EVENT, handleStartRenameEvent);
+		return () => {
+			window.removeEventListener(FILE_TREE_START_RENAME_EVENT, handleStartRenameEvent);
+		};
+	}, []);
+
+	// Keep the inline renaming row scrolled into view.
+	useEffect(() => {
+		if (!renamingPath) return;
+		const index = sortedNotes.findIndex((note) => note.note_path === renamingPath);
+		if (index >= 0) {
+			rowVirtualizer.scrollToIndex(index, { align: "auto" });
+		}
+	}, [renamingPath, rowVirtualizer, sortedNotes]);
 
 	const focusPane = useCallback(() => {
 		requestAnimationFrame(() => paneRef.current?.focus({ preventScroll: true }));
