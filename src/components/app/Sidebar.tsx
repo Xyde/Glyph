@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Settings } from "@/components/Icons";
-import { AnimatePresence, m, useReducedMotion } from "motion/react";
+import { m, useReducedMotion } from "motion/react";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useUILayoutContext } from "../../contexts";
@@ -60,6 +60,7 @@ export const Sidebar = memo(function Sidebar({
 			data-state={sidebarState}
 			data-collapsible={sidebarCollapsed ? "offcanvas" : ""}
 			className={cn("sidebar", sidebarCollapsed && "sidebarCollapsed")}
+			style={{ width: sidebarCollapsed ? 0 : sidebarWidth }}
 			animate={{ width: sidebarCollapsed ? 0 : sidebarWidth }}
 			transition={
 				shouldReduceMotion
@@ -67,52 +68,45 @@ export const Sidebar = memo(function Sidebar({
 					: { type: "spring", stiffness: 400, damping: 30 }
 			}
 		>
-			<AnimatePresence>
-				{!sidebarCollapsed && (
-					<m.div
-						key="sidebar-content"
-						data-slot="sidebar-inner"
-						className="sidebarContentRoot"
-						initial={shouldReduceMotion ? false : { opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={shouldReduceMotion ? {} : { opacity: 0 }}
-						transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.15 }}
-					>
-						{settingsMode ? (
-							<>
-								<div aria-hidden="true" className="sidebarDragLayer" data-tauri-drag-region />
-								<div className="sidebarHeader" data-tauri-drag-region />
-								<SidebarSettingsContent />
-							</>
-						) : (
-							<>
-								<SidebarHeader
-									canGoBack={canGoBack}
-									canGoForward={canGoForward}
-									onGoBack={onGoBack}
-									onGoForward={onGoForward}
-								/>
-								<SidebarContent key={activeSpacePath ?? "no-space"} {...contentProps} />
-								<div className="sidebarFooter">
-									<button
-										type="button"
-										className="sidebarFooterBtn sidebarSettingsBtn"
-										onClick={() => openSettings()}
-										aria-label={t("sidebar.settings", { defaultValue: "Settings" })}
-										title={`${t("sidebar.settings", { defaultValue: "Settings" })} (⌘,)`}
-									>
-										<Settings size={16} />
-										<span className="sidebarFooterLabel">
-											{t("sidebar.settings", { defaultValue: "Settings" })}
-										</span>
-									</button>
-									<div className="sidebarBottomLayer">{spaceSwitcher}</div>
-								</div>
-							</>
-						)}
-					</m.div>
-				)}
-			</AnimatePresence>
+			{!sidebarCollapsed && (
+				<div
+					data-slot="sidebar-inner"
+					className="sidebarContentRoot"
+				>
+					{settingsMode ? (
+						<>
+							<div aria-hidden="true" className="sidebarDragLayer" data-tauri-drag-region />
+							<div className="sidebarHeader" data-tauri-drag-region />
+							<SidebarSettingsContent />
+						</>
+					) : (
+						<>
+							<SidebarHeader
+								canGoBack={canGoBack}
+								canGoForward={canGoForward}
+								onGoBack={onGoBack}
+								onGoForward={onGoForward}
+							/>
+							<SidebarContent key={activeSpacePath ?? "no-space"} {...contentProps} />
+							<div className="sidebarFooter">
+								<button
+									type="button"
+									className="sidebarFooterBtn sidebarSettingsBtn"
+									onClick={() => openSettings()}
+									aria-label={t("sidebar.settings", { defaultValue: "Settings" })}
+									title={`${t("sidebar.settings", { defaultValue: "Settings" })} (⌘,)`}
+								>
+									<Settings size={16} />
+									<span className="sidebarFooterLabel">
+										{t("sidebar.settings", { defaultValue: "Settings" })}
+									</span>
+								</button>
+								<div className="sidebarBottomLayer">{spaceSwitcher}</div>
+							</div>
+						</>
+					)}
+				</div>
+			)}
 		</m.aside>
 	);
 });
