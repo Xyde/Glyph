@@ -72,8 +72,8 @@ export function SidebarToggleIcon({
 			aria-hidden="true"
 			{...props}
 		>
-			<rect x="1.75" y="2.25" width="12.5" height="11.5" rx="2" />
-			<line x1="5.75" y1="2.25" x2="5.75" y2="13.75" />
+			<rect x="1.75" y="2.25" width="12.5" height="11.5" rx="2" vectorEffect="non-scaling-stroke" />
+			<line x1="5.75" y1="2.25" x2="5.75" y2="13.75" vectorEffect="non-scaling-stroke" />
 		</svg>
 	);
 }
@@ -100,8 +100,8 @@ export function NavArrowLeftIcon({
 			aria-hidden="true"
 			{...props}
 		>
-			<path d="M12.5 8H3.5" />
-			<path d="M7 4.5L3.5 8L7 11.5" />
+			<path d="M12.5 8H3.5" vectorEffect="non-scaling-stroke" />
+			<path d="M7 4.5L3.5 8L7 11.5" vectorEffect="non-scaling-stroke" />
 		</svg>
 	);
 }
@@ -128,8 +128,8 @@ export function NavArrowRightIcon({
 			aria-hidden="true"
 			{...props}
 		>
-			<path d="M3.5 8H12.5" />
-			<path d="M9 4.5L12.5 8L9 11.5" />
+			<path d="M3.5 8H12.5" vectorEffect="non-scaling-stroke" />
+			<path d="M9 4.5L12.5 8L9 11.5" vectorEffect="non-scaling-stroke" />
 		</svg>
 	);
 }

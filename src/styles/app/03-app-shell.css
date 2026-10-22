@@ -229,9 +229,9 @@ body:has(.indexingNotice) [data-sileo-viewport][data-position="top-center"] {
 
 .sidebarCollapsedToggle {
 	position: absolute;
-	top: var(--window-control-toggle-top);
+	top: 0;
+	height: 38px;
 	left: var(--window-control-toggle-offset);
-	transform: translateY(-50%);
 	z-index: 3;
 	display: flex;
 	align-items: center;
