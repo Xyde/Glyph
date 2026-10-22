@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
+import { HugeiconsIcon } from "@/components/HugeiconsIcon";
+import { Tick02Icon } from "@hugeicons/core-free-icons";
 import type { AiModel, AiProviderKind } from "../../lib/tauri";
 import { invoke } from "../../lib/tauri";
 import { ChevronDown } from "../Icons";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
-	DropdownMenuRadioGroup,
-	DropdownMenuRadioItem,
+	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "../ui/shadcn/dropdown-menu";
 import styles from "./ModelSelector.module.css";
@@ -73,22 +74,27 @@ export function ModelSelector({ profileId, value, onChange, provider }: ModelSel
 				) : !modelsQuery.data?.length ? (
 					<div className="p-2 text-xs text-muted-foreground">No models available</div>
 				) : (
-					<DropdownMenuRadioGroup
-						value={value}
-						onValueChange={(val) => {
-							if (typeof val === "string") {
-								onChange(val);
-							}
-						}}
-					>
-						{modelsQuery.data.map((model) => (
-							<DropdownMenuRadioItem key={model.id} value={model.id} closeOnClick>
+					modelsQuery.data.map((model) => {
+						const isSelected = model.id === value;
+						return (
+							<DropdownMenuItem
+								key={model.id}
+								onClick={() => onChange(model.id)}
+								className="flex items-center justify-between gap-2 cursor-pointer"
+							>
 								<span className="truncate" title={model.name}>
 									{model.name}
 								</span>
-							</DropdownMenuRadioItem>
-						))}
-					</DropdownMenuRadioGroup>
+								{isSelected && (
+									<HugeiconsIcon
+										icon={Tick02Icon}
+										size="var(--icon-sm)"
+										className="shrink-0 text-primary"
+									/>
+								)}
+							</DropdownMenuItem>
+						);
+					})
 				)}
 			</DropdownMenuContent>
 		</DropdownMenu>
