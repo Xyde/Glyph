@@ -1429,6 +1429,10 @@ export function AppShell() {
 						onSelectSpace={handleSelectSpace}
 						onSetSpaceIcon={setSpaceIcon}
 						onCloseSpace={handleCloseSpaceFromSwitcher}
+						onOpenSpace={handleOpenSpace}
+						onCreateSpace={handleCreateSpace}
+						onRevealSpace={handleRevealSpaceFromMenu}
+						onOpenSpaceSettings={handleOpenSpaceSettings}
 						onSelectDir={setActiveDirPath}
 						onOpenFile={(p) => void openWorkspaceFile(p)}
 						onNewNote={() => void createNoteInSelectedFolder()}

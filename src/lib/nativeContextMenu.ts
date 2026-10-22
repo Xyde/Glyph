@@ -30,14 +30,16 @@ export type NativeContextMenuItem =
 	| NativeContextMenuSeparatorItem;
 
 interface NativeContextMenuEvent {
-	clientX: number;
-	clientY: number;
+	clientX?: number;
+	clientY?: number;
 	preventDefault: () => void;
 	stopPropagation: () => void;
 }
 
 interface NativePopupMenuEvent {
-	currentTarget: Element;
+	currentTarget?: Element;
+	clientX?: number;
+	clientY?: number;
 	preventDefault: () => void;
 	stopPropagation: () => void;
 }
@@ -95,8 +97,9 @@ export function isNativeContextMenuAvailable(): boolean {
 }
 
 async function showNativeMenu(
-	event: NativeContextMenuEvent,
+	event: { preventDefault: () => void; stopPropagation: () => void },
 	items: NativeContextMenuItem[],
+	position?: LogicalPosition,
 ): Promise<NativeMenuResult> {
 	if (!isTauri()) return { shown: false, didSelectItem: false };
 
@@ -111,7 +114,11 @@ async function showNativeMenu(
 	});
 
 	try {
-		await menu.popup(new LogicalPosition(event.clientX, event.clientY));
+		if (position) {
+			await menu.popup(position);
+		} else {
+			await menu.popup();
+		}
 		return { shown: true, didSelectItem };
 	} finally {
 		await menu.close().catch((error: unknown) => {
@@ -124,7 +131,11 @@ export async function showNativeContextMenu(
 	event: NativeContextMenuEvent,
 	items: NativeContextMenuItem[],
 ): Promise<boolean> {
-	const result = await showNativeMenu(event, items);
+	const position =
+		typeof event.clientX === "number" && typeof event.clientY === "number"
+			? new LogicalPosition(event.clientX, event.clientY)
+			: undefined;
+	const result = await showNativeMenu(event, items, position);
 	return result.didSelectItem;
 }
 
@@ -132,15 +143,9 @@ export async function showNativePopupMenu(
 	event: NativePopupMenuEvent,
 	items: NativeContextMenuItem[],
 ): Promise<boolean> {
-	const rect = event.currentTarget.getBoundingClientRect();
-	const result = await showNativeMenu(
-		{
-			clientX: rect.left,
-			clientY: rect.bottom,
-			preventDefault: () => event.preventDefault(),
-			stopPropagation: () => event.stopPropagation(),
-		},
-		items,
-	);
+	// For popup menus triggered by button clicks, omitting explicit coordinates
+	// allows Cocoa on macOS to position the NSMenu natively at NSEvent::mouseLocation()
+	// in global screen space without WKWebView coordinate inversion or clipping.
+	const result = await showNativeMenu(event, items);
 	return result.didSelectItem;
 }

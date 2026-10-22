@@ -73,6 +73,10 @@ export interface SidebarGutterProps {
 	onSelectSpace?: (path: string) => Promise<boolean>;
 	onSetSpaceIcon?: (path: string, iconName: string | null) => Promise<void>;
 	onCloseSpace?: (path: string) => Promise<void>;
+	onOpenSpace?: () => Promise<void>;
+	onCreateSpace?: () => Promise<void>;
+	onRevealSpace?: () => void;
+	onOpenSpaceSettings?: () => void;
 	openSettings: () => void;
 }
 
@@ -103,6 +107,10 @@ export const SidebarGutter = memo(function SidebarGutter({
 	onSelectSpace,
 	onSetSpaceIcon,
 	onCloseSpace,
+	onOpenSpace,
+	onCreateSpace,
+	onRevealSpace,
+	onOpenSpaceSettings,
 	openSettings,
 }: SidebarGutterProps) {
 	const { t } = useTranslation("shell");
@@ -129,21 +137,62 @@ export const SidebarGutter = memo(function SidebarGutter({
 			if (spaces.length > 0) {
 				menuItems.push({ type: "separator" });
 			}
-			if (currentSpace) {
+			if (onOpenSpace) {
 				menuItems.push({
-					label: t("spaceSwitcher.changeIcon", { defaultValue: "Change Space Icon..." }),
+					label: t("spaceSwitcher.openSpace", { defaultValue: "Open Vault…" }),
+					action: () => {
+						void onOpenSpace();
+					},
+				});
+			}
+			if (onCreateSpace) {
+				menuItems.push({
+					label: t("spaceSwitcher.createSpace", { defaultValue: "New Vault…" }),
+					action: () => {
+						void onCreateSpace();
+					},
+				});
+			}
+			if (currentSpace) {
+				menuItems.push({ type: "separator" });
+				menuItems.push({
+					label: t("spaceSwitcher.changeIcon", { defaultValue: "Change Vault Icon…" }),
 					action: () => setIconPickerSpacePath(currentSpace.path),
 				});
-				if (spaces.length > 1 && onCloseSpace) {
+				if (onRevealSpace) {
 					menuItems.push({
-						label: t("spaceSwitcher.closeSpace", { defaultValue: "Close Space" }),
+						label: t("spaceSwitcher.revealInFinder", { defaultValue: "Reveal in Finder" }),
+						action: () => onRevealSpace(),
+					});
+				}
+				if (onOpenSpaceSettings) {
+					menuItems.push({
+						label: t("spaceSwitcher.spaceSettings", { defaultValue: "Vault Settings…" }),
+						action: () => onOpenSpaceSettings(),
+					});
+				}
+				if (spaces.length > 1 && onCloseSpace) {
+					menuItems.push({ type: "separator" });
+					menuItems.push({
+						label: t("spaceSwitcher.closeSpace", { defaultValue: "Close Vault" }),
 						action: () => void onCloseSpace(currentSpace.path),
 					});
 				}
 			}
 			void showNativePopupMenu(event, menuItems);
 		},
-		[activeSpacePath, currentSpace, onCloseSpace, onSelectSpace, spaces, t],
+		[
+			activeSpacePath,
+			currentSpace,
+			onCloseSpace,
+			onCreateSpace,
+			onOpenSpace,
+			onOpenSpaceSettings,
+			onRevealSpace,
+			onSelectSpace,
+			spaces,
+			t,
+		],
 	);
 
 	const renderGutterButton = (key: string): ReactNode => {
@@ -377,8 +426,8 @@ export const SidebarGutter = memo(function SidebarGutter({
 							className="sidebarGutterBtn sidebarGutterSpaceBtn"
 							onClick={handleSpaceClick}
 							onContextMenu={handleSpaceClick}
-							title={`${t("spaceSwitcher.label", { defaultValue: "Space" })}: ${currentSpace.name}`}
-							aria-label={`${t("spaceSwitcher.label", { defaultValue: "Space" })}: ${currentSpace.name}`}
+							title={`${t("spaceSwitcher.label", { defaultValue: "Vault" })}: ${currentSpace.name}`}
+							aria-label={`${t("spaceSwitcher.label", { defaultValue: "Vault" })}: ${currentSpace.name}`}
 						>
 							<AppearanceIcon
 								iconName={currentSpace.iconName}
@@ -400,7 +449,7 @@ export const SidebarGutter = memo(function SidebarGutter({
 			</aside>
 
 			<AppearancePicker
-				title={t("spaceSwitcher.chooseIcon", { defaultValue: "Choose space icon" })}
+				title={t("spaceSwitcher.chooseIcon", { defaultValue: "Choose vault icon" })}
 				open={iconPickerSpace !== null}
 				onOpenChange={(open) => {
 					if (!open) setIconPickerSpacePath(null);

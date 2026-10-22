@@ -130,6 +130,10 @@ export interface SidebarContentProps {
 	onSelectSpace?: (path: string) => Promise<boolean>;
 	onSetSpaceIcon?: (path: string, iconName: string | null) => Promise<void>;
 	onCloseSpace?: (path: string) => Promise<void>;
+	onOpenSpace?: () => Promise<void>;
+	onCreateSpace?: () => Promise<void>;
+	onRevealSpace?: () => void;
+	onOpenSpaceSettings?: () => void;
 }
 
 type SidebarView =
@@ -280,6 +284,10 @@ export const SidebarContent = memo(function SidebarContent({
 	onSelectSpace,
 	onSetSpaceIcon,
 	onCloseSpace,
+	onOpenSpace,
+	onCreateSpace,
+	onRevealSpace,
+	onOpenSpaceSettings,
 }: SidebarContentProps) {
 	const { t } = useTranslation("shell");
 	// Contexts
@@ -1194,6 +1202,10 @@ export const SidebarContent = memo(function SidebarContent({
 					onSelectSpace={onSelectSpace}
 					onSetSpaceIcon={onSetSpaceIcon}
 					onCloseSpace={onCloseSpace}
+					onOpenSpace={onOpenSpace}
+					onCreateSpace={onCreateSpace}
+					onRevealSpace={onRevealSpace}
+					onOpenSpaceSettings={onOpenSpaceSettings}
 					openSettings={openSettings}
 				/>
 				<div className="sidebarFilePane">{filePaneContent}</div>

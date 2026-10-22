@@ -362,12 +362,16 @@
 		"saveError": "Could not save canvas: {{message}}"
 	},
 	"spaceSwitcher": {
-		"label": "Spaces",
+		"label": "Vault",
 		"switchTo": "Switch to {{name}}",
-		"changeIcon": "Change icon…",
-		"closeSpace": "Close space",
-		"chooseIcon": "Choose a space icon",
-		"menuFailed": "Could not open the space menu"
+		"openSpace": "Open Vault…",
+		"createSpace": "New Vault…",
+		"revealInFinder": "Reveal in Finder",
+		"spaceSettings": "Vault Settings…",
+		"changeIcon": "Change Vault Icon…",
+		"closeSpace": "Close Vault",
+		"chooseIcon": "Choose a vault icon",
+		"menuFailed": "Could not open the vault menu"
 	},
 	"tasks": {
 		"searchPlaceholder": "Filter tasks",
