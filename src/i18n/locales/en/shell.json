@@ -15,6 +15,7 @@
 		"newNoteInFolder": "Create new note in {{folder}}",
 		"newNoteInRoot": "Create new note in the workspace root",
 		"pinned": "Pinned",
+		"pinnedProjects": "Pinned Projects",
 		"allNotes": "All Notes",
 		"collections": "Collections",
 		"connections": "Connections",

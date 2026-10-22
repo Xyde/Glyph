@@ -5,7 +5,7 @@ import { memo, type MouseEvent, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { showNativeContextMenu } from "../../lib/nativeContextMenu";
 import { invoke } from "../../lib/tauri";
-import type { AllDocsItem, FileTreeAppearance } from "../../lib/tauri";
+import type { FileTreeAppearance } from "../../lib/tauri";
 import { basename } from "../../utils/path";
 import { AppearanceIcon } from "../AppearanceIcon";
 
@@ -162,13 +162,14 @@ export const PinnedProjectsSection = memo(function PinnedProjectsSection({
 	onRemoveFolder,
 	itemAppearance,
 }: PinnedProjectsSectionProps) {
+	const { t } = useTranslation("shell");
 	if (folders.length === 0) return null;
 
 	return (
 		<div className="sidebarPinnedProjectsSection">
 			<div className="sidebarPinnedProjectsHeader">
 				<HugeiconsIcon icon={PinIcon} size="var(--icon-xs)" className="sidebarPinnedProjectsPinIcon" />
-				<span className="sidebarPinnedProjectsTitle">PINNED PROJECTS</span>
+				<span className="sidebarPinnedProjectsTitle">{t("sidebar.pinnedProjects")}</span>
 			</div>
 			<div className="sidebarPinnedProjectsList">
 				{folders.map((folderPath) => (
