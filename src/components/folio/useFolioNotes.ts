@@ -85,7 +85,7 @@ async function listNotesPage(
 	});
 	if (scope.kind === "pinned") {
 		const pinnedSet = new Set(pinnedPaths);
-		const pinnedItems = items.filter((item) => pinnedSet.has(item.path));
+		const pinnedItems = items.filter((item) => pinnedSet.has(item.note_path));
 		return {
 			items: pinnedItems.slice(0, FOLIO_NOTES_PAGE_SIZE),
 			nextOffset: null,

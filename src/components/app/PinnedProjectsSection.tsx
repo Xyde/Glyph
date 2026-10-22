@@ -46,7 +46,7 @@ function PinnedProjectItem({
 	const latestNoteQuery = useQuery({
 		queryKey: ["pinned-project-latest-note", folderPath],
 		queryFn: async () => {
-			const items = await invoke<AllDocsItem[]>("all_docs_list", {
+			const items = await invoke("all_docs_list", {
 				folder_prefix: folderPath,
 				limit: 1,
 				sort_mode: "modified-desc",
@@ -122,9 +122,9 @@ function PinnedProjectItem({
 					className="sidebarPinnedProjectNote"
 					onClick={(e) => {
 						e.stopPropagation();
-						onOpenFile(latestNote.path);
+						onOpenFile(latestNote.note_path);
 					}}
-					title={latestNote.path}
+					title={latestNote.note_path}
 				>
 					<HugeiconsIcon
 						icon={NoteIcon}
@@ -132,7 +132,7 @@ function PinnedProjectItem({
 						className="sidebarPinnedProjectNoteIcon"
 					/>
 					<span className="sidebarPinnedProjectNoteTitle">
-						{latestNote.title || basename(latestNote.path)}
+						{latestNote.title || basename(latestNote.note_path)}
 					</span>
 					{latestNote.updated ? (
 						<span className="sidebarPinnedProjectNoteAge">

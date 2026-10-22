@@ -2,19 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { extractErrorMessage } from "../../lib/errorUtils";
+import { loadSettings } from "../../lib/settings";
+import { DURABLE_SETTINGS, writeSidebarLayout } from "../../lib/settings/definitions";
 import {
 	DEFAULT_SIDEBAR_ORDER,
 	DEFAULT_SIDEBAR_PINNED_STYLE,
 	DEFAULT_SIDEBAR_VISIBILITY,
-	DURABLE_SETTINGS,
 	isSidebarPinnedStyle,
-	loadSettings,
 	type SidebarOrder,
 	type SidebarPinnedStyle,
 	type SidebarVisibility,
 	type SidebarVisibilityKey,
-	writeSidebarLayout,
-} from "../../lib/settings";
+} from "../../lib/settings/model";
 import { useTauriEvent } from "../../lib/tauriEvents";
 import { RefreshCw } from "../Icons";
 import { Button } from "../ui/shadcn/button";
@@ -99,7 +98,7 @@ function SidebarSettingsContent({
 				visibility.setValue(DEFAULT_SIDEBAR_VISIBILITY);
 				order.setValue(DEFAULT_SIDEBAR_ORDER);
 			})
-			.catch((cause) => {
+			.catch((cause: unknown) => {
 				setError(cause instanceof Error ? cause.message : t("resetError"));
 			})
 			.finally(() => setIsResetting(false));
