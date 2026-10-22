@@ -60,8 +60,7 @@ export const Sidebar = memo(function Sidebar({
 			data-state={sidebarState}
 			data-collapsible={sidebarCollapsed ? "offcanvas" : ""}
 			className={cn("sidebar", sidebarCollapsed && "sidebarCollapsed")}
-			style={{ width: sidebarCollapsed ? 0 : sidebarWidth }}
-			layout
+			animate={{ width: sidebarCollapsed ? 0 : sidebarWidth }}
 			transition={
 				shouldReduceMotion
 					? { type: "tween", duration: 0 }

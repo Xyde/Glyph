@@ -881,8 +881,10 @@ export function AppShell() {
 
 	const createNoteInSelectedFolder = useCallback(async () => {
 		if (!spacePath) return null;
-		return fileTree.onNewFileInDir(newNoteFolder);
-	}, [fileTree, newNoteFolder, spacePath]);
+		const path = await fileTree.onNewFileInDir(newNoteFolder);
+		if (path) await openWorkspaceFile(path);
+		return path;
+	}, [fileTree, newNoteFolder, openWorkspaceFile, spacePath]);
 	const createCanvasInSelectedFolder = useCallback(async () => {
 		if (!spacePath) return null;
 		const path = await fileTree.onNewCanvasInDir(newNoteFolder);
