@@ -2,7 +2,6 @@ import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import { memo, Suspense, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useUILayoutContext } from "../../contexts";
 import { cn } from "../../lib/utils";
 import { SidebarSettingsContent } from "../app/SidebarSettingsContent";
 import { HugeiconsIcon } from "../HugeiconsIcon";

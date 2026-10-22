@@ -88,25 +88,23 @@ export const Sidebar = memo(function Sidebar({
 						onCloseSpace={onCloseSpace}
 						{...contentProps}
 					/>
-							{sidebarLayoutStyle !== "gutter" ? (
-								<div className="sidebarFooter">
-									<button
-										type="button"
-										className="sidebarFooterBtn sidebarSettingsBtn"
-										onClick={() => openSettings()}
-										aria-label={t("sidebar.settings", { defaultValue: "Settings" })}
-										title={`${t("sidebar.settings", { defaultValue: "Settings" })} (⌘,)`}
-									>
-										<Settings size={16} />
-										<span className="sidebarFooterLabel">
-											{t("sidebar.settings", { defaultValue: "Settings" })}
-										</span>
-									</button>
-									<div className="sidebarBottomLayer">{spaceSwitcher}</div>
-								</div>
-							) : null}
-						</>
-					)}
+					{sidebarLayoutStyle !== "gutter" ? (
+						<div className="sidebarFooter">
+							<button
+								type="button"
+								className="sidebarFooterBtn sidebarSettingsBtn"
+								onClick={() => openSettings()}
+								aria-label={t("sidebar.settings", { defaultValue: "Settings" })}
+								title={`${t("sidebar.settings", { defaultValue: "Settings" })} (⌘,)`}
+							>
+								<Settings size={16} />
+								<span className="sidebarFooterLabel">
+									{t("sidebar.settings", { defaultValue: "Settings" })}
+								</span>
+							</button>
+							<div className="sidebarBottomLayer">{spaceSwitcher}</div>
+						</div>
+					) : null}
 				</div>
 			)}
 		</m.aside>
