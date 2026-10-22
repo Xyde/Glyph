@@ -4,7 +4,7 @@
 .appShell {
 	--window-control-toggle-offset: 92px;
 	--window-control-toggle-top: 19px;
-	--collapsed-sidebar-top-reserve: calc(var(--window-control-toggle-offset) + 38px);
+	--collapsed-sidebar-top-reserve: calc(var(--window-control-toggle-offset) + 92px);
 
 	isolation: isolate;
 	display: flex;
@@ -267,6 +267,51 @@ body:has(.indexingNotice) [data-sileo-viewport][data-position="top-center"] {
 }
 
 .sidebarToggleBtn:focus-visible {
+	outline: 2px solid var(--border-focus);
+	outline-offset: 1px;
+}
+
+.sidebarNavHistoryGroup {
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+}
+
+.sidebarNavHistoryBtn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	border: 0;
+	border-radius: var(--radius-sm);
+	background: transparent;
+	color: var(--text-secondary);
+	cursor: pointer;
+	-webkit-app-region: no-drag;
+	transition:
+		background var(--transition-fast),
+		color var(--transition-fast),
+		opacity var(--transition-fast);
+}
+
+.sidebarNavHistoryBtn:hover:not(:disabled) {
+	background: color-mix(in srgb, var(--text-primary) 8%, transparent);
+	color: var(--text-primary);
+}
+
+.sidebarNavHistoryBtn:active:not(:disabled) {
+	background: color-mix(in srgb, var(--text-primary) 14%, transparent);
+}
+
+.sidebarNavHistoryBtn:disabled {
+	opacity: 0.28;
+	cursor: default;
+	pointer-events: none;
+}
+
+.sidebarNavHistoryBtn:focus-visible {
 	outline: 2px solid var(--border-focus);
 	outline-offset: 1px;
 }

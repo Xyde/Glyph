@@ -204,6 +204,57 @@
 	position: relative;
 }
 
+.sidebarFooter {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 38px;
+	padding: 0 8px;
+	border-top: 1px solid color-mix(in srgb, var(--border-subtle) 60%, transparent);
+	flex-shrink: 0;
+	position: relative;
+	z-index: 10;
+	-webkit-app-region: no-drag;
+}
+
+.sidebarFooterBtn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	height: 28px;
+	padding: 0 8px;
+	border: 0;
+	border-radius: var(--radius-sm);
+	background: transparent;
+	color: var(--text-secondary);
+	font-size: var(--text-sm);
+	font-weight: var(--font-normal);
+	cursor: pointer;
+	-webkit-app-region: no-drag;
+	transition:
+		background var(--transition-fast),
+		color var(--transition-fast);
+}
+
+.sidebarFooterBtn:hover {
+	background: color-mix(in srgb, var(--text-primary) 8%, transparent);
+	color: var(--text-primary);
+}
+
+.sidebarFooterBtn:active {
+	background: color-mix(in srgb, var(--text-primary) 14%, transparent);
+}
+
+.sidebarFooterBtn:focus-visible {
+	outline: 2px solid var(--border-focus);
+	outline-offset: 1px;
+}
+
+.sidebarFooterLabel {
+	user-select: none;
+	-webkit-user-select: none;
+}
+
 .spaceSwitcher {
 	display: flex;
 	align-items: center;

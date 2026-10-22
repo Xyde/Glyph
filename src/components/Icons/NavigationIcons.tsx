@@ -77,3 +77,59 @@ export function SidebarToggleIcon({
 		</svg>
 	);
 }
+
+export function NavArrowLeftIcon({
+	size = 16,
+	className,
+	...props
+}: {
+	size?: number | string;
+	className?: string;
+} & React.SVGProps<SVGSVGElement>) {
+	return (
+		<svg
+			width={size}
+			height={size}
+			viewBox="0 0 16 16"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="1.3"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			className={className}
+			aria-hidden="true"
+			{...props}
+		>
+			<path d="M12.5 8H3.5" />
+			<path d="M7 4.5L3.5 8L7 11.5" />
+		</svg>
+	);
+}
+
+export function NavArrowRightIcon({
+	size = 16,
+	className,
+	...props
+}: {
+	size?: number | string;
+	className?: string;
+} & React.SVGProps<SVGSVGElement>) {
+	return (
+		<svg
+			width={size}
+			height={size}
+			viewBox="0 0 16 16"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="1.3"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			className={className}
+			aria-hidden="true"
+			{...props}
+		>
+			<path d="M3.5 8H12.5" />
+			<path d="M9 4.5L12.5 8L9 11.5" />
+		</svg>
+	);
+}

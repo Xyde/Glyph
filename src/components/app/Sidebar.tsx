@@ -1,6 +1,8 @@
 import { cn } from "@/lib/utils";
+import { Settings } from "@/components/Icons";
 import { AnimatePresence, m, useReducedMotion } from "motion/react";
 import { memo } from "react";
+import { useTranslation } from "react-i18next";
 import { useUILayoutContext } from "../../contexts";
 import type { SpaceDefinition } from "../../lib/spaceRegistry";
 import { SidebarContent, type SidebarContentProps } from "./SidebarContent";
@@ -16,6 +18,10 @@ interface SidebarProps extends SidebarContentProps {
 	onSelectSpace: (path: string) => Promise<boolean>;
 	onSetSpaceIcon: (path: string, iconName: string | null) => Promise<void>;
 	onCloseSpace: (path: string) => Promise<void>;
+	canGoBack?: boolean;
+	canGoForward?: boolean;
+	onGoBack?: () => void;
+	onGoForward?: () => void;
 }
 
 export const Sidebar = memo(function Sidebar({
@@ -26,9 +32,14 @@ export const Sidebar = memo(function Sidebar({
 	onSelectSpace,
 	onSetSpaceIcon,
 	onCloseSpace,
+	canGoBack,
+	canGoForward,
+	onGoBack,
+	onGoForward,
 	...contentProps
 }: SidebarProps) {
-	const { sidebarWidth, settingsMode } = useUILayoutContext();
+	const { sidebarWidth, settingsMode, openSettings } = useUILayoutContext();
+	const { t } = useTranslation("shell");
 	const shouldReduceMotion = useReducedMotion();
 	const sidebarState = sidebarCollapsed ? "collapsed" : "expanded";
 	const spaceSwitcher = (
@@ -76,10 +87,27 @@ export const Sidebar = memo(function Sidebar({
 							</>
 						) : (
 							<>
-								<SidebarHeader />
+								<SidebarHeader
+									canGoBack={canGoBack}
+									canGoForward={canGoForward}
+									onGoBack={onGoBack}
+									onGoForward={onGoForward}
+								/>
 								<SidebarContent key={activeSpacePath ?? "no-space"} {...contentProps} />
-								<div className="sidebarBottomLayer">
-									{spaceSwitcher}
+								<div className="sidebarFooter">
+									<button
+										type="button"
+										className="sidebarFooterBtn sidebarSettingsBtn"
+										onClick={() => openSettings()}
+										aria-label={t("sidebar.settings", { defaultValue: "Settings" })}
+										title={`${t("sidebar.settings", { defaultValue: "Settings" })} (⌘,)`}
+									>
+										<Settings size={16} />
+										<span className="sidebarFooterLabel">
+											{t("sidebar.settings", { defaultValue: "Settings" })}
+										</span>
+									</button>
+									<div className="sidebarBottomLayer">{spaceSwitcher}</div>
 								</div>
 							</>
 						)}

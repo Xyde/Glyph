@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { SidebarToggleIcon } from "@/components/Icons";
+import { NavArrowLeftIcon, NavArrowRightIcon, SidebarToggleIcon } from "@/components/Icons";
 import { join } from "@tauri-apps/api/path";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { openPath } from "@tauri-apps/plugin-opener";
@@ -1379,6 +1379,28 @@ export function AppShell() {
 					>
 						<SidebarToggleIcon size={16} />
 					</button>
+					<div className="sidebarNavHistoryGroup">
+						<button
+							type="button"
+							className="sidebarNavHistoryBtn"
+							onClick={goBack}
+							disabled={!canGoBack}
+							title={t("sidebar.goBack", { defaultValue: "Go back" })}
+							aria-label={t("sidebar.goBack", { defaultValue: "Go back" })}
+						>
+							<NavArrowLeftIcon size={16} />
+						</button>
+						<button
+							type="button"
+							className="sidebarNavHistoryBtn"
+							onClick={goForward}
+							disabled={!canGoForward}
+							title={t("sidebar.goForward", { defaultValue: "Go forward" })}
+							aria-label={t("sidebar.goForward", { defaultValue: "Go forward" })}
+						>
+							<NavArrowRightIcon size={16} />
+						</button>
+					</div>
 					<WindowChromeUpdateButton
 						updateReady={autoUpdater.updateReady}
 						updateVersion={autoUpdater.updateVersion}
@@ -1389,6 +1411,10 @@ export function AppShell() {
 			{!zenMode || settingsMode ? (
 				<>
 					<Sidebar
+						canGoBack={canGoBack}
+						canGoForward={canGoForward}
+						onGoBack={goBack}
+						onGoForward={goForward}
 						spaces={spaces}
 						activeSpacePath={spacePath}
 						switchingSpacePath={switchingSpacePath}

@@ -6,6 +6,9 @@
 	"sidebar": {
 		"collapse": "Collapse sidebar",
 		"expand": "Expand sidebar",
+		"goBack": "Go back",
+		"goForward": "Go forward",
+		"settings": "Settings",
 		"devBadge": "DEV",
 		"newNote": "New Note",
 		"newCanvas": "New Canvas",
