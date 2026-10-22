@@ -1,5 +1,4 @@
-import { HugeiconsIcon } from "@/components/HugeiconsIcon";
-import { SidebarLeftIcon } from "@hugeicons/core-free-icons";
+import { SidebarToggleIcon } from "@/components/Icons";
 import { useTranslation } from "react-i18next";
 import { useUILayoutContext, useUpdaterContext } from "../../contexts";
 import { onWindowDragMouseDown } from "../../utils/window";
@@ -27,7 +26,7 @@ export function SidebarHeader() {
 						aria-label={t("sidebar.collapse")}
 						onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
 					>
-						<HugeiconsIcon icon={SidebarLeftIcon} size="var(--icon-md)" />
+						<SidebarToggleIcon size={16} />
 					</button>
 					<WindowChromeUpdateButton
 						updateReady={autoUpdater.updateReady}

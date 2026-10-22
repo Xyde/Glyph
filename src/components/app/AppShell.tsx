@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
-import { HugeiconsIcon } from "@/components/HugeiconsIcon";
-import { SidebarLeftIcon } from "@hugeicons/core-free-icons";
+import { SidebarToggleIcon } from "@/components/Icons";
 import { join } from "@tauri-apps/api/path";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { openPath } from "@tauri-apps/plugin-opener";
@@ -1378,7 +1377,7 @@ export function AppShell() {
 						aria-label={t(sidebarCollapsed ? "sidebar.expand" : "sidebar.collapse")}
 						onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
 					>
-						<HugeiconsIcon icon={SidebarLeftIcon} size="var(--icon-md)" />
+						<SidebarToggleIcon size={16} />
 					</button>
 					<WindowChromeUpdateButton
 						updateReady={autoUpdater.updateReady}

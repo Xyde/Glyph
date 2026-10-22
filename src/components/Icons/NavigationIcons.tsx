@@ -49,3 +49,31 @@ export const Settings = (props: IconProps) => (
 export const Calendar = (props: IconProps) => (
 	<HugeiconsIcon icon={Calendar03Icon} {...withDefaultIconSize(props)} />
 );
+
+export function SidebarToggleIcon({
+	size = 16,
+	className,
+	...props
+}: {
+	size?: number | string;
+	className?: string;
+} & React.SVGProps<SVGSVGElement>) {
+	return (
+		<svg
+			width={size}
+			height={size}
+			viewBox="0 0 16 16"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="1.25"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			className={className}
+			aria-hidden="true"
+			{...props}
+		>
+			<rect x="1.75" y="2.25" width="12.5" height="11.5" rx="2" />
+			<line x1="5.75" y1="2.25" x2="5.75" y2="13.75" />
+		</svg>
+	);
+}

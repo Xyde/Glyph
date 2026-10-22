@@ -2,7 +2,7 @@
    APP SHELL - Main Layout with floating panels
    ───────────────────────────────────────────────────────────────────────────── */
 .appShell {
-	--window-control-toggle-offset: 78px;
+	--window-control-toggle-offset: 92px;
 	--window-control-toggle-top: 19px;
 	--collapsed-sidebar-top-reserve: calc(var(--window-control-toggle-offset) + 38px);
 
@@ -243,8 +243,8 @@ body:has(.indexingNotice) [data-sileo-viewport][data-position="top-center"] {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 24px;
-	height: 24px;
+	width: 26px;
+	height: 26px;
 	padding: 0;
 	border: 0;
 	border-radius: var(--radius-sm);
@@ -260,6 +260,10 @@ body:has(.indexingNotice) [data-sileo-viewport][data-position="top-center"] {
 .sidebarToggleBtn:hover {
 	background: color-mix(in srgb, var(--text-primary) 10%, transparent);
 	color: var(--text-primary);
+}
+
+.sidebarToggleBtn:active {
+	background: color-mix(in srgb, var(--text-primary) 14%, transparent);
 }
 
 .sidebarToggleBtn:focus-visible {
