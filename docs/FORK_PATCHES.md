@@ -460,6 +460,28 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Low.
 
+---
+
+## Patch 25: Folio Scope Header Architecture & Search Row Alignment
+- **Problem**:
+  - In 3-column Folio Mode, the middle column (`FolioNotesListPane`) jammed the search and sort controls directly into Row 0 (the macOS titlebar strip).
+  - Meanwhile, Column 1 (Sidebar) placed its primary note creation action (`New Note`) on Row 1 (below the window controls).
+  - This produced an acute horizontal eye misalignment: `New Note` and `Search Notes`—twin discovery actions on the same cognitive hierarchy—sat on conflicting vertical rows.
+  - Furthermore, Folio never displayed the active scope (folder name, tag, or collection) or note count in its header, forcing the user to deduce current context by squinting at the sidebar tree.
+  - Additionally, collapsing the sidebar forced the search input into an awkward 26px squished icon button to avoid macOS traffic lights.
+- **Resolution**:
+  - Re-architected `FolioScopeHeader` into a 2-tier desktop layout:
+    - **Row 0: Scope Header (38px)**: Native macOS titlebar strip with `data-tauri-drag-region` window drag support, displaying the active Scope icon (Folder, Tag, Person, Pinned, or All Notes), active Scope Title (`1780-1850`, `#tag`, `Explorer`, etc.), and tabular note count badge. Automatically respects collapsed sidebar reserve padding without clipping traffic lights.
+    - **Row 1: Actions & Filter Row (34px)**: Houses `Filter notes` search and sort controls, now horizontally aligned with the `New Note` button on Column 1.
+  - When the sidebar is collapsed, the search input remains full-width and unhindered on Row 1, while Row 0 provides the necessary clearance and window drag surface for macOS traffic lights.
+- **Files Modified**:
+  - `src/components/folio/FolioScopeHeader.tsx`
+  - `src/components/folio/FolioNotesListPane.tsx`
+  - `src/styles/app/49-folio-mode.css`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Low.
+
+
 
 
 

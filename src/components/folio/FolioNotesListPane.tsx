@@ -546,6 +546,8 @@ export const FolioNotesListPane = memo(function FolioNotesListPane({
 				onReset={() => updatePickerAppearance({ icon: null, color: null })}
 			/>
 			<FolioScopeHeader
+				scope={folioScope}
+				noteCount={sortedNotes.length}
 				searchQuery={searchQuery}
 				sortMode={folioSortMode}
 				onSearchQueryChange={setSearchQuery}

@@ -20,45 +20,63 @@
 
 .folioNotesHeader {
 	flex: 0 0 auto;
+	display: flex;
+	flex-direction: column;
+	border-bottom: 1px solid color-mix(in srgb, var(--border-light) 52%, transparent);
+	box-sizing: border-box;
+	background: var(--bg-primary);
+}
+
+.folioNotesScopeHeader {
+	flex: 0 0 auto;
 	height: 38px;
 	padding: 0 14px;
 	display: flex;
 	align-items: center;
-	border-bottom: 1px solid color-mix(in srgb, var(--border-light) 52%, transparent);
+	justify-content: space-between;
 	box-sizing: border-box;
+	user-select: none;
+	-webkit-user-select: none;
+	cursor: default;
 }
 
-.appShell.appShellSidebarCollapsed .folioNotesHeader {
+.appShell.appShellSidebarCollapsed .folioNotesScopeHeader {
 	padding-left: max(14px, var(--collapsed-sidebar-top-reserve));
 }
 
-.appShell.appShellSidebarCollapsed .folioNotesSearch {
-	flex: 0 0 26px;
-	width: 26px;
-	min-width: 26px;
-	padding: 0;
-	justify-content: center;
-	cursor: pointer;
-	transition: width var(--transition-fast), border-color var(--transition-fast);
-}
-
-.appShell.appShellSidebarCollapsed .folioNotesSearch input {
-	display: none;
-}
-
-.appShell.appShellSidebarCollapsed .folioNotesSearch:focus-within,
-.appShell.appShellSidebarCollapsed .folioNotesSearch:has(input:not(:placeholder-shown)) {
+.folioNotesScopeInfo {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	min-width: 0;
 	flex: 1 1 auto;
-	width: auto;
-	min-width: 70px;
-	padding: 0 8px;
-	justify-content: flex-start;
-	cursor: text;
 }
 
-.appShell.appShellSidebarCollapsed .folioNotesSearch:focus-within input,
-.appShell.appShellSidebarCollapsed .folioNotesSearch:has(input:not(:placeholder-shown)) input {
-	display: block;
+.folioNotesScopeIcon {
+	flex: 0 0 auto;
+	color: var(--text-tertiary);
+}
+
+.folioNotesScopeTitle {
+	font-size: var(--text-sm);
+	font-weight: 600;
+	color: var(--text-primary);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	letter-spacing: -0.01em;
+}
+
+.folioNotesScopeCount {
+	flex: 0 0 auto;
+	font-size: 11px;
+	font-weight: 500;
+	color: var(--text-tertiary);
+	background: color-mix(in srgb, var(--border-light) 65%, transparent);
+	padding: 1px 6px;
+	border-radius: var(--radius-full, 9999px);
+	font-variant-numeric: tabular-nums;
+	line-height: 1.3;
 }
 
 .folioNotesControls {
@@ -66,6 +84,9 @@
 	align-items: center;
 	gap: 6px;
 	width: 100%;
+	height: 34px;
+	padding: 0 14px 6px 14px;
+	box-sizing: border-box;
 }
 
 .folioNotesSearch {
