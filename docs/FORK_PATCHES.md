@@ -481,6 +481,31 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Low.
 
+---
+
+## Patch 26: Obsidian-Style Desktop Settings Modal Architecture
+- **Problem**:
+  - In upstream Glyph, opening Settings (`Cmd+,`) hijacked the entire viewport by setting `settingsMode: true` in `UIContext`.
+  - This destructive takeover completely unmounted the active editor workspace, document tabs, Folio stream, and sidebar file tree, replacing them with a full-screen view.
+  - On widescreen displays, this created an empty 1200px+ desert of wasted space where small settings panels sat stranded in an expansive void.
+  - Exiting settings forced an unmount and reconstruction cycle of CodeMirror and the entire directory tree.
+- **Resolution**:
+  - Replaced the full-screen eviction state machine with a centered desktop modal: `<SettingsModal />` built with `@base-ui/react/dialog`.
+  - **Zero Workspace Disruption**: The active document, tabs, Folio stream, and sidebar remain 100% mounted, live, and idle behind a soft `backdrop-blur` overlay.
+  - **Expandable Pro Sizing**: Sized by default at `960px × 680px` (comfortable centered desktop dialog) with an **Expand / Maximize Toggle** (`[ ⤢ ]` / `[ ⤡ ]`) expanding to `1480px × 920px` for dense multi-column views like Keyboard Shortcuts. Double-clicking the modal header also toggles maximize/restore.
+  - **Instant Dismissal**: Dismissible instantly via `Esc`, close button `✕`, or clicking the backdrop with zero remount latency.
+  - **Hard Subtraction Pass**: Deleted 40+ lines of destructive unmount-and-swap branching from `MainContent.tsx` and `Sidebar.tsx`.
+- **Files Modified**:
+  - `src/components/settings/SettingsModal.tsx`
+  - `src/components/app/SidebarSettingsContent.tsx`
+  - `src/components/app/Sidebar.tsx`
+  - `src/components/app/MainContent.tsx`
+  - `src/components/app/AppShell.tsx`
+  - `src/styles/app/09-settings-shell.css`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Low.
+
+
 
 
 

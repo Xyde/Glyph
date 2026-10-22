@@ -7,7 +7,6 @@ import { useUILayoutContext } from "../../contexts";
 import type { SpaceDefinition } from "../../lib/spaceRegistry";
 import { SidebarContent, type SidebarContentProps } from "./SidebarContent";
 import { SidebarHeader } from "./SidebarHeader";
-import { SidebarSettingsContent } from "./SidebarSettingsContent";
 import { SpaceSwitcher } from "./SpaceSwitcher";
 
 interface SidebarProps extends SidebarContentProps {
@@ -38,7 +37,7 @@ export const Sidebar = memo(function Sidebar({
 	onGoForward,
 	...contentProps
 }: SidebarProps) {
-	const { sidebarWidth, settingsMode, openSettings, sidebarLayoutStyle } = useUILayoutContext();
+	const { sidebarWidth, openSettings, sidebarLayoutStyle } = useUILayoutContext();
 	const { t } = useTranslation("shell");
 	const shouldReduceMotion = useReducedMotion();
 	const sidebarState = sidebarCollapsed ? "collapsed" : "expanded";
@@ -73,30 +72,22 @@ export const Sidebar = memo(function Sidebar({
 					data-slot="sidebar-inner"
 					className="sidebarContentRoot"
 				>
-					{settingsMode ? (
-						<>
-							<div aria-hidden="true" className="sidebarDragLayer" data-tauri-drag-region />
-							<div className="sidebarHeader" data-tauri-drag-region />
-							<SidebarSettingsContent />
-						</>
-					) : (
-						<>
-							<SidebarHeader
-								canGoBack={canGoBack}
-								canGoForward={canGoForward}
-								onGoBack={onGoBack}
-								onGoForward={onGoForward}
-							/>
-							<SidebarContent
-								key={activeSpacePath ?? "no-space"}
-								spaces={spaces}
-								activeSpacePath={activeSpacePath}
-								switchingSpacePath={switchingSpacePath}
-								onSelectSpace={onSelectSpace}
-								onSetSpaceIcon={onSetSpaceIcon}
-								onCloseSpace={onCloseSpace}
-								{...contentProps}
-							/>
+					<SidebarHeader
+						canGoBack={canGoBack}
+						canGoForward={canGoForward}
+						onGoBack={onGoBack}
+						onGoForward={onGoForward}
+					/>
+					<SidebarContent
+						key={activeSpacePath ?? "no-space"}
+						spaces={spaces}
+						activeSpacePath={activeSpacePath}
+						switchingSpacePath={switchingSpacePath}
+						onSelectSpace={onSelectSpace}
+						onSetSpaceIcon={onSetSpaceIcon}
+						onCloseSpace={onCloseSpace}
+						{...contentProps}
+					/>
 							{sidebarLayoutStyle !== "gutter" ? (
 								<div className="sidebarFooter">
 									<button

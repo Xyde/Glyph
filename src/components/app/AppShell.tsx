@@ -75,6 +75,7 @@ import { IndexingNotice } from "./IndexingNotice";
 import { MainContent } from "./MainContent";
 import { Sidebar } from "./Sidebar";
 import { WindowChromeUpdateButton } from "./WindowChromeUpdateButton";
+import { SettingsModal } from "../settings/SettingsModal";
 import { loadActivityTimelinePane, loadDatabasesPane } from "./prefetchablePanes";
 import { useAppCommands } from "./useAppCommands";
 import { useDocumentExport } from "./useDocumentExport";
@@ -1393,7 +1394,7 @@ export function AppShell() {
 				data-tauri-drag-region
 				onMouseDown={onWindowDragMouseDown}
 			/>
-			{(!zenMode || settingsMode) && sidebarCollapsed ? (
+			{!zenMode && sidebarCollapsed ? (
 				<div className="sidebarCollapsedToggle">
 					<button
 						type="button"
@@ -1433,7 +1434,7 @@ export function AppShell() {
 					/>
 				</div>
 			) : null}
-			{!zenMode || settingsMode ? (
+			{!zenMode ? (
 				<>
 					<Sidebar
 						canGoBack={canGoBack}
@@ -1596,6 +1597,7 @@ export function AppShell() {
 					/>
 				</>
 			) : null}
+			<SettingsModal open={settingsMode} onClose={closeSettings} />
 		</div>
 	);
 }

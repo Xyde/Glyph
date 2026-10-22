@@ -17,7 +17,13 @@ import {
 import { useActiveSettingsTab, useDeveloperMode } from "../settings/useDeveloperMode";
 import { Button } from "../ui/shadcn/button";
 
-export const SidebarSettingsContent = memo(function SidebarSettingsContent() {
+interface SidebarSettingsContentProps {
+	showBackButton?: boolean;
+}
+
+export const SidebarSettingsContent = memo(function SidebarSettingsContent({
+	showBackButton = true,
+}: SidebarSettingsContentProps) {
 	const { t: tGeneral, i18n } = useTranslation("settings.general");
 	const { setSettingsTab, closeSettings } = useUILayoutContext();
 	const settingsTab = useActiveSettingsTab();
@@ -49,16 +55,18 @@ export const SidebarSettingsContent = memo(function SidebarSettingsContent() {
 	return (
 		<>
 			<div className="sidebarSection sidebarSectionGrow settingsSidebarNavSection">
-				<div className="settingsSidebarBackRow">
-					<button
-						type="button"
-						className="sidebarQuickActionBtn settingsBackButton"
-						onClick={closeSettings}
-					>
-						<HugeiconsIcon icon={ArrowLeft02Icon} size="var(--icon-md)" />
-						<span className="sidebarQuickActionLabel">Back</span>
-					</button>
-				</div>
+				{showBackButton ? (
+					<div className="settingsSidebarBackRow">
+						<button
+							type="button"
+							className="sidebarQuickActionBtn settingsBackButton"
+							onClick={closeSettings}
+						>
+							<HugeiconsIcon icon={ArrowLeft02Icon} size="var(--icon-md)" />
+							<span className="sidebarQuickActionLabel">Back</span>
+						</button>
+					</div>
+				) : null}
 
 				<div className="settingsSidebarSearch">
 					<Search size="var(--icon-md)" className="settingsSidebarSearchIcon" />
