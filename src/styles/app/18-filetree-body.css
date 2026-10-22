@@ -101,7 +101,14 @@
 	border-radius: var(--radius-md);
 }
 
-.fileTreeItem:hover > .fileTreeRowShell > .fileTreeRow .fileTreeIcon {
+.fileTreeItem:hover > .fileTreeRowShell > .fileTreeRow .fileTreeIcon,
+.fileTreeItem:focus-within > .fileTreeRowShell > .fileTreeRow .fileTreeIcon {
+	color: var(--text-primary);
+	opacity: 1;
+}
+
+.fileTreeItem:hover > .fileTreeRowShell > .fileTreeRow .fileTreeName,
+.fileTreeItem:focus-within > .fileTreeRowShell > .fileTreeRow .fileTreeName {
 	color: var(--text-primary);
 }
 
@@ -109,6 +116,12 @@
 	background: var(--bg-active);
 	color: var(--text-primary);
 	border-radius: var(--radius-md);
+}
+
+.fileTreeItem.active > .fileTreeRowShell > .fileTreeRow .fileTreeIcon,
+.fileTreeItem.active > .fileTreeRowShell > .fileTreeRow .fileTreeName {
+	color: var(--text-primary);
+	opacity: 1;
 }
 
 .fileTreeRowShell {
@@ -297,9 +310,12 @@
 	display: inline-flex;
 	width: var(--icon-md);
 	justify-content: center;
-	color: var(--text-primary);
+	color: var(--text-secondary);
 	flex-shrink: 0;
-	opacity: 1;
+	opacity: 0.82;
+	transition:
+		color var(--transition-fast) var(--ease-expo-out, ease),
+		opacity var(--transition-fast) var(--ease-expo-out, ease);
 }
 
 .fileTreeRow[data-has-custom-color="true"] .fileTreeChevron,
@@ -311,13 +327,14 @@
 .fileTreeName {
 	flex: 1;
 	font-size: var(--text-sm);
-	color: var(--text-primary);
+	color: var(--text-secondary);
 	line-height: 1.3;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	min-width: 0;
 	max-width: 100%;
+	transition: color var(--transition-fast) var(--ease-expo-out, ease);
 }
 
 .fileTreeFileText {

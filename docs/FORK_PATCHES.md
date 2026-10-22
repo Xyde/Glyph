@@ -506,7 +506,7 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
 - **Upstream Conflict Risk**: Low.
 
 ### Patch 27: Systemic Theme Engine Anchor Hierarchy, Alpha Feathering & Antigravity Preset
-- **Commit**: (Pending compilation)
+- **Commit**: `b7151176`
 - **Problem**:
   - The sidebar quick actions (`Files`, `Recents`, `Tags`) and call-to-action (`New Note`) all shared the exact same visual weight (`color: var(--text-primary)`, transparent background), lacking an anchored visual center.
   - Sibling navigation items did not provide subtle luminance feedback on hover.
@@ -526,6 +526,28 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
   - `src/styles/app/49-folio-mode.css`
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Zero (strictly additive CSS tokens and semantic selectors).
+
+---
+
+### Patch 28: Elimination of Explorer Hover Spring Jiggle & Systemic Translucent Typography Hierarchy
+- **Commit**: (Pending compilation)
+- **Problem**:
+  - Hovering over a directory in the Explorer caused a noticeable "jiggle and bounce" subpixel animation due to `<m.button>` triggering Framer Motion's spring calculation (`stiffness: 400, damping: 25`) on hover events while simultaneously transitioning CSS background and mask filters.
+  - Resting list items across both the Explorer tree and Folio notes stream were hardcoded to solid opaque `--text-primary` (`#e8e8e8` / `#cccccc`), eliminating Antigravity 2.0's subtle faded-out translucent resting state and leaving the interface visually dense.
+- **Resolution**:
+  - **Hard Subtraction of Motion Spring**: Replaced `<m.button>` with standard semantic `<button>` elements in `FileTreeDirItem.tsx` and `FileTreeFileItem.tsx`. Cleaned up unused `rowVariants` and `springTransition` in `fileTreeItemHelpers.ts`. Eliminates all spring calculations, subpixel transform ticks, and hover jiggle.
+  - **Universal Translucent Resting Hierarchy**: Switched `.fileTreeName`, `.fileTreeIcon`, `.folioNoteTitle`, `.folioFileName`, and `.folioFileLine` to rest at `var(--text-secondary)` (~65% pale luminance / translucent alpha). On `:hover`, `:focus-visible`, and active/selected states, items brighten smoothly to `var(--text-primary)` using `--ease-expo-out`.
+  - **Subdued Date Metadata**: Pinned `.folioNoteDates` to `var(--text-tertiary)` at rest, transitioning to `var(--text-secondary)` on row hover/selection, eliminating high-saturation distraction in note card streams.
+  - **Antigravity Dark Alpha Translucency**: Calibrated `--text-secondary: rgba(204, 204, 204, 0.62)` in `antigravity-dark` to match Antigravity 2.0's exact `#9d9d9d` on pitch surfaces with authentic alpha depth.
+- **Files Modified**:
+  - `src/components/filetree/fileTreeItemHelpers.ts`
+  - `src/components/filetree/FileTreeDirItem.tsx`
+  - `src/components/filetree/FileTreeFileItem.tsx`
+  - `src/styles/app/18-filetree-body.css`
+  - `src/styles/app/49-folio-mode.css`
+  - `src/styles/themes/dark-themes.css`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Zero.
 
 
 

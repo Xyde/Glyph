@@ -252,17 +252,19 @@
 	border-bottom: 1px solid color-mix(in srgb, var(--border-light) 44%, transparent);
 	border-radius: 0;
 	background: transparent;
-	color: var(--text-primary);
+	color: var(--text-secondary);
 	text-align: left;
 	cursor: default;
 	transition:
 		background-color 120ms ease,
-		box-shadow 120ms ease;
+		box-shadow 120ms ease,
+		color var(--transition-fast) var(--ease-expo-out, ease);
 }
 
 .folioNoteRow:hover,
 .folioNoteRow:focus-visible {
 	background: color-mix(in srgb, var(--bg-hover) 76%, transparent);
+	color: var(--text-primary);
 	outline: none;
 }
 
@@ -330,10 +332,17 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	color: var(--folio-file-color, var(--text-primary));
+	color: var(--folio-file-color, var(--text-secondary));
 	font-size: calc(var(--text-base) * 0.95);
 	font-weight: var(--font-semibold);
 	line-height: 1.32;
+	transition: color var(--transition-fast) var(--ease-expo-out, ease);
+}
+
+.folioNoteRow:hover .folioNoteTitle,
+.folioNoteRow:focus-visible .folioNoteTitle,
+.folioNoteRow[data-state="selected"] .folioNoteTitle {
+	color: var(--folio-file-color, var(--text-primary));
 }
 
 .folioNotePinIcon {
@@ -472,10 +481,17 @@
 
 .folioNoteDates {
 	flex: 0 0 auto;
-	color: var(--interactive-accent);
+	color: var(--text-tertiary);
 	font-size: calc(var(--text-base) * 0.8);
 	line-height: 1.35;
 	white-space: nowrap;
+	transition: color var(--transition-fast) var(--ease-expo-out, ease);
+}
+
+.folioNoteRow:hover .folioNoteDates,
+.folioNoteRow:focus-visible .folioNoteDates,
+.folioNoteRow[data-state="selected"] .folioNoteDates {
+	color: var(--text-secondary);
 }
 
 .folioFileLine {
@@ -484,6 +500,13 @@
 	display: flex;
 	align-items: center;
 	gap: 8px;
+	color: var(--text-secondary);
+	transition: color var(--transition-fast) var(--ease-expo-out, ease);
+}
+
+.folioNoteRow:hover .folioFileLine,
+.folioNoteRow:focus-visible .folioFileLine,
+.folioNoteRow[data-state="selected"] .folioFileLine {
 	color: var(--text-primary);
 }
 
@@ -493,10 +516,17 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	color: var(--folio-file-color, var(--text-primary));
+	color: var(--folio-file-color, var(--text-secondary));
 	font-size: calc(var(--text-base) * 0.95);
 	font-weight: var(--font-semibold);
 	line-height: 1.25;
+	transition: color var(--transition-fast) var(--ease-expo-out, ease);
+}
+
+.folioNoteRow:hover .folioFileName,
+.folioNoteRow:focus-visible .folioFileName,
+.folioNoteRow[data-state="selected"] .folioFileName {
+	color: var(--folio-file-color, var(--text-primary));
 }
 
 .folioNotesState {

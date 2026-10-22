@@ -912,9 +912,9 @@
 	--bg-sidebar: #151515;
 	--bg-canvas: #101010;
 	--text-primary: #cccccc;
-	--text-secondary: #9d9d9d;
-	--text-tertiary: #6e6e6e;
-	--text-placeholder: #484848;
+	--text-secondary: rgba(204, 204, 204, 0.62);
+	--text-tertiary: rgba(204, 204, 204, 0.42);
+	--text-placeholder: rgba(204, 204, 204, 0.26);
 	--text-inverse: #101010;
 	--text-accent: #cccccc;
 	--text-error: #de5555;

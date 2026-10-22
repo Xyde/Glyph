@@ -1,7 +1,6 @@
 import { HugeiconsIcon } from "@/components/HugeiconsIcon";
 import { useDraggable } from "@dnd-kit/react";
 import { Folder01Icon, Folder03Icon, MoreVerticalIcon } from "@hugeicons/core-free-icons";
-import { m } from "motion/react";
 import type { CSSProperties, KeyboardEvent, MouseEvent, MutableRefObject, Ref } from "react";
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -20,7 +19,7 @@ import {
 	fileTreeEntryDragId,
 	useFileTreeDirDropTargets,
 } from "./fileTreeDnd";
-import { buildRowStyle, rowVariants, springTransition } from "./fileTreeItemHelpers";
+import { buildRowStyle } from "./fileTreeItemHelpers";
 import { fileTreeAppearanceNativeMenu } from "./fileTreeNativeContextMenu";
 
 interface FileTreeDirItemProps {
@@ -262,7 +261,7 @@ export const FileTreeDirItem = memo(function FileTreeDirItem({
 					</div>
 				) : (
 					<>
-						<m.button
+						<button
 							ref={setDragHandleRef}
 							type="button"
 							className="fileTreeRow"
@@ -278,11 +277,6 @@ export const FileTreeDirItem = memo(function FileTreeDirItem({
 							}}
 							onContextMenu={handleContextMenu}
 							style={rowStyle}
-							variants={rowVariants}
-							whileHover="hover"
-							whileTap="tap"
-							animate={isActive ? "active" : "idle"}
-							transition={springTransition}
 							title={entry.rel_path || entry.name || "Folder"}
 							data-draggable="true"
 							data-dragging={isDragging ? "true" : undefined}
@@ -352,7 +346,7 @@ export const FileTreeDirItem = memo(function FileTreeDirItem({
 									<Plus size="var(--icon-sm)" />
 								</span>
 							</div>
-						</m.button>
+						</button>
 					</>
 				)}
 			</div>

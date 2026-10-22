@@ -2,7 +2,6 @@ import { useNoteArchive } from "../../hooks/useNoteArchive";
 import { HugeiconsIcon } from "@/components/HugeiconsIcon";
 import { useDraggable } from "@dnd-kit/react";
 import { PaintBoardIcon, PinIcon } from "@hugeicons/core-free-icons";
-import { m } from "motion/react";
 import type { CSSProperties, KeyboardEvent, MouseEvent, MutableRefObject, Ref } from "react";
 import { memo, useCallback } from "react";
 import { useEditorContext, useSpace } from "../../contexts";
@@ -17,7 +16,7 @@ import { TaskProgressIndicator } from "../checklists/TaskProgressIndicator";
 import { AppearanceIcon } from "../AppearanceIcon";
 import { isEditorTextColor } from "../editor/textColors";
 import { FILE_TREE_ENTRY_SENSORS, FILE_TREE_ENTRY_TYPE, fileTreeEntryDragId } from "./fileTreeDnd";
-import { buildRowStyle, rowVariants, springTransition } from "./fileTreeItemHelpers";
+import { buildRowStyle } from "./fileTreeItemHelpers";
 import { buildFileTreeFileNativeMenu } from "./fileTreeNativeContextMenu";
 import { getFileTypeInfo } from "./fileTypeUtils";
 
@@ -223,7 +222,7 @@ export const FileTreeFileItem = memo(function FileTreeFileItem({
 						/>
 					</div>
 				) : (
-					<m.button
+					<button
 						ref={setRowRef}
 						type="button"
 						className={previewText ? "fileTreeRow fileTreePreviewRow" : "fileTreeRow"}
@@ -241,11 +240,6 @@ export const FileTreeFileItem = memo(function FileTreeFileItem({
 						onKeyDown={handleKeyDown}
 						style={rowStyle}
 						title={`${entry.rel_path} (${label})`}
-						variants={rowVariants}
-						whileHover="hover"
-						whileTap="tap"
-						animate={isActive ? "active" : "idle"}
-						transition={springTransition}
 						data-draggable="true"
 						data-dragging={isDragging ? "true" : undefined}
 						data-has-custom-color={customColor ? "true" : "false"}
@@ -292,7 +286,7 @@ export const FileTreeFileItem = memo(function FileTreeFileItem({
 								aria-hidden="true"
 							/>
 						) : null}
-					</m.button>
+					</button>
 				)}
 			</div>
 		</li>
