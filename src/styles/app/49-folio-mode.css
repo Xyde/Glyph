@@ -197,6 +197,20 @@
 	list-style: none;
 	margin: 0;
 	padding: 2px 6px 8px;
+	-webkit-mask-image: linear-gradient(
+		to bottom,
+		transparent 0,
+		black 14px,
+		black calc(100% - 14px),
+		transparent 100%
+	);
+	mask-image: linear-gradient(
+		to bottom,
+		transparent 0,
+		black 14px,
+		black calc(100% - 14px),
+		transparent 100%
+	);
 }
 
 .folioNotesList.is-virtualized {

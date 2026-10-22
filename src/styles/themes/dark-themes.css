@@ -901,3 +901,49 @@
 	--scrollbar-thumb-hover: rgba(206, 207, 208, 0.3);
 	--glass-bg: rgba(41, 42, 48, 0.74);
 }
+
+:where(:root, .appearanceThemePreview).dark[data-dark-theme="antigravity-dark"] {
+	/* Google Antigravity 2.0 — velvety micro-stepping pitch graphite with pale silver typography. */
+	--bg-primary: #191919;
+	--bg-secondary: #1b1b1b;
+	--bg-tertiary: #272727;
+	--bg-hover: rgba(255, 255, 255, 0.05);
+	--bg-active: rgba(255, 255, 255, 0.08);
+	--bg-sidebar: #151515;
+	--bg-canvas: #101010;
+	--text-primary: #cccccc;
+	--text-secondary: #9d9d9d;
+	--text-tertiary: #6e6e6e;
+	--text-placeholder: #484848;
+	--text-inverse: #101010;
+	--text-accent: #cccccc;
+	--text-error: #de5555;
+	--border-light: rgba(255, 255, 255, 0.05);
+	--border-default: #191919;
+	--border-strong: #222222;
+	--border-focus: rgba(255, 255, 255, 0.18);
+	--interactive-hover: rgba(255, 255, 255, 0.05);
+	--interactive-accent: #007acc;
+	--interactive-accent-hover: #1f8ad2;
+	--accent-color: #007acc;
+	--link-color: #6a9fcb;
+	--link-color-hover: #8ab8de;
+	--selection-bg-muted: rgba(255, 255, 255, 0.08);
+	--feedback-error-bg: rgba(222, 85, 85, 0.18);
+	--status-info-fg: #6a9fcb;
+	--status-success-fg: #7aae66;
+	--status-success-bg: color-mix(in srgb, #7aae66 18%, transparent);
+	--status-warning-fg: #e8975f;
+	--status-danger-fg: #de5555;
+	--status-danger-bg: color-mix(in srgb, #de5555 20%, transparent);
+	--status-danger-border: color-mix(in srgb, #de5555 40%, transparent);
+	--ai-accent-chat: #6a9fcb;
+	--ai-accent-create: #e8975f;
+	--callout-info: #6a9fcb;
+	--callout-tip: #7aae66;
+	--callout-warning: #e8975f;
+	--callout-error: #de5555;
+	--scrollbar-thumb: rgba(204, 204, 204, 0.15);
+	--scrollbar-thumb-hover: rgba(204, 204, 204, 0.25);
+	--glass-bg: rgba(16, 16, 16, 0.78);
+}

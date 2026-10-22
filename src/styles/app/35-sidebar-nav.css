@@ -7,7 +7,7 @@
 	min-height: max(26px, calc(var(--text-sm) * 1.35 + 8px));
 	padding: 4px 10px;
 	font-size: var(--text-sm);
-	color: var(--text-primary);
+	color: var(--text-secondary);
 	background: none;
 	border: 1px solid transparent;
 	border-radius: var(--radius-8);
@@ -23,6 +23,7 @@
 
 .sidebarQuickActionBtn:hover {
 	background: var(--bg-hover);
+	color: var(--text-primary);
 }
 
 .sidebarQuickActionBtn:focus-visible {
@@ -37,7 +38,8 @@
 
 .sidebarQuickActionBtn > svg {
 	flex: 0 0 auto;
-	color: var(--text-primary);
+	color: var(--text-secondary);
+	transition: color var(--transition-fast);
 }
 
 .sidebarQuickActionBtn:hover > svg {
@@ -63,6 +65,29 @@
 	flex: 1 1 auto;
 	min-width: 0;
 	width: auto;
+	background: color-mix(in srgb, var(--bg-primary) 82%, var(--bg-sidebar));
+	border-color: color-mix(in srgb, var(--border-default) 80%, transparent);
+	color: var(--text-primary);
+	box-shadow:
+		0 1px 2px rgba(0, 0, 0, 0.08),
+		0 0 0 1px color-mix(in srgb, var(--border-light) 40%, transparent);
+}
+
+.sidebarCreateRow .sidebarNewNoteBtn > svg {
+	color: var(--text-primary);
+}
+
+.sidebarCreateRow .sidebarNewNoteBtn:hover {
+	background: var(--bg-primary);
+	border-color: var(--border-strong);
+	color: var(--text-primary);
+	box-shadow:
+		0 2px 6px rgba(0, 0, 0, 0.12),
+		0 0 0 1px color-mix(in srgb, var(--border-default) 60%, transparent);
+}
+
+.sidebarCreateRow .sidebarNewNoteBtn:active {
+	background: var(--bg-active);
 }
 
 button.sidebarNewCanvasIconBtn,

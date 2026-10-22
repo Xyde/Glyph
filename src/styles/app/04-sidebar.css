@@ -181,6 +181,20 @@
 	scrollbar-gutter: stable;
 	display: flex;
 	flex-direction: column;
+	-webkit-mask-image: linear-gradient(
+		to bottom,
+		transparent 0,
+		black 12px,
+		black calc(100% - 12px),
+		transparent 100%
+	);
+	mask-image: linear-gradient(
+		to bottom,
+		transparent 0,
+		black 12px,
+		black calc(100% - 12px),
+		transparent 100%
+	);
 }
 
 .sidebarContentRoot:has(.spaceSwitcher) .sidebarViewContent > .sidebarViewPanel {

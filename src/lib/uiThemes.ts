@@ -165,6 +165,10 @@ export const DARK_THEME_OPTIONS = [
 		id: "vesper",
 		label: "Vesper",
 	},
+	{
+		id: "antigravity-dark",
+		label: "Antigravity",
+	},
 ] as const satisfies readonly UiThemeOption<string>[];
 
 export type UiBuiltInLightThemeId = (typeof LIGHT_THEME_OPTIONS)[number]["id"];

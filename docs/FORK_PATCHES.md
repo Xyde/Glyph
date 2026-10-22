@@ -505,6 +505,28 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Low.
 
+### Patch 27: Systemic Theme Engine Anchor Hierarchy, Alpha Feathering & Antigravity Preset
+- **Commit**: (Pending compilation)
+- **Problem**:
+  - The sidebar quick actions (`Files`, `Recents`, `Tags`) and call-to-action (`New Note`) all shared the exact same visual weight (`color: var(--text-primary)`, transparent background), lacking an anchored visual center.
+  - Sibling navigation items did not provide subtle luminance feedback on hover.
+  - Scrollable regions (Folio notes stream and sidebar tree) suffered from hard 1px boundary clipping at the top and bottom.
+- **Resolution**:
+  - **Systemic CTA Anchor & Glow**: Transformed `.sidebarNewNoteBtn` into a permanently framed, elevated pill (`background: color-mix(in srgb, var(--bg-primary) 82%, var(--bg-sidebar)); border-color: var(--border-default); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 0 0 1px color-mix(in srgb, var(--border-light) 40%, transparent)`) across ALL themes.
+  - **Universal Luminance Hierarchy**: Sibling navigation buttons (`.sidebarQuickActionBtn:not(.sidebarNewNoteBtn)`) now rest at `var(--text-secondary)` (pale ~65% luminance) and smoothly brighten to `var(--text-primary)` on hover.
+  - **Universal Alpha Scroll Feathering**: Applied 12-14px linear mask gradients (`mask-image` / `-webkit-mask-image`) to `.folioNotesList` and `.sidebarViewContent > .sidebarViewPanel`, dissolving scrolling elements softly into the background across all themes.
+  - **Apple / Antigravity Deceleration Curves**: Added `--ease-expo-out` (`cubic-bezier(0.16, 1, 0.3, 1)`) to `primitives.css` for fluid, non-jarring micro-transitions.
+  - **Antigravity Dark Theme Preset**: Added `antigravity-dark` (`#101010` void canvas, `#151515` sidebar, `#191919` primary surface, `#cccccc` pale text ceiling, micro-stepping deltas) to `dark-themes.css` and `uiThemes.ts`.
+- **Files Modified**:
+  - `src/lib/uiThemes.ts`
+  - `src/styles/themes/primitives.css`
+  - `src/styles/themes/dark-themes.css`
+  - `src/styles/app/35-sidebar-nav.css`
+  - `src/styles/app/04-sidebar.css`
+  - `src/styles/app/49-folio-mode.css`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Zero (strictly additive CSS tokens and semantic selectors).
+
 
 
 
