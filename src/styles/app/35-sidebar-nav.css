@@ -65,7 +65,8 @@
 	width: auto;
 }
 
-button.sidebarNewCanvasIconBtn {
+button.sidebarNewCanvasIconBtn,
+button.sidebarCreateOptionsBtn {
 	flex: 0 0 auto;
 	min-width: max(26px, calc(var(--icon-md) + 4px));
 	min-height: max(26px, calc(var(--icon-md) + 4px));
@@ -75,10 +76,19 @@ button.sidebarNewCanvasIconBtn {
 	margin-left: auto;
 	border-radius: var(--radius-8);
 	color: var(--text-secondary);
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background var(--transition-fast), color var(--transition-fast);
 }
 
 button.sidebarNewCanvasIconBtn:hover,
-button.sidebarNewCanvasIconBtn:active {
+button.sidebarNewCanvasIconBtn:active,
+button.sidebarCreateOptionsBtn:hover,
+button.sidebarCreateOptionsBtn:active {
 	background: var(--bg-hover);
 	color: var(--text-primary);
 }
@@ -414,7 +424,7 @@ button.sidebarNewCanvasIconBtn:active {
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
-	padding: 6px 0 10px;
+	padding: 6px 0 16px;
 	border-right: 1px solid var(--border-subtle);
 	overflow-y: auto;
 	overflow-x: hidden;

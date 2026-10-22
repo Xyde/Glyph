@@ -14,8 +14,8 @@ import {
 	InboxIcon,
 	Layout01Icon as TemplatesIcon,
 	LibraryIcon as CollectionsIcon,
+	MoreVerticalIcon,
 	NoteIcon as AllNotesIcon,
-	PaintBoardIcon as CanvasIcon,
 	PinIcon,
 	Refresh04Icon as SyncIcon,
 	SearchIcon,
@@ -52,7 +52,11 @@ import { FILE_TREE_START_RENAME_EVENT } from "../../lib/appEvents";
 import { extractErrorMessage } from "../../lib/errorUtils";
 import { scheduleScrollFileTreePathIntoView } from "../../lib/fileTreeScroll";
 import { FILE_TREE_SORT_MODES, fileTreeSortLabel } from "../../lib/fileTreeSort";
-import { showNativeContextMenu } from "../../lib/nativeContextMenu";
+import {
+	showNativeContextMenu,
+	showNativePopupMenu,
+	type NativeContextMenuItem,
+} from "../../lib/nativeContextMenu";
 import { allDocsCountQueryOptions, formatAllDocsCountLabel } from "../../lib/navigationPrefetch";
 import { type PeriodKind, isPeriodNoteEnabled } from "../../lib/periodNotes";
 import { isFileTreeSortMode } from "../../lib/settings";
@@ -577,6 +581,32 @@ export const SidebarContent = memo(function SidebarContent({
 
 	const isGutterMode = sidebarLayoutStyle === "gutter";
 
+	const handleCreateOptionsClick = useCallback(
+		(event: MouseEvent<HTMLButtonElement>) => {
+			const menuItems: NativeContextMenuItem[] = [
+				{
+					label: t("sidebar.newNote", { defaultValue: "New Markdown Note" }),
+					action: onNewNote,
+				},
+				{
+					label: t("sidebar.fromTemplate", { defaultValue: "New Note from Template..." }),
+					action: () => onCreateFromTemplateInDir(newNoteFolder),
+				},
+				{
+					label: t("sidebar.newCanvas", { defaultValue: "New Whiteboard (.excalidraw)" }),
+					action: onNewCanvas,
+				},
+				{ type: "separator" },
+				{
+					label: t("sidebar.dailyNote", { defaultValue: "Today's Daily Note" }),
+					action: () => onOpenPeriodNote("day"),
+				},
+			];
+			void showNativePopupMenu(event, menuItems);
+		},
+		[newNoteFolder, onCreateFromTemplateInDir, onNewCanvas, onNewNote, onOpenPeriodNote, t],
+	);
+
 	const createRow =
 		sidebarVisibility.newNote || sidebarVisibility.newCanvas ? (
 			<div
@@ -604,17 +634,15 @@ export const SidebarContent = memo(function SidebarContent({
 						) : null}
 					</button>
 				) : null}
-				{sidebarVisibility.newCanvas ? (
-					<button
-						type="button"
-						className="sidebarNewCanvasIconBtn"
-						aria-label={t("sidebar.newCanvas")}
-						title={t("sidebar.newCanvas")}
-						onClick={onNewCanvas}
-					>
-						<HugeiconsIcon icon={CanvasIcon} size="var(--icon-md)" aria-hidden="true" />
-					</button>
-				) : null}
+				<button
+					type="button"
+					className="sidebarCreateOptionsBtn"
+					aria-label={t("sidebar.createOptions", { defaultValue: "More note creation options" })}
+					title={t("sidebar.createOptions", { defaultValue: "More note creation options..." })}
+					onClick={handleCreateOptionsClick}
+				>
+					<HugeiconsIcon icon={MoreVerticalIcon} size="var(--icon-sm)" aria-hidden="true" />
+				</button>
 			</div>
 		) : null;
 
