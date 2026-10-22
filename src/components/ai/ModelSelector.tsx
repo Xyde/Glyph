@@ -1,9 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { showNativePopupMenu, type NativeContextMenuItem } from "../../lib/nativeContextMenu";
-import { toast } from "../../lib/toast";
 import type { AiModel, AiProviderKind } from "../../lib/tauri";
 import { invoke } from "../../lib/tauri";
 import { ChevronDown } from "../Icons";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuRadioGroup,
+	DropdownMenuRadioItem,
+	DropdownMenuTrigger,
+} from "../ui/shadcn/dropdown-menu";
 import styles from "./ModelSelector.module.css";
 import { ProviderLogo, providerLogoMap, resolveLogoProvider } from "./modelSelectorConstants";
 
@@ -21,8 +26,10 @@ export function ModelSelector({ profileId, value, onChange, provider }: ModelSel
 			if (!profileId) return Promise.resolve<AiModel[]>([]);
 			return invoke("ai_models_list", { profile_id: profileId, provider });
 		},
-		enabled: false,
+		enabled: Boolean(profileId),
+		staleTime: 60_000,
 	});
+
 	const selectedModel = modelsQuery.data?.find((model) => model.id === value);
 	const displayLabel = selectedModel?.name || value || "Model";
 	const logoProvider = resolveLogoProvider(provider, selectedModel?.name);
@@ -30,68 +37,60 @@ export function ModelSelector({ profileId, value, onChange, provider }: ModelSel
 		? (providerLogoMap[logoProvider]?.label ?? logoProvider)
 		: "Model provider";
 
-	async function openModelMenu(anchor: Element): Promise<void> {
-		try {
-			const cachedModels = modelsQuery.data?.length ? modelsQuery.data : null;
-			const result = cachedModels ? null : await modelsQuery.refetch();
-			if (!anchor.isConnected) return;
-			if (result?.error) {
-				toast.error("Could not load models", {
-					description: result.error instanceof Error ? result.error.message : String(result.error),
-				});
-				return;
-			}
-			const models = cachedModels ?? result?.data;
-			const items: NativeContextMenuItem[] = !models?.length
-				? [
-						{
-							label: "No models available",
-							enabled: false,
-							action: () => {},
-						},
-					]
-				: models.map((model) => ({
-						label: model.name,
-						checked: model.id === value,
-						action: () => {
-							if (anchor.isConnected) onChange(model.id);
-						},
-					}));
-			await showNativePopupMenu(
-				{ currentTarget: anchor, preventDefault: () => {}, stopPropagation: () => {} },
-				items,
-			);
-			if (cachedModels && anchor.isConnected) void modelsQuery.refetch();
-		} catch (error) {
-			toast.error("Could not open model menu", {
-				description: error instanceof Error ? error.message : String(error),
-			});
-		}
-	}
-
 	return (
-		<button
-			type="button"
-			className={styles.trigger}
-			onClick={(event) => {
-				event.preventDefault();
-				event.stopPropagation();
-				void openModelMenu(event.currentTarget);
-			}}
-			title={value || "Select model"}
-			aria-label="Select model"
-			aria-haspopup="menu"
-			disabled={!profileId || (modelsQuery.isFetching && !modelsQuery.data?.length)}
-		>
-			{logoProvider && (
-				<span className={styles.triggerLogo} title={providerTitle}>
-					<ProviderLogo provider={logoProvider} className={styles.providerSvg} />
+		<DropdownMenu>
+			<DropdownMenuTrigger
+				render={
+					<button
+						type="button"
+						className={styles.trigger}
+						title={value || "Select model"}
+						aria-label="Select model"
+						disabled={!profileId || (modelsQuery.isFetching && !modelsQuery.data?.length)}
+					/>
+				}
+			>
+				{logoProvider && (
+					<span className={styles.triggerLogo} title={providerTitle}>
+						<ProviderLogo provider={logoProvider} className={styles.providerSvg} />
+					</span>
+				)}
+				<span className={styles.triggerLabel}>{displayLabel}</span>
+				<span className={styles.triggerIcon}>
+					<ChevronDown size="var(--icon-sm)" />
 				</span>
-			)}
-			<span className={styles.triggerLabel}>{displayLabel}</span>
-			<span className={styles.triggerIcon}>
-				<ChevronDown size="var(--icon-sm)" />
-			</span>
-		</button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent
+				side="top"
+				align="end"
+				sideOffset={6}
+				className="max-h-[300px] w-64 overflow-y-auto"
+			>
+				{modelsQuery.isLoading ? (
+					<div className="p-2 text-xs text-muted-foreground">Loading models...</div>
+				) : modelsQuery.isError ? (
+					<div className="p-2 text-xs text-destructive">Could not load models</div>
+				) : !modelsQuery.data?.length ? (
+					<div className="p-2 text-xs text-muted-foreground">No models available</div>
+				) : (
+					<DropdownMenuRadioGroup
+						value={value}
+						onValueChange={(val) => {
+							if (typeof val === "string") {
+								onChange(val);
+							}
+						}}
+					>
+						{modelsQuery.data.map((model) => (
+							<DropdownMenuRadioItem key={model.id} value={model.id} closeOnClick>
+								<span className="truncate" title={model.name}>
+									{model.name}
+								</span>
+							</DropdownMenuRadioItem>
+						))}
+					</DropdownMenuRadioGroup>
+				)}
+			</DropdownMenuContent>
+		</DropdownMenu>
 	);
 }

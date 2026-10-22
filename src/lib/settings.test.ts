@@ -169,13 +169,13 @@ const DURABLE_SETTING_CASES = [
 		name: "frontmatter visibility",
 		storeKey: "editor.showFrontmatterInEditor",
 		read: (settings: AppSettings) => settings.editor.showFrontmatterInEditor,
-		defaultValue: false,
-		storedValue: true,
+		defaultValue: true,
+		storedValue: false,
 		writeKey: "editorShowFrontmatterInEditor",
 		writes: [
 			{
-				value: true,
-				payload: { editor: { showFrontmatterInEditor: true } },
+				value: false,
+				payload: { editor: { showFrontmatterInEditor: false } },
 			},
 		],
 	},

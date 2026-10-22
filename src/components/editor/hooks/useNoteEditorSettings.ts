@@ -23,7 +23,7 @@ interface NoteEditorSettings {
 const DEFAULT_NOTE_EDITOR_SETTINGS: NoteEditorSettings = {
 	showCollapsibleHeadings: false,
 	showCollapsibleLists: false,
-	showFrontmatterInEditor: false,
+	showFrontmatterInEditor: true,
 	showHeadingPrefixes: true,
 	colorfulHeadings: false,
 	peopleMentionsEnabled: false,

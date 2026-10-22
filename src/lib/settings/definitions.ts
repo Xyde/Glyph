@@ -703,7 +703,7 @@ export const DURABLE_SETTINGS = {
 	}),
 	editorShowFrontmatterInEditor: booleanSetting({
 		key: "editor.showFrontmatterInEditor",
-		defaultValue: false,
+		defaultValue: true,
 		discovery: searchable("general-editor-frontmatter"),
 		read: (settings) => settings.editor.showFrontmatterInEditor,
 		change: (value) => ({ editor: { showFrontmatterInEditor: value } }),
