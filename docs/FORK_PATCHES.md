@@ -614,7 +614,7 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
 ---
 
 ### Patch 32: Elimination of Stacked Alpha Color Mismatch & Dynamic Width Calibration on Folder Actions (Seamless Antigravity Hover Pill)
-- **Commit**: (Pending compilation)
+- **Commit**: `1b5a01ea`, `75d5cec5`
 - **Problem**:
   - Hovering a directory row in the Explorer tree revealed a visibly lighter, discolored patch under the action buttons (`+` and `⋮`). Because `--bg-hover` is a translucent alpha overlay (`rgba(255, 255, 255, 0.05)`), `.fileTreeRowActions`'s gradient background (`linear-gradient(to right, transparent 0%, var(--bg-hover) 14px, var(--bg-hover) 100%)`) painted a second coat of 5% white on top of the parent `.fileTreeRow`'s existing 5% white. Under Porter-Duff alpha compositing, this doubled the opacity to ~10% white (`rgb(58, 58, 58)` vs `rgb(48, 48, 48)`), breaking visual seamlessness across the pill.
   - Adding a hardcoded `padding-right: 48px;` to `.fileTreeName` caused short names (e.g. "Game notes") to prematurely truncate into "Game no..." even when ample whitespace existed before the buttons.
