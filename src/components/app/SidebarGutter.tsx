@@ -20,7 +20,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { memo, useCallback, useState, type MouseEvent, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { showNativePopupMenu, type NativeContextMenuItem } from "../../lib/nativeContextMenu";
+import { showNativeContextMenu, type NativeContextMenuItem } from "../../lib/nativeContextMenu";
 import { allDocsCountQueryOptions, formatAllDocsCountLabel } from "../../lib/navigationPrefetch";
 import { defaultSpaceIconName, type SpaceDefinition } from "../../lib/spaceRegistry";
 import type { SidebarOrder, SidebarVisibility } from "../../lib/settings/model";
@@ -179,7 +179,7 @@ export const SidebarGutter = memo(function SidebarGutter({
 					});
 				}
 			}
-			void showNativePopupMenu(event, menuItems, { placement: "right-end" });
+			void showNativeContextMenu(event, menuItems);
 		},
 		[
 			activeSpacePath,
