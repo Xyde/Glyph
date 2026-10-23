@@ -82,8 +82,8 @@ interface FileTreePaneProps {
 	children?: ReactNode;
 }
 
-const springTransition = springPresets.bouncy;
-const FILE_TREE_ROW_ESTIMATE = 32;
+const springTransition = springPresets.snappy;
+const FILE_TREE_ROW_ESTIMATE = 28;
 const FILE_TREE_PREVIEW_ROW_ESTIMATE = 52;
 const DRAG_CLICK_SUPPRESSION_DELAY_MS = 100;
 

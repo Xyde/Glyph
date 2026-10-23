@@ -162,8 +162,14 @@
 	display: inline-flex;
 	align-items: center;
 	gap: 2px;
-	padding-left: 12px;
+	padding-left: 18px;
 	padding-right: 6px;
+	background: linear-gradient(
+		to right,
+		transparent 0%,
+		var(--bg-hover) 14px,
+		var(--bg-hover) 100%
+	);
 	opacity: 0;
 	pointer-events: none;
 	transition: opacity var(--transition-fast);
@@ -171,26 +177,19 @@
 	z-index: 2;
 }
 
+.fileTreeItem.active > .fileTreeRowShell > .fileTreeRow .fileTreeRowActions {
+	background: linear-gradient(
+		to right,
+		transparent 0%,
+		var(--bg-active) 14px,
+		var(--bg-active) 100%
+	);
+}
+
 .fileTreeItem:hover > .fileTreeRowShell > .fileTreeRow .fileTreeRowActions,
 .fileTreeItem:focus-within > .fileTreeRowShell > .fileTreeRow .fileTreeRowActions {
 	opacity: 1;
 	pointer-events: auto;
-}
-
-.fileTreeItem:hover > .fileTreeRowShell > .fileTreeRow[data-file-tree-kind="dir"] .fileTreeName,
-.fileTreeItem:focus-within > .fileTreeRowShell > .fileTreeRow[data-file-tree-kind="dir"] .fileTreeName {
-	mask-image: linear-gradient(
-		to right,
-		black 0%,
-		black calc(100% - 76px),
-		transparent calc(100% - 50px)
-	);
-	-webkit-mask-image: linear-gradient(
-		to right,
-		black 0%,
-		black calc(100% - 76px),
-		transparent calc(100% - 50px)
-	);
 }
 
 .fileTreeRowAction {

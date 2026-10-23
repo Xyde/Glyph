@@ -530,7 +530,7 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
 ---
 
 ### Patch 28: Elimination of Explorer Hover Spring Jiggle & Systemic Translucent Typography Hierarchy
-- **Commit**: (Pending compilation)
+- **Commit**: `ad1f357b`
 - **Problem**:
   - Hovering over a directory in the Explorer caused a noticeable "jiggle and bounce" subpixel animation due to `<m.button>` triggering Framer Motion's spring calculation (`stiffness: 400, damping: 25`) on hover events while simultaneously transitioning CSS background and mask filters.
   - Resting list items across both the Explorer tree and Folio notes stream were hardcoded to solid opaque `--text-primary` (`#e8e8e8` / `#cccccc`), eliminating Antigravity 2.0's subtle faded-out translucent resting state and leaving the interface visually dense.
@@ -546,6 +546,23 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
   - `src/styles/app/18-filetree-body.css`
   - `src/styles/app/49-folio-mode.css`
   - `src/styles/themes/dark-themes.css`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Zero.
+
+---
+
+### Patch 29: Elimination of Dynamic Folder Mask Shiver & Virtual Row Geometry Calibration
+- **Commit**: (Pending compilation)
+- **Problem**:
+  - Resting or moving the cursor over a directory in the Explorer caused the folder text to visibly "shake" and shiver due to a dynamic `mask-image: linear-gradient(...)` applied on hover in `18-filetree-body.css`. Toggling `mask-image` dynamically forced WebKit into offscreen texture compositing on hover, disabling LCD subpixel antialiasing and altering glyph metrics across the mask threshold.
+  - `FILE_TREE_ROW_ESTIMATE` was set to 32px while physical rows rendered at 28px, causing ResizeObserver height recalibration jumps on virtual item mounts.
+- **Resolution**:
+  - **Hard Subtraction of Hover Mask**: Completely removed the dynamic `mask-image` and `-webkit-mask-image` rules from `.fileTreeName` on `[data-file-tree-kind="dir"]`.
+  - **Zero-Composite Action Fade**: Applied a smooth `linear-gradient(to right, transparent, var(--bg-hover) 14px, var(--bg-hover) 100%)` directly to `.fileTreeRowActions`, cleanly occluding long folder names when the floating action buttons fade in without altering the text's rendering layer or font antialiasing.
+  - **Geometry Alignment**: Calibrated `FILE_TREE_ROW_ESTIMATE = 28` and upgraded `FileTreePane` mount physics to `springPresets.snappy`.
+- **Files Modified**:
+  - `src/styles/app/18-filetree-body.css`
+  - `src/components/filetree/FileTreePane.tsx`
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Zero.
 
