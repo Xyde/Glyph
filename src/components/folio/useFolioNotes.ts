@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useCallback, useMemo } from "react";
 import type { AllDocsPage } from "../../lib/navigationPrefetch";
 import type { FileTreeSortMode } from "../../lib/settings/model";
@@ -75,6 +75,12 @@ async function listNotesPage(
 	pinnedPaths: string[],
 	offset: number,
 ): Promise<AllDocsPage> {
+	if (scope.kind === "pinned" && pinnedPaths.length === 0) {
+		return {
+			items: [],
+			nextOffset: null,
+		};
+	}
 	const items = await invoke("all_docs_list", {
 		...scopeInvokeArgs(scope),
 		limit: FOLIO_NOTES_PAGE_SIZE + 1,
@@ -143,11 +149,13 @@ export function useFolioNotes(
 		queryFn: ({ pageParam }) => listNotesPage(scope, sortMode, query, pinnedPaths, pageParam),
 		initialPageParam: 0,
 		getNextPageParam: (lastPage) => lastPage.nextOffset ?? undefined,
+		placeholderData: keepPreviousData,
 	});
 	const filesQuery = useQuery({
 		queryKey: ["navigation", "all-docs", "folio-files", folderPrefix],
 		queryFn: () => listNonMarkdownFiles(folderPrefix),
 		enabled: includesNonMarkdownFiles,
+		placeholderData: keepPreviousData,
 	});
 
 	const items = useMemo(

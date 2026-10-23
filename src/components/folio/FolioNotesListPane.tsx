@@ -403,10 +403,10 @@ export const FolioNotesListPane = memo(function FolioNotesListPane({
 	);
 
 	const body = (() => {
-		if (isLoading) {
+		if (isLoading && sortedNotes.length === 0) {
 			return <div className="folioNotesState">{t("calendar.loading")}</div>;
 		}
-		if (error) {
+		if (error && sortedNotes.length === 0) {
 			return (
 				<div className="folioNotesState">
 					{t("calendar.loadFailed", { message: extractErrorMessage(error) })}

@@ -552,7 +552,7 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
 ---
 
 ### Patch 29: Elimination of Dynamic Folder Mask Shiver & Virtual Row Geometry Calibration
-- **Commit**: (Pending compilation)
+- **Commit**: `b086c9d2`
 - **Problem**:
   - Resting or moving the cursor over a directory in the Explorer caused the folder text to visibly "shake" and shiver due to a dynamic `mask-image: linear-gradient(...)` applied on hover in `18-filetree-body.css`. Toggling `mask-image` dynamically forced WebKit into offscreen texture compositing on hover, disabling LCD subpixel antialiasing and altering glyph metrics across the mask threshold.
   - `FILE_TREE_ROW_ESTIMATE` was set to 32px while physical rows rendered at 28px, causing ResizeObserver height recalibration jumps on virtual item mounts.
@@ -563,6 +563,24 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
 - **Files Modified**:
   - `src/styles/app/18-filetree-body.css`
   - `src/components/filetree/FileTreePane.tsx`
+  - `docs/FORK_PATCHES.md`
+- **Upstream Conflict Risk**: Zero.
+
+---
+
+### Patch 30: Elimination of First-Click Folio Jitter & Sidebar Tab Desynchronization
+- **Commit**: (Pending compilation)
+- **Problem**:
+  - Clicking the "Pinned" tab button on the sidebar for the first time in a session caused the middle Folio pane to violently jitter and flash. Because uncached queries start in `isPending: true`, `FolioNotesListPane` unconditionally unmounted the entire virtualized `<ul className="folioNotesList is-virtualized">` DOM container and rendered a temporary "Loading..." text until SQLite returned 30ms later, forcing TanStack Virtualizer to remount and re-measure from scratch. On subsequent clicks, in-memory query caching masked the bug.
+  - In `SidebarContent.tsx`, clicking the Pinned button when `sidebarPinnedStyle === "projects"` called `setFolioScope({ kind: "pinned" })` and returned early without setting `sidebarView`. This left `activeSidebarView.kind` stuck on `"files"`, desynchronizing `aria-selected` and causing subsequent clicks on the "Files" tab to be silently ignored due to an early `activeSidebarView.kind === view` return.
+- **Resolution**:
+  - **Smooth Query Transitions (`keepPreviousData`)**: Configured `placeholderData: keepPreviousData` on `useInfiniteQuery` and `useQuery` in `useFolioNotes.ts`, and narrowed `FolioNotesListPane`'s loading guard to `isLoading && sortedNotes.length === 0`. Existing note rows stay mounted while background fetches occur, eliminating virtual list destruction and layout jitter.
+  - **Instant Empty Bypass**: Added an immediate `{ items: [], nextOffset: null }` return for `scope.kind === "pinned"` when `pinnedPaths` is empty, avoiding unnecessary database queries.
+  - **Sidebar State Synchronization**: Set `setSidebarView({ kind: "pinned" })` alongside `setFolioScope` and ensured clicking "Files" always resets `folioScope` back to `all` when scoped.
+- **Files Modified**:
+  - `src/components/folio/useFolioNotes.ts`
+  - `src/components/folio/FolioNotesListPane.tsx`
+  - `src/components/app/SidebarContent.tsx`
   - `docs/FORK_PATCHES.md`
 - **Upstream Conflict Risk**: Zero.
 

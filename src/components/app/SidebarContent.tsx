@@ -315,6 +315,7 @@ export const SidebarContent = memo(function SidebarContent({
 	const { openTagMenu } = useTagRefactor();
 	const {
 		folioMode,
+		folioScope,
 		periodNotesEnabled,
 		sidebarOrder,
 		setFolioScope,
@@ -483,11 +484,12 @@ export const SidebarContent = memo(function SidebarContent({
 		(view: "files" | "pinned" | "recents" | "tags") => {
 			if (sidebarPinnedStyle === "projects" && folioMode && view === "pinned") {
 				setFolioScope({ kind: "pinned" });
+				setSidebarView({ kind: "pinned" });
 				return;
 			}
 			if (
 				folioMode &&
-				activeSidebarView.kind !== view &&
+				(activeSidebarView.kind !== view || (view === "files" && folioScope.kind !== "all")) &&
 				(activeSidebarView.kind === "folder" ||
 					view === "files" ||
 					view === "pinned" ||
@@ -508,6 +510,7 @@ export const SidebarContent = memo(function SidebarContent({
 			activeSidebarView.kind,
 			ensureTagsFresh,
 			folioMode,
+			folioScope.kind,
 			handleSelectFolioFolder,
 			onSelectDir,
 			setFolioScope,
