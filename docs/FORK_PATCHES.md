@@ -599,7 +599,7 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
 ---
 
 ### Patch 31: Cursor-Anchored Native Vault Menu Positioning (Obsidian Alignment)
-- **Commit**: (Pending compilation)
+- **Commit**: `1321fdb8`, `9d4f4a16`
 - **Problem**:
   - Clicking the Vault button at the bottom of the activity rail caused the native macOS context menu to float ~100px above the button in the middle of the folder tree. `SidebarGutter.tsx` called `showNativePopupMenu(event, menuItems, { placement: "right-end" })`, which computed a synthetic position of `rect.right + 4, rect.bottom`. Because `rect.bottom` is at the very bottom of the window (Y ≈ 1250), AppKit detected that the menu exceeded window bounds and flipped it upwards while aligning the checkmarked first item (`positioningItem`), pushing the entire menu high into the air.
 - **Resolution**:
