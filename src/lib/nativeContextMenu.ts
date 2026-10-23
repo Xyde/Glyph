@@ -131,11 +131,11 @@ export async function showNativeContextMenu(
 	event: NativeContextMenuEvent,
 	items: NativeContextMenuItem[],
 ): Promise<boolean> {
-	const position =
-		typeof event.clientX === "number" && typeof event.clientY === "number"
-			? new LogicalPosition(event.clientX, event.clientY)
-			: undefined;
-	const result = await showNativeMenu(event, items, position);
+	// When triggered by a pointer click, omit explicit LogicalPosition so macOS AppKit
+	// anchors the menu directly at the native hardware cursor via NSEvent::mouseLocation()
+	// with in_view: None. This eliminates view-height subtraction and upward inversion glitches,
+	// matching Obsidian's dynamic pointer-anchored behavior.
+	const result = await showNativeMenu(event, items);
 	return result.didSelectItem;
 }
 
