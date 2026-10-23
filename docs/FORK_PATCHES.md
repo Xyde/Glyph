@@ -568,8 +568,8 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
 
 ---
 
-### Patch 30: Elimination of First-Click Folio Jitter & Sidebar Tab Desynchronization
-- **Commit**: (Pending compilation)
+### Patch 30: Elimination of First-Click Folio Unmount Jitter & Sidebar Tab Desynchronization
+- **Commit**: `bcb4aac0`
 - **Problem**:
   - Clicking the "Pinned" tab button on the sidebar for the first time in a session caused the middle Folio pane to violently jitter and flash. Because uncached queries start in `isPending: true`, `FolioNotesListPane` unconditionally unmounted the entire virtualized `<ul className="folioNotesList is-virtualized">` DOM container and rendered a temporary "Loading..." text until SQLite returned 30ms later, forcing TanStack Virtualizer to remount and re-measure from scratch. On subsequent clicks, in-memory query caching masked the bug.
   - In `SidebarContent.tsx`, clicking the Pinned button when `sidebarPinnedStyle === "projects"` called `setFolioScope({ kind: "pinned" })` and returned early without setting `sidebarView`. This left `activeSidebarView.kind` stuck on `"files"`, desynchronizing `aria-selected` and causing subsequent clicks on the "Files" tab to be silently ignored due to an early `activeSidebarView.kind === view` return.
