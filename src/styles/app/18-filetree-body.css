@@ -112,11 +112,6 @@
 	color: var(--text-primary);
 }
 
-.fileTreeItem:hover > .fileTreeRowShell > .fileTreeRow[data-file-tree-kind="dir"] .fileTreeName,
-.fileTreeItem:focus-within > .fileTreeRowShell > .fileTreeRow[data-file-tree-kind="dir"] .fileTreeName {
-	padding-right: 48px;
-}
-
 .fileTreeItem.active > .fileTreeRowShell > .fileTreeRow {
 	background: var(--bg-active);
 	color: var(--text-primary);
@@ -160,24 +155,17 @@
 }
 
 .fileTreeRowActions {
-	position: absolute;
-	right: 6px;
-	top: 0;
-	bottom: 0;
-	display: inline-flex;
+	display: none;
 	align-items: center;
 	gap: 2px;
-	background: transparent;
-	opacity: 0;
-	pointer-events: none;
-	transition: opacity var(--transition-fast);
+	margin-left: auto;
+	flex-shrink: 0;
 	z-index: 2;
 }
 
 .fileTreeItem:hover > .fileTreeRowShell > .fileTreeRow .fileTreeRowActions,
 .fileTreeItem:focus-within > .fileTreeRowShell > .fileTreeRow .fileTreeRowActions {
-	opacity: 1;
-	pointer-events: auto;
+	display: inline-flex;
 }
 
 .fileTreeRowAction {
@@ -370,7 +358,7 @@
 
 .fileTreeItem:hover > .fileTreeRowShell > .fileTreeRow .fileTreeCounts,
 .fileTreeItem:focus-within > .fileTreeRowShell > .fileTreeRow .fileTreeCounts {
-	opacity: 0;
+	display: none;
 }
 
 .fileTreeExtBadge {

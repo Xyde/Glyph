@@ -613,14 +613,16 @@ Use this manifest during upstream rebases to rapidly audit, re-apply, or retire 
 
 ---
 
-### Patch 32: Elimination of Stacked Alpha Color Mismatch on Folder Actions (Seamless Antigravity Hover Pill)
-- **Commit**: `1b5a01ea`
+### Patch 32: Elimination of Stacked Alpha Color Mismatch & Dynamic Width Calibration on Folder Actions (Seamless Antigravity Hover Pill)
+- **Commit**: (Pending compilation)
 - **Problem**:
   - Hovering a directory row in the Explorer tree revealed a visibly lighter, discolored patch under the action buttons (`+` and `⋮`). Because `--bg-hover` is a translucent alpha overlay (`rgba(255, 255, 255, 0.05)`), `.fileTreeRowActions`'s gradient background (`linear-gradient(to right, transparent 0%, var(--bg-hover) 14px, var(--bg-hover) 100%)`) painted a second coat of 5% white on top of the parent `.fileTreeRow`'s existing 5% white. Under Porter-Duff alpha compositing, this doubled the opacity to ~10% white (`rgb(58, 58, 58)` vs `rgb(48, 48, 48)`), breaking visual seamlessness across the pill.
+  - Adding a hardcoded `padding-right: 48px;` to `.fileTreeName` caused short names (e.g. "Game notes") to prematurely truncate into "Game no..." even when ample whitespace existed before the buttons.
 - **Resolution**:
-  - Removed the synthetic background gradient from `.fileTreeRowActions` and set `background: transparent; right: 6px;`.
-  - Added `padding-right: 48px;` to `.fileTreeName` on hover/focus-within when `[data-file-tree-kind="dir"]`, ensuring long directory names truncate cleanly with `text-overflow: ellipsis` before reaching the action buttons without colliding.
-  - The hover/active pill is now 100% continuous, uniform, and seamless from edge to edge across all themes.
+  - Removed the synthetic background gradient from `.fileTreeRowActions` and switched it to in-flow flexbox (`display: inline-flex; margin-left: auto; flex-shrink: 0;` on hover/focus, `display: none;` when idle).
+  - Switched `.fileTreeCounts` to `display: none;` on hover/focus so `.fileTreeRowActions` cleanly replaces it at the far-right anchor.
+  - Removed artificial padding on `.fileTreeName`. Flexbox now dynamically calculates available width based on the actual sidebar column width: names within bounds (like "Game notes") never show ellipsis, while long names dynamically truncate at the exact button boundary.
+  - The hover/active pill is now 100% continuous, uniform, and dynamically calibrated across all sidebar widths and themes.
 - **Files Modified**:
   - `src/styles/app/18-filetree-body.css`
   - `docs/FORK_PATCHES.md`
